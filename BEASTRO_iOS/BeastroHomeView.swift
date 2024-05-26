@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct BeastroHomeView: View {
+    
+    @State private var showMenu: Bool = false
+    
     var body: some View {
         NavigationStack {
-            HStack {
-                homePageTitle
-                Spacer()
+            VStack {
+                HStack {
+                    homePageTitle
+                    Spacer()
+                }
+                Button {
+                    showMenu = true
+                } label: {
+                    showMenuButton
+                }
             }
             .background {
                 Image("HomeScreenImage_Local")
@@ -40,5 +50,17 @@ extension BeastroHomeView {
         .font(.largeTitle)
         .fontWeight(.heavy)
         .foregroundStyle(Color.white)
+    }
+    
+    private var showMenuButton: some View {
+        VStack(spacing: 7) {
+            Image(systemName: "chevron.up")
+                .foregroundStyle(Color.white.opacity(0.5))
+            Image(systemName: "chevron.up")
+                .foregroundStyle(Color.white)
+            Text("View Menu")
+                .foregroundStyle(Color.white)
+        }
+        .fontWeight(.bold)
     }
 }
