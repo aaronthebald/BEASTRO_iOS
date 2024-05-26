@@ -26,11 +26,29 @@ struct BeastroHomeView: View {
                         Divider()
                             .foregroundStyle(Color.primary)
                         VStack(spacing: 10) {
-                            ForEach(vm.businessHours) { hour in
-                                HStack {
-                                    Text(hour.dayOfWeek)
+                            ForEach(vm.formattedDaysTimes, id: \.self) { day in
+                                HStack(alignment: .top) {
+                                    Text(day.weekday)
                                     Spacer()
-                                    Text(hour.startLocalTime)
+                                    if day.startTimes == [] || day.endTimes == [] {
+                                        Text("Closed")
+                                    } else {
+                                        HStack(alignment: .top) {
+                                            VStack {
+                                                ForEach(day.startTimes, id: \.self) { time in
+                                                        Text(makeTimeReadable(input: time))
+                                                }
+                                            }
+                                            Text("-")
+                                            VStack {
+                                                ForEach(day.endTimes, id: \.self) { time in
+                                                        Text(makeTimeReadable(input: time))
+                                                }
+                                            }
+                                        }
+                                       
+
+                                    }
                                 }
                             }
                         }
@@ -61,6 +79,7 @@ struct BeastroHomeView: View {
             })
             .task {
                 await vm.fetchBusinessHours()
+                vm.consolidateReturnedDays()
             }
             .alert("Uh Oh", isPresented: $vm.showAlert) {
                 Button {
@@ -127,5 +146,27 @@ extension BeastroHomeView {
                     .foregroundStyle(Color.primary)
             }
         }
+    }
+    private func makeTimeReadable(input: String) -> String {
+        var returnedString = ""
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "HH:mm:ss"
+
+        // Convert the input string to a Date object
+        if let date = inputFormatter.date(from: input) {
+            // Create a DateFormatter for the output format
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "h a"
+            outputFormatter.amSymbol = "AM"
+            outputFormatter.pmSymbol = "PM"
+            
+            // Convert the Date object to the desired string format
+            let outputTime = outputFormatter.string(from: date)
+            print(outputTime)  // Output will be "3:PM"
+            returnedString = outputTime
+        } else {
+            print("Invalid input time format")
+        }
+        return returnedString
     }
 }
