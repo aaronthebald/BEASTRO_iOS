@@ -16,9 +16,9 @@ struct HoursResponse: Codable {
     }
 }
 
-struct Hour: Codable {
+struct Hour: Codable, Identifiable {
     let dayOfWeek, startLocalTime, endLocalTime: String
-
+    let id: String = UUID().uuidString
     enum CodingKeys: String, CodingKey {
         case dayOfWeek = "day_of_week"
         case startLocalTime = "start_local_time"

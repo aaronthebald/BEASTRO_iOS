@@ -26,11 +26,11 @@ struct BeastroHomeView: View {
                         Divider()
                             .foregroundStyle(Color.primary)
                         VStack(spacing: 10) {
-                            ForEach(0..<7) { _ in
+                            ForEach(vm.businessHours) { hour in
                                 HStack {
-                                    Text("Monday")
+                                    Text(hour.dayOfWeek)
                                     Spacer()
-                                    Text("5AM-7PM")
+                                    Text(hour.startLocalTime)
                                 }
                             }
                         }
