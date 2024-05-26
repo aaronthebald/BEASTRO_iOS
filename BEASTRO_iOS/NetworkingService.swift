@@ -7,7 +7,12 @@
 
 import Foundation
 
-class NetworkingService {
+protocol NetworkingServiceProtocol {
+    func fetchBusinessHours() async throws -> [Hour]
+}
+
+class NetworkingService: NetworkingServiceProtocol {
+    
     private let urlString = "https://purs-demo-bucket-test.s3.us-west-2.amazonaws.com/location.json"
     private var jsonDecoder = JSONDecoder()
     
