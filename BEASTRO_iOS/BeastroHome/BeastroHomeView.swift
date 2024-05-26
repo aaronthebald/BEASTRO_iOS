@@ -36,10 +36,10 @@ struct BeastroHomeView: View {
                                         HStack(alignment: .top) {
                                             VStack {
                                                 ForEach(day.startTimes, id: \.self) { time in
-                                                        Text(makeTimeReadable(input: time))
+                                                        Text("\(makeTimeReadable(input: time)) -")
                                                 }
                                             }
-                                            Text("-")
+                                            
                                             VStack {
                                                 ForEach(day.endTimes, id: \.self) { time in
                                                         Text(makeTimeReadable(input: time))
@@ -153,19 +153,37 @@ extension BeastroHomeView {
         inputFormatter.dateFormat = "HH:mm:ss"
 
         // Convert the input string to a Date object
-        if let date = inputFormatter.date(from: input) {
-            // Create a DateFormatter for the output format
-            let outputFormatter = DateFormatter()
-            outputFormatter.dateFormat = "h a"
-            outputFormatter.amSymbol = "AM"
-            outputFormatter.pmSymbol = "PM"
-            
-            // Convert the Date object to the desired string format
-            let outputTime = outputFormatter.string(from: date)
-            print(outputTime)  // Output will be "3:PM"
-            returnedString = outputTime
+        if input == "24:00:00" {
+           var newInput = "00:00:00"
+            if let date = inputFormatter.date(from: newInput) {
+                // Create a DateFormatter for the output format
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "h a"
+                outputFormatter.amSymbol = "AM"
+                outputFormatter.pmSymbol = "PM"
+                
+                // Convert the Date object to the desired string format
+                let outputTime = outputFormatter.string(from: date)
+                print(outputTime)  // Output will be "3:PM"
+                returnedString = outputTime
+            } else {
+                print("Invalid input time format")
+            }
         } else {
-            print("Invalid input time format")
+            if let date = inputFormatter.date(from: input) {
+                // Create a DateFormatter for the output format
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "h a"
+                outputFormatter.amSymbol = "AM"
+                outputFormatter.pmSymbol = "PM"
+                
+                // Convert the Date object to the desired string format
+                let outputTime = outputFormatter.string(from: date)
+                print(outputTime)  // Output will be "3:PM"
+                returnedString = outputTime
+            } else {
+                print("Invalid input time format")
+            }
         }
         return returnedString
     }
