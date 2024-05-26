@@ -11,7 +11,7 @@ struct BeastroHomeView: View {
     
     @StateObject private var vm = BeastroHomeViewModel(networkingService: NetworkingService())
     @State private var showMenu: Bool = false
-    @State private var showFullHours: Bool = true
+    @State private var showFullHours: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -61,6 +61,15 @@ struct BeastroHomeView: View {
             })
             .task {
                 await vm.fetchBusinessHours()
+            }
+            .alert("Uh Oh", isPresented: $vm.showAlert) {
+                Button {
+                    vm.showAlert = false
+                } label: {
+                    Text("Dismiss")
+                }
+            } message: {
+                Text(vm.errorMessage)
             }
         }
     }
