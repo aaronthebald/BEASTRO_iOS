@@ -32,6 +32,8 @@ struct BeastroHomeView: View {
                                     Spacer()
                                     if day.startTimes == [] || day.endTimes == [] {
                                         Text("Closed")
+                                    } else if day.endTimes.contains("24:00:00") && day.startTimes.contains("00:00:00") {
+                                        Text("Open 24 hours")
                                     } else {
                                         HStack(alignment: .top) {
                                             VStack {
