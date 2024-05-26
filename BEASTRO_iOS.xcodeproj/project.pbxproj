@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */; };
-		029843D92C02B0110000BF0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* ContentView.swift */; };
+		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
 		029843DE2C02B0130000BF0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DD2C02B0130000BF0A /* Preview Assets.xcassets */; };
 		029843E82C02B0130000BF0A /* BEASTRO_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843E72C02B0130000BF0A /* BEASTRO_iOSTests.swift */; };
@@ -36,7 +36,7 @@
 /* Begin PBXFileReference section */
 		029843D32C02B0110000BF0A /* BEASTRO_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BEASTRO_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSApp.swift; sourceTree = "<group>"; };
-		029843D82C02B0110000BF0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
 		029843DA2C02B0130000BF0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		029843DD2C02B0130000BF0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		029843E32C02B0130000BF0A /* BEASTRO_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BEASTRO_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
-				029843D82C02B0110000BF0A /* ContentView.swift */,
+				029843D82C02B0110000BF0A /* BeastroHomeView.swift */,
 				029843DA2C02B0130000BF0A /* Assets.xcassets */,
 				029843DC2C02B0130000BF0A /* Preview Content */,
 			);
@@ -257,7 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				029843D92C02B0110000BF0A /* ContentView.swift in Sources */,
+				029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */,
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
