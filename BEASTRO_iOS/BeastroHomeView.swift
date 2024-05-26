@@ -10,7 +10,7 @@ import SwiftUI
 struct BeastroHomeView: View {
     
     @State private var showMenu: Bool = false
-    @State private var showFullHours: Bool = false
+    @State private var showFullHours: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -20,28 +20,28 @@ struct BeastroHomeView: View {
                     Spacer()
                 }
                 VStack(alignment: .leading) {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading) {
-                            Text("Open until 7PM")
-
+                    currentOpenStatus
+                    if showFullHours {
+                        Divider()
+                            .foregroundStyle(Color.primary)
+                        VStack(spacing: 10) {
+                            ForEach(0..<7) { _ in
+                                HStack {
+                                    Text("Monday")
+                                    Spacer()
+                                    Text("5AM-7PM")
+                                }
+                            }
                         }
-                        Spacer()
-                        Button {
-                            showFullHours.toggle()
-                        } label: {
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(Color.primary)
-                        }
-                        
                     }
                 }
+                .padding(25)
                 .frame(maxWidth: .infinity)
                 .background {
-                    RoundedRectangle(cornerRadius: 15)
+                    RoundedRectangle(cornerRadius: 7)
                         .fill(Material.ultraThin)
                 }
                 .padding(.horizontal, 20)
-
                 Spacer()
                 Button {
                     showMenu = true
@@ -89,5 +89,30 @@ extension BeastroHomeView {
                 .foregroundStyle(Color.white)
         }
         .fontWeight(.bold)
+    }
+    
+    private var currentOpenStatus: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text("Open until 7PM")
+                    Circle()
+                        .frame(height: 7)
+                        .foregroundStyle(Color.green)
+                }
+                Text("SEE FULL HOURS")
+                    .font(.caption)
+                    .foregroundStyle(Color.secondary)
+            }
+            Spacer()
+            Button {
+                withAnimation(.easeIn) {
+                    showFullHours.toggle()
+                }
+            } label: {
+                Image(systemName: showFullHours ? "chevron.up" : "chevron.right")
+                    .foregroundStyle(Color.primary)
+            }
+        }
     }
 }
