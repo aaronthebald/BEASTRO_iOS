@@ -10,14 +10,39 @@ import SwiftUI
 struct BeastroHomeView: View {
     
     @State private var showMenu: Bool = false
+    @State private var showFullHours: Bool = false
     
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 50) {
                 HStack {
                     homePageTitle
                     Spacer()
                 }
+                VStack(alignment: .leading) {
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading) {
+                            Text("Open until 7PM")
+
+                        }
+                        Spacer()
+                        Button {
+                            showFullHours.toggle()
+                        } label: {
+                            Image(systemName: "chevron.right")
+                                .foregroundStyle(Color.primary)
+                        }
+                        
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .background {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Material.ultraThin)
+                }
+                .padding(.horizontal, 20)
+
+                Spacer()
                 Button {
                     showMenu = true
                 } label: {
@@ -30,6 +55,9 @@ struct BeastroHomeView: View {
                     .scaledToFill()
                     .ignoresSafeArea(.all)
             }
+            .sheet(isPresented: $showMenu, onDismiss: {showMenu = false}, content: {
+                Text("This is where the menu would go")
+            })
         }
     }
 }
@@ -44,7 +72,6 @@ extension BeastroHomeView {
             Text("BEASTRO by")
             Text("Marshawn")
             Text("Lynch")
-            Spacer()
         }
         .padding(.leading)
         .font(.largeTitle)
