@@ -14,6 +14,9 @@
 		029843E82C02B0130000BF0A /* BEASTRO_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843E72C02B0130000BF0A /* BEASTRO_iOSTests.swift */; };
 		029843F22C02B0130000BF0A /* BEASTRO_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843F12C02B0130000BF0A /* BEASTRO_iOSUITests.swift */; };
 		029843F42C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843F32C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift */; };
+		029844012C0377DB0000BF0A /* BeastroHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */; };
+		029844032C0379430000BF0A /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844022C0379430000BF0A /* NetworkingService.swift */; };
+		029844052C037A350000BF0A /* HoursResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844042C037A350000BF0A /* HoursResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		029843ED2C02B0130000BF0A /* BEASTRO_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BEASTRO_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843F12C02B0130000BF0A /* BEASTRO_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSUITests.swift; sourceTree = "<group>"; };
 		029843F32C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeViewModel.swift; sourceTree = "<group>"; };
+		029844022C0379430000BF0A /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
+		029844042C037A350000BF0A /* HoursResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoursResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,9 @@
 				029843D82C02B0110000BF0A /* BeastroHomeView.swift */,
 				029843DA2C02B0130000BF0A /* Assets.xcassets */,
 				029843DC2C02B0130000BF0A /* Preview Content */,
+				029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */,
+				029844022C0379430000BF0A /* NetworkingService.swift */,
+				029844042C037A350000BF0A /* HoursResponse.swift */,
 			);
 			path = BEASTRO_iOS;
 			sourceTree = "<group>";
@@ -257,8 +266,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				029844012C0377DB0000BF0A /* BeastroHomeViewModel.swift in Sources */,
 				029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */,
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
+				029844032C0379430000BF0A /* NetworkingService.swift in Sources */,
+				029844052C037A350000BF0A /* HoursResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
