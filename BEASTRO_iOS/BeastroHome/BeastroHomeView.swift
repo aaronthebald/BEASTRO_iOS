@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BeastroHomeView: View {
     
+    @StateObject private var vm = BeastroHomeViewModel(networkingService: NetworkingService())
     @State private var showMenu: Bool = false
     @State private var showFullHours: Bool = true
     
@@ -58,6 +59,9 @@ struct BeastroHomeView: View {
             .sheet(isPresented: $showMenu, onDismiss: {showMenu = false}, content: {
                 Text("This is where the menu would go")
             })
+            .task {
+                await vm.fetchBusinessHours()
+            }
         }
     }
 }

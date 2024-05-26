@@ -33,7 +33,7 @@ class NetworkingService: NetworkingServiceProtocol {
             guard (response as? HTTPURLResponse)?.statusCode == 200 else {
                 throw URLError.badResponse
             }
-            var decodedData = try jsonDecoder.decode(HoursResponse.self, from: data)
+            let decodedData = try jsonDecoder.decode(HoursResponse.self, from: data)
             retunedArray = decodedData.hours
         } catch {
             throw error

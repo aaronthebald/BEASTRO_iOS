@@ -22,6 +22,7 @@ class BeastroHomeViewModel: ObservableObject {
     func fetchBusinessHours() async {
         do {
             let hours = try await networkingService.fetchBusinessHours()
+            businessHours = hours
         } catch  {
             showAlert = true
             errorMessage = error.localizedDescription
