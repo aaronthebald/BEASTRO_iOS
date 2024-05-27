@@ -70,7 +70,7 @@ class BeastroHomeViewModel: ObservableObject {
             if timeString == "24:00:00" {
                 let correctedTimeString = closingTime ? "23:59:59" : "24:00:00"
                 if let timeDate = timeFormatter.date(from: correctedTimeString) {
-                    var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
+                    var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: timeDate)
                     dateComponents.year = dayOfTheWeek.year
                     dateComponents.month = dayOfTheWeek.month
                     dateComponents.day = dayOfTheWeek.day
