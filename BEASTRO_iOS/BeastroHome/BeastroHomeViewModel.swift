@@ -15,6 +15,7 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var currentDay: String = ""
     @Published var openStatusLight: IndicatorLights = .green
+    @Published var openStatusText: String = ""
     @Published var restaurantIsOpen: Bool = false
     @Published var closingSoon: Bool = false
     
@@ -97,10 +98,13 @@ class BeastroHomeViewModel: ObservableObject {
                     if currentTime >= openDate && currentTime <= closeDate {
                         restaurantIsOpen = true
                         openStatusLight = .green
+                       let closeDateString = closeDate.description
+                        openStatusText = "Open until \(makeTimeReadable(input: closeDateString))"
                         let oneHourBeforeClose = calendar.date(byAdding: .hour, value: -1, to: closeDate)!
                         let isClosingSoon = currentTime >= oneHourBeforeClose && currentTime <= closeDate
                         closingSoon = isClosingSoon
                         if closingSoon {
+                            openStatusText = "Open until \(makeTimeReadable(input: closeDateString)), reopens at THIS NEEDS TO BE FIXED"
                             openStatusLight = .yellow
                         }
                     } else {
@@ -111,6 +115,45 @@ class BeastroHomeViewModel: ObservableObject {
             }
         }
     }
+    
+    func makeTimeReadable(input: String) -> String {
+       var returnedString = ""
+       let inputFormatter = DateFormatter()
+       inputFormatter.dateFormat = "HH:mm:ss"
+
+       // Convert the input string to a Date object
+       if input == "24:00:00" {
+          let newInput = "00:00:00"
+           if let date = inputFormatter.date(from: newInput) {
+               // Create a DateFormatter for the output format
+               let outputFormatter = DateFormatter()
+               outputFormatter.dateFormat = "h a"
+               outputFormatter.amSymbol = "AM"
+               outputFormatter.pmSymbol = "PM"
+               
+               // Convert the Date object to the desired string format
+               let outputTime = outputFormatter.string(from: date)
+               returnedString = outputTime
+           } else {
+               print("Invalid input time format")
+           }
+       } else {
+           if let date = inputFormatter.date(from: input) {
+               // Create a DateFormatter for the output format
+               let outputFormatter = DateFormatter()
+               outputFormatter.dateFormat = "h a"
+               outputFormatter.amSymbol = "AM"
+               outputFormatter.pmSymbol = "PM"
+               
+               // Convert the Date object to the desired string format
+               let outputTime = outputFormatter.string(from: date)
+               returnedString = outputTime
+           } else {
+               print("Invalid input time format")
+           }
+       }
+       return returnedString
+   }
 }
 
 struct DayWithAbbreviations: Hashable {

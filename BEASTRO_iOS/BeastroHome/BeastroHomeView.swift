@@ -38,13 +38,13 @@ struct BeastroHomeView: View {
                                         HStack(alignment: .top) {
                                             VStack {
                                                 ForEach(day.startTimes, id: \.self) { time in
-                                                        Text("\(makeTimeReadable(input: time)) -")
+                                                    Text("\(vm.makeTimeReadable(input: time)) -")
                                                 }
                                             }
                                             
                                             VStack {
                                                 ForEach(day.endTimes, id: \.self) { time in
-                                                        Text(makeTimeReadable(input: time))
+                                                    Text(vm.makeTimeReadable(input: time))
                                                 }
                                             }
                                         }
@@ -129,7 +129,7 @@ extension BeastroHomeView {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text(vm.restaurantIsOpen ? "Open until 7PM" : "Closed")
+                    Text(vm.openStatusText)
                     Circle()
                         .frame(height: 7)
                         .foregroundStyle(getColorStatus())
@@ -148,44 +148,6 @@ extension BeastroHomeView {
                     .foregroundStyle(Color.primary)
             }
         }
-    }
-    private func makeTimeReadable(input: String) -> String {
-        var returnedString = ""
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "HH:mm:ss"
-
-        // Convert the input string to a Date object
-        if input == "24:00:00" {
-           let newInput = "00:00:00"
-            if let date = inputFormatter.date(from: newInput) {
-                // Create a DateFormatter for the output format
-                let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "h a"
-                outputFormatter.amSymbol = "AM"
-                outputFormatter.pmSymbol = "PM"
-                
-                // Convert the Date object to the desired string format
-                let outputTime = outputFormatter.string(from: date)
-                returnedString = outputTime
-            } else {
-                print("Invalid input time format")
-            }
-        } else {
-            if let date = inputFormatter.date(from: input) {
-                // Create a DateFormatter for the output format
-                let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "h a"
-                outputFormatter.amSymbol = "AM"
-                outputFormatter.pmSymbol = "PM"
-                
-                // Convert the Date object to the desired string format
-                let outputTime = outputFormatter.string(from: date)
-                returnedString = outputTime
-            } else {
-                print("Invalid input time format")
-            }
-        }
-        return returnedString
     }
     
     private func getColorStatus() -> Color {
