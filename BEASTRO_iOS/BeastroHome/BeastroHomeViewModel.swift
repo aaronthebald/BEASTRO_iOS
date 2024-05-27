@@ -100,8 +100,8 @@ class BeastroHomeViewModel: ObservableObject {
                 }
                 if let nextDayOpenDate = currentDayFormatter.date(from: nextDayOpen.weekday),
                    let nextDayOpenTime = timeFormatter.date(from: nextOpenDateString) {
-                    let within24Hours = calendar.date(byAdding: .hour, value: -24, to: nextDayOpenDate)
-                    let isOpeningWithin24Hours = currentTime >= nextDayOpenTime
+                    let within24Hours = calendar.date(byAdding: .hour, value: -24, to: nextDayOpenTime)!
+                    let isOpeningWithin24Hours = currentTime >= nextDayOpenTime && currentTime >= within24Hours
                     if isOpeningWithin24Hours {
                         openStatusText = "Opens again at \(makeTimeReadable(input: nextOpenDateString))"
                     } else {
@@ -109,7 +109,6 @@ class BeastroHomeViewModel: ObservableObject {
                     }
                 }
             }
-           
         }
         
         let currentTimeString = timeFormatter.string(from: currentDate)
@@ -132,21 +131,6 @@ class BeastroHomeViewModel: ObservableObject {
                             openStatusText = "Open until \(makeTimeReadable(input: closeDateString)), reopens at THIS NEEDS TO BE FIXED"
                             openStatusLight = .yellow
                         }
-                    } else {
-                        print("This is running")
-                        restaurantIsOpen = false
-                        openStatusLight = .red
-                        guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else { return }
-                        guard let nextOpenDateString = nextDayOpen.startTimes.first else { return }
-                        if let nextDayOpenDate = currentDayFormatter.date(from: nextDayOpen.weekday),
-                           let nextDayOpenTime = timeFormatter.date(from: nextOpenDateString) {
-                            let within24Hours = calendar.date(byAdding: .hour, value: -24, to: nextDayOpenDate)
-                            let  isOpeningWithin24Hours = currentTime >= nextDayOpenTime
-                            if isOpeningWithin24Hours {
-                                print("HEYYYYOO")
-                            }
-                        }
-                        
                     }
                 }
             }
