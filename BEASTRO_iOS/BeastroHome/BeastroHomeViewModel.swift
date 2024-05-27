@@ -84,17 +84,20 @@ class BeastroHomeViewModel: ObservableObject {
             print("The Full function isn't running")
             return
         }
+//        Restaurant is closed
         if todaysHoursObject.startTimes == [] && todaysHoursObject .startTimes == [] {
             let currentTimeString = timeFormatter.string(from: currentDate)
             if let currentTime = timeFormatter.date(from: currentTimeString) {
-                print("This is running")
                 restaurantIsOpen = false
                 openStatusLight = .red
-                guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else { print("Part A Is broken")
-                    return }
-                print(nextDayOpen)
-                guard let nextOpenDateString = nextDayOpen.startTimes.first else {print("Part B is broken")
-                    return }
+                guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else {
+                    print("Part A Is broken")
+                    return
+                }
+                guard let nextOpenDateString = nextDayOpen.startTimes.first else {
+                    print("Part B is broken")
+                    return
+                }
                 if let nextDayOpenDate = currentDayFormatter.date(from: nextDayOpen.weekday),
                    let nextDayOpenTime = timeFormatter.date(from: nextOpenDateString) {
                     let within24Hours = calendar.date(byAdding: .hour, value: -24, to: nextDayOpenDate)
@@ -108,16 +111,18 @@ class BeastroHomeViewModel: ObservableObject {
             }
            
         }
+        
         let currentTimeString = timeFormatter.string(from: currentDate)
         for openTime in todaysHoursObject.startTimes {
             for closedTime in todaysHoursObject.endTimes {
                 if let openDate = timeFormatter.date(from: openTime),
                    let closeDate = timeFormatter.date(from: closedTime),
                    let currentTime = timeFormatter.date(from: currentTimeString) {
-                    // Check if the current time is between open and close times
+                    // Check if the Restaurant is open
                     if currentTime >= openDate && currentTime <= closeDate {
                         restaurantIsOpen = true
                         openStatusLight = .green
+//                        Checks if Restaurant is closing within the hour
                        let closeDateString = closeDate.description
                         openStatusText = "Open until \(makeTimeReadable(input: closeDateString))"
                         let oneHourBeforeClose = calendar.date(byAdding: .hour, value: -1, to: closeDate)!
