@@ -13,9 +13,18 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var returnedHours: [Hour] = []
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
+    @Published var currentDay: String = ""
+    @Published var openStatusLight: IndicatorLights = .green
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
+        
+    }
+    
+    enum IndicatorLights {
+        case red
+        case yellow
+        case green
     }
     
     var networkingService: NetworkingServiceProtocol
@@ -52,6 +61,27 @@ class BeastroHomeViewModel: ObservableObject {
             newArray.append(formattedDay)
             formattedDaysTimes = newArray
         }
+        getDayOfTheWeek()
+    }
+    
+    func getDayOfTheWeek() {
+        // Get the current date
+        let currentDate = Date()
+
+        // Create a DateFormatter to get the day of the week as a string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"// "EEEE" gives the full name of the day of the week
+
+        // Get the day of the week string
+        let dayOfWeek = dateFormatter.string(from: currentDate)
+        currentDay = dayOfWeek
+        let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay})
+        
+        if todaysHoursObject?.startTimes == [] && todaysHoursObject?.endTimes == [] {
+            openStatusLight = .red
+        }
+        
+        print(todaysHoursObject)
     }
 }
 

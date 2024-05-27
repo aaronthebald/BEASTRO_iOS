@@ -132,7 +132,7 @@ extension BeastroHomeView {
                     Text("Open until 7PM")
                     Circle()
                         .frame(height: 7)
-                        .foregroundStyle(Color.green)
+                        .foregroundStyle(getColorStatus())
                 }
                 Text("SEE FULL HOURS")
                     .font(.caption)
@@ -186,5 +186,15 @@ extension BeastroHomeView {
             }
         }
         return returnedString
+    }
+    
+    private func getColorStatus() -> Color {
+        if vm.openStatusLight == .red {
+            return Color.red
+        } else if vm.openStatusLight == .yellow {
+            return Color.yellow
+        } else {
+            return Color.green
+        }
     }
 }
