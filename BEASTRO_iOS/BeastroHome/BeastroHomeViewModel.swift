@@ -128,6 +128,8 @@ class BeastroHomeViewModel: ObservableObject {
                         let isClosingSoon = currentTime >= oneHourBeforeClose && currentTime <= closeDate
                         closingSoon = isClosingSoon
                         if closingSoon {
+                            guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else { return }
+                            
                             openStatusText = "Open until \(makeTimeReadable(input: closeDateString)), reopens at THIS NEEDS TO BE FIXED"
                             openStatusLight = .yellow
                         }
@@ -154,12 +156,37 @@ class BeastroHomeViewModel: ObservableObject {
         for offset in 0..<daysOfWeek.count {
             let dayIndex = (currentIndex + offset) % daysOfWeek.count
             let dayName = daysOfWeek[dayIndex]
-            
-            if let dayHours = businessHours.first(where: { $0.weekday == dayName && !$0.startTimes.isEmpty }) {
-                return dayHours
+            for day in businessHours {
+                if day.weekday == dayName && isStartTimeInThePast(day: day) && day.startTimes != [] {
+                    return day
+                }
+//                if let dayHours = businessHours.first(where: { $0.weekday == dayName && !$0.startTimes.isEmpty }) {
+//                    return dayHours
+//                }
             }
+            
         }
         return nil
+    }
+    
+    func isStartTimeInThePast(day: DayWithAbbreviations) -> Bool {
+        let now = Date()
+        var returnedBool: Bool = false
+        if day.startTimes == [] {
+            returnedBool = true
+        } else {
+            for startTime in day.startTimes {
+                guard let timeOfDay = timeFormatter.date(from: startTime) else {
+                    print("There was a problem in the isStartTimeInThePast function")
+                    return false }
+                if timeOfDay <= now {
+                    returnedBool = true
+                } else {
+                    returnedBool = false
+                }
+            }
+        }
+        return returnedBool
     }
     
     func makeTimeReadable(input: String) -> String {
