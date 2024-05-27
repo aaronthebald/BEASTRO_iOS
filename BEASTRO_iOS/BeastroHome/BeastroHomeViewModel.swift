@@ -48,18 +48,10 @@ class BeastroHomeViewModel: ObservableObject {
             let findTheDaysArray = returnedHours.filter({$0.dayOfWeek == day.abv})
             let openingTimes = findTheDaysArray.map { $0.startLocalTime }
             let closingTimes = findTheDaysArray.map { $0.endLocalTime }
-            var formattedDay = DayWithAbbreviations(weekday: day.weekday, abv: day.abv, startTimes: openingTimes, endTimes: closingTimes)
+            let formattedDay = DayWithAbbreviations(weekday: day.weekday, abv: day.abv, startTimes: openingTimes, endTimes: closingTimes)
             newArray.append(formattedDay)
             formattedDaysTimes = newArray
         }
-    }
-    
-    func workYourMagicChatGPT() {
-        let inputTimeFormatter = DateFormatter()
-        inputTimeFormatter.dateFormat = "HH:mm:ss"
-        
-        let outputTimeFormatter = DateFormatter()
-        outputTimeFormatter.dateFormat = "h:mm a"
     }
 }
 

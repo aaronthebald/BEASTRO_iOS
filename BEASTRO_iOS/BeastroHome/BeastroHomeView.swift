@@ -156,7 +156,7 @@ extension BeastroHomeView {
 
         // Convert the input string to a Date object
         if input == "24:00:00" {
-           var newInput = "00:00:00"
+           let newInput = "00:00:00"
             if let date = inputFormatter.date(from: newInput) {
                 // Create a DateFormatter for the output format
                 let outputFormatter = DateFormatter()
@@ -166,7 +166,6 @@ extension BeastroHomeView {
                 
                 // Convert the Date object to the desired string format
                 let outputTime = outputFormatter.string(from: date)
-                print(outputTime)  // Output will be "3:PM"
                 returnedString = outputTime
             } else {
                 print("Invalid input time format")
@@ -181,7 +180,6 @@ extension BeastroHomeView {
                 
                 // Convert the Date object to the desired string format
                 let outputTime = outputFormatter.string(from: date)
-                print(outputTime)  // Output will be "3:PM"
                 returnedString = outputTime
             } else {
                 print("Invalid input time format")
