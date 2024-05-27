@@ -16,6 +16,8 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var currentDay: String = ""
     @Published var openStatusLight: IndicatorLights = .green
     @Published var restaurantIsOpen: Bool = false
+    @Published var closingSoon: Bool = false
+    
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
@@ -68,7 +70,7 @@ class BeastroHomeViewModel: ObservableObject {
     func getDayOfTheWeek() {
         // Get the current date
         let currentDate = Date()
-
+        let calendar = Calendar.current
         // Create a DateFormatter to get the day of the week as a string
         let currentDayFormatter = DateFormatter()
         currentDayFormatter.dateFormat = "EEEE"// "EEEE" gives the full name of the day of the week
@@ -77,7 +79,10 @@ class BeastroHomeViewModel: ObservableObject {
         // Get the day of the week string
         let dayOfWeek = currentDayFormatter.string(from: currentDate)
         currentDay = dayOfWeek
-        guard let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay}) else { return }
+        guard let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay}) else {
+            print("The Full function isn't running")
+            return
+        }
         
         if todaysHoursObject.startTimes == [] && todaysHoursObject.endTimes == [] {
             openStatusLight = .red
@@ -92,8 +97,15 @@ class BeastroHomeViewModel: ObservableObject {
                     if currentTime >= openDate && currentTime <= closeDate {
                         restaurantIsOpen = true
                         openStatusLight = .green
+                        let oneHourBeforeClose = calendar.date(byAdding: .hour, value: -1, to: closeDate)!
+                        let isClosingSoon = currentTime >= oneHourBeforeClose && currentTime <= closeDate
+                        closingSoon = isClosingSoon
+                        if closingSoon {
+                            openStatusLight = .yellow
+                        }
                     } else {
                         restaurantIsOpen = false
+                        openStatusLight = .red
                     }
                 }
             }
