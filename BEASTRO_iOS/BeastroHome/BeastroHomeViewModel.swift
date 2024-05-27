@@ -15,6 +15,7 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var currentDay: String = ""
     @Published var openStatusLight: IndicatorLights = .green
+    @Published var restaurantIsOpen: Bool = false
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
@@ -69,19 +70,34 @@ class BeastroHomeViewModel: ObservableObject {
         let currentDate = Date()
 
         // Create a DateFormatter to get the day of the week as a string
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"// "EEEE" gives the full name of the day of the week
-
+        let currentDayFormatter = DateFormatter()
+        currentDayFormatter.dateFormat = "EEEE"// "EEEE" gives the full name of the day of the week
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"
         // Get the day of the week string
-        let dayOfWeek = dateFormatter.string(from: currentDate)
+        let dayOfWeek = currentDayFormatter.string(from: currentDate)
         currentDay = dayOfWeek
-        let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay})
+        guard let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay}) else { return }
         
-        if todaysHoursObject?.startTimes == [] && todaysHoursObject?.endTimes == [] {
+        if todaysHoursObject.startTimes == [] && todaysHoursObject.endTimes == [] {
             openStatusLight = .red
         }
-        
-        print(todaysHoursObject)
+        let currentTimeString = timeFormatter.string(from: currentDate)
+        for openTime in todaysHoursObject.startTimes {
+            for closedTime in todaysHoursObject.endTimes {
+                if let openDate = timeFormatter.date(from: openTime),
+                   let closeDate = timeFormatter.date(from: closedTime),
+                   let currentTime = timeFormatter.date(from: currentTimeString) {
+                    // Check if the current time is between open and close times
+                    if currentTime >= openDate && currentTime <= closeDate {
+                        restaurantIsOpen = true
+                        openStatusLight = .green
+                    } else {
+                        restaurantIsOpen = false
+                    }
+                }
+            }
+        }
     }
 }
 

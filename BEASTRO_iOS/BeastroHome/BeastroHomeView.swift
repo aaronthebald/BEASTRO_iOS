@@ -129,7 +129,7 @@ extension BeastroHomeView {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Open until 7PM")
+                    Text(vm.restaurantIsOpen ? "Open until 7PM" : "Closed")
                     Circle()
                         .frame(height: 7)
                         .foregroundStyle(getColorStatus())
