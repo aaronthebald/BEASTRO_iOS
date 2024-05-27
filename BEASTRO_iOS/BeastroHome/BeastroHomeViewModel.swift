@@ -35,13 +35,13 @@ class BeastroHomeViewModel: ObservableObject {
 
     var networkingService: NetworkingServiceProtocol
     var daysOfTheWeek = [
-        DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Wednesday", abv: "WED", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Thursday", abv: "THU", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Friday", abv: "FRI", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: []),
-        DayWithAbbreviations(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [])
+        DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Wednesday", abv: "WED", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Thursday", abv: "THU", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Friday", abv: "FRI", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
     ]
     func fetchBusinessHours() async {
         do {
@@ -56,48 +56,134 @@ class BeastroHomeViewModel: ObservableObject {
             }
         }
     }
-    func datesFromStrings(timeStrings: [String]) -> [Date] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
-//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
+    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
         var dates: [Date] = []
-        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
+        timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
+
+        let calendar = Calendar.current
+        let today = Date() // Get current date
+        let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
+
         for timeString in timeStrings {
             if timeString == "24:00:00" {
-                var fixedTimeString = "00:00:00"
-                if let date = dateFormatter.date(from: fixedTimeString) {
-                    dates.append(date)
+                let correctedTimeString = closingTime ? "23:00:00" : "00:00:00"
+                if let timeDate = timeFormatter.date(from: correctedTimeString) {
+                    var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
+                    dateComponents.year = todayComponents.year
+                    dateComponents.month = todayComponents.month
+                    dateComponents.day = todayComponents.day
+
+                    if let combinedDate = calendar.date(from: dateComponents) {
+                        dates.append(combinedDate)
+                    } else {
+                        print("Could not combine date components for string: \(correctedTimeString)")
+                    }
                 } else {
-                    print("Invalid time string format: \(fixedTimeString)")
+                    print("Invalid date format for string: \(correctedTimeString)")
                 }
             } else {
-                if let date = dateFormatter.date(from: timeString) {
-                    dates.append(date)
+                if let timeDate = timeFormatter.date(from: timeString) {
+                    var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
+                    dateComponents.year = todayComponents.year
+                    dateComponents.month = todayComponents.month
+                    dateComponents.day = todayComponents.day
+
+                    if let combinedDate = calendar.date(from: dateComponents) {
+                        dates.append(combinedDate)
+                    } else {
+                        print("Could not combine date components for string: \(timeString)")
+                    }
                 } else {
-                    print("Invalid time string format: \(timeString)")
+                    print("Invalid date format for string: \(timeString)")
                 }
             }
         }
-        
         return dates
     }
+
+//    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH:mm:ss"
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+//        
+//        var dates: [Date] = []
+//        
+//        for timeString in timeStrings {
+//            if timeString == "24:00:00" {
+//                let fixedTimeString = closingTime ? "23:59:59" : "00:00:00"
+//                if let date = dateFormatter.date(from: fixedTimeString) {
+//                    dates.append(date)
+//                } else {
+//                    print("Invalid time string format: \(fixedTimeString)")
+//                }
+//            } else {
+//                if let date = dateFormatter.date(from: timeString) {
+//                    dates.append(date)
+//                } else {
+//                    print("Invalid time string format: \(timeString)")
+//                }
+//            }
+//        }
+//        return dates
+//    }
+//    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
+//        
+//        currentDayFormatter.dateFormat = "HH:mm:ss"
+////        currentDayFormatter.locale = Locale(identifier: "en_US_POSIX")
+//        
+//        var dates: [Date] = []
+//        
+//        for timeString in timeStrings {
+//            if timeString == "24:00:00" {
+//                
+//                let fixedTimeString = closingTime ? "23:59:59" : "00:00:00"
+//                if let date = currentDayFormatter.date(from: fixedTimeString) {
+//                    dates.append(date)
+//                } else {
+//                    print("Invalid time string format: \(fixedTimeString)")
+//                }
+//            } else {
+//                if let date = currentDayFormatter.date(from: timeString) {
+//                    dates.append(date)
+//                } else {
+//                    print("Invalid time string format: \(timeString)")
+//                }
+//            }
+//        }
+//        
+//        return dates
+//    }
     
     func consolidateReturnedDays() {
         var newArray: [DayWithAbbreviations] = []
+        
         for day in daysOfTheWeek {
-            let findTheDaysArray = returnedHours.filter({$0.dayOfWeek == day.abv})
-            let openingTimes = findTheDaysArray.map { $0.startLocalTime }
-            let closingTimes = findTheDaysArray.map { $0.endLocalTime }
-            let startTimesInDateFormat = datesFromStrings(timeStrings: openingTimes)
-            let endTimesInDateFormat = datesFromStrings(timeStrings: closingTimes)
-            print(startTimesInDateFormat, endTimesInDateFormat)
-            let formattedDay = DayWithAbbreviations(weekday: day.weekday, abv: day.abv, startTimes: openingTimes, endTimes: closingTimes)
+            let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
+            let openingTimes = filteredHours.map { $0.startLocalTime }
+            let closingTimes = filteredHours.map { $0.endLocalTime }
+            
+            let startTimesInDateFormat = datesFromStrings(timeStrings: openingTimes, closingTime: false)
+            let endTimesInDateFormat = datesFromStrings(timeStrings: closingTimes, closingTime: true)
+            
+            let formattedDay = DayWithAbbreviations(
+                weekday: day.weekday,
+                abv: day.abv,
+                startTimes: openingTimes,
+                endTimes: closingTimes,
+                startTimeInDateFormat: startTimesInDateFormat,
+                endTimeInDateFormat: endTimesInDateFormat
+            )
+            
             newArray.append(formattedDay)
-            formattedDaysTimes = newArray
         }
+        
+        formattedDaysTimes = newArray
+        print(formattedDaysTimes)
         getOpenStatus()
     }
+
     
     func getOpenStatus() {
         // Get the current date
@@ -260,4 +346,6 @@ struct DayWithAbbreviations: Hashable {
     let abv: String
     let startTimes: [String]
     let endTimes: [String]
+    let startTimeInDateFormat: [Date]
+    let endTimeInDateFormat: [Date]
 }
