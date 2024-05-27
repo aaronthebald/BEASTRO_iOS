@@ -56,7 +56,7 @@ class BeastroHomeViewModel: ObservableObject {
             }
         }
     }
-    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
+    func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) -> [Date] {
         var dates: [Date] = []
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
@@ -68,12 +68,12 @@ class BeastroHomeViewModel: ObservableObject {
 
         for timeString in timeStrings {
             if timeString == "24:00:00" {
-                let correctedTimeString = closingTime ? "23:00:00" : "00:00:00"
+                let correctedTimeString = closingTime ? "23:59:59" : "24:00:00"
                 if let timeDate = timeFormatter.date(from: correctedTimeString) {
                     var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
-                    dateComponents.year = todayComponents.year
-                    dateComponents.month = todayComponents.month
-                    dateComponents.day = todayComponents.day
+                    dateComponents.year = dayOfTheWeek.year
+                    dateComponents.month = dayOfTheWeek.month
+                    dateComponents.day = dayOfTheWeek.day
 
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
@@ -86,9 +86,9 @@ class BeastroHomeViewModel: ObservableObject {
             } else {
                 if let timeDate = timeFormatter.date(from: timeString) {
                     var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
-                    dateComponents.year = todayComponents.year
-                    dateComponents.month = todayComponents.month
-                    dateComponents.day = todayComponents.day
+                    dateComponents.year = dayOfTheWeek.year
+                    dateComponents.month = dayOfTheWeek.month
+                    dateComponents.day = dayOfTheWeek.day
 
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
@@ -102,59 +102,34 @@ class BeastroHomeViewModel: ObservableObject {
         }
         return dates
     }
-
-//    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "HH:mm:ss"
-//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-//        
-//        var dates: [Date] = []
-//        
-//        for timeString in timeStrings {
-//            if timeString == "24:00:00" {
-//                let fixedTimeString = closingTime ? "23:59:59" : "00:00:00"
-//                if let date = dateFormatter.date(from: fixedTimeString) {
-//                    dates.append(date)
-//                } else {
-//                    print("Invalid time string format: \(fixedTimeString)")
-//                }
-//            } else {
-//                if let date = dateFormatter.date(from: timeString) {
-//                    dates.append(date)
-//                } else {
-//                    print("Invalid time string format: \(timeString)")
-//                }
-//            }
-//        }
-//        return dates
-//    }
-//    func datesFromStrings(timeStrings: [String], closingTime: Bool) -> [Date] {
-//        
-//        currentDayFormatter.dateFormat = "HH:mm:ss"
-////        currentDayFormatter.locale = Locale(identifier: "en_US_POSIX")
-//        
-//        var dates: [Date] = []
-//        
-//        for timeString in timeStrings {
-//            if timeString == "24:00:00" {
-//                
-//                let fixedTimeString = closingTime ? "23:59:59" : "00:00:00"
-//                if let date = currentDayFormatter.date(from: fixedTimeString) {
-//                    dates.append(date)
-//                } else {
-//                    print("Invalid time string format: \(fixedTimeString)")
-//                }
-//            } else {
-//                if let date = currentDayFormatter.date(from: timeString) {
-//                    dates.append(date)
-//                } else {
-//                    print("Invalid time string format: \(timeString)")
-//                }
-//            }
-//        }
-//        
-//        return dates
-//    }
+    func nextOccurrence(ofDayOfWeek day: String) -> DateComponents? {
+        let calendar = Calendar.current
+        var dateComponents = DateComponents()
+        
+        // Get the current date
+        let currentDate = Date()
+        
+        // Get the weekday of the current date (Sunday: 1, Monday: 2, ..., Saturday: 7)
+        let currentWeekday = calendar.component(.weekday, from: currentDate)
+        
+        // Get the index of the input day (case-insensitive)
+        guard let index = calendar.weekdaySymbols.firstIndex(where: { $0.caseInsensitiveCompare(day) == .orderedSame }) else {
+            print("Invalid day of the week: \(day)")
+            return nil
+        }
+        
+        // Calculate the number of days until the next occurrence of the input day
+        let daysUntilNextDay = (index + 7 - currentWeekday) % 7
+        
+        // Add the number of days to the current date
+        if let nextDate = calendar.date(byAdding: .day, value: daysUntilNextDay, to: currentDate) {
+            // Get the components for the next occurrence of the input day
+            dateComponents = calendar.dateComponents([.year, .month, .day], from: nextDate)
+        }
+        
+        print(dateComponents)
+        return dateComponents
+    }
     
     func consolidateReturnedDays() {
         var newArray: [DayWithAbbreviations] = []
@@ -163,9 +138,9 @@ class BeastroHomeViewModel: ObservableObject {
             let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
             let openingTimes = filteredHours.map { $0.startLocalTime }
             let closingTimes = filteredHours.map { $0.endLocalTime }
-            
-            let startTimesInDateFormat = datesFromStrings(timeStrings: openingTimes, closingTime: false)
-            let endTimesInDateFormat = datesFromStrings(timeStrings: closingTimes, closingTime: true)
+            let dayOfTheWeek = nextOccurrence(ofDayOfWeek: day.weekday)
+            let startTimesInDateFormat = datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: openingTimes, closingTime: false)
+            let endTimesInDateFormat = datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: closingTimes, closingTime: true)
             
             let formattedDay = DayWithAbbreviations(
                 weekday: day.weekday,
