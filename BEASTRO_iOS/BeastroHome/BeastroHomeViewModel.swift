@@ -56,6 +56,32 @@ class BeastroHomeViewModel: ObservableObject {
             }
         }
     }
+    func datesFromStrings(timeStrings: [String]) -> [Date] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        var dates: [Date] = []
+        
+        for timeString in timeStrings {
+            if timeString == "24:00:00" {
+                var fixedTimeString = "00:00:00"
+                if let date = dateFormatter.date(from: fixedTimeString) {
+                    dates.append(date)
+                } else {
+                    print("Invalid time string format: \(fixedTimeString)")
+                }
+            } else {
+                if let date = dateFormatter.date(from: timeString) {
+                    dates.append(date)
+                } else {
+                    print("Invalid time string format: \(timeString)")
+                }
+            }
+        }
+        
+        return dates
+    }
     
     func consolidateReturnedDays() {
         var newArray: [DayWithAbbreviations] = []
@@ -63,6 +89,9 @@ class BeastroHomeViewModel: ObservableObject {
             let findTheDaysArray = returnedHours.filter({$0.dayOfWeek == day.abv})
             let openingTimes = findTheDaysArray.map { $0.startLocalTime }
             let closingTimes = findTheDaysArray.map { $0.endLocalTime }
+            let startTimesInDateFormat = datesFromStrings(timeStrings: openingTimes)
+            let endTimesInDateFormat = datesFromStrings(timeStrings: closingTimes)
+            print(startTimesInDateFormat, endTimesInDateFormat)
             let formattedDay = DayWithAbbreviations(weekday: day.weekday, abv: day.abv, startTimes: openingTimes, endTimes: closingTimes)
             newArray.append(formattedDay)
             formattedDaysTimes = newArray
@@ -160,9 +189,6 @@ class BeastroHomeViewModel: ObservableObject {
                 if day.weekday == dayName && isStartTimeInThePast(day: day) && day.startTimes != [] {
                     return day
                 }
-//                if let dayHours = businessHours.first(where: { $0.weekday == dayName && !$0.startTimes.isEmpty }) {
-//                    return dayHours
-//                }
             }
             
         }
