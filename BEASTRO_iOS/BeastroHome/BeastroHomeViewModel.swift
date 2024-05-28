@@ -30,9 +30,12 @@ class BeastroHomeViewModel: ObservableObject {
         case yellow
         case green
     }
+    let dateAndTimeService = DateAndTimeService()
     let currentDayFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
+    let timeReadableinputFormatter = DateFormatter()
 
+    
     var networkingService: NetworkingServiceProtocol
     var daysOfTheWeek = [
         DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
@@ -56,16 +59,54 @@ class BeastroHomeViewModel: ObservableObject {
             }
         }
     }
+    
+    func createArrayOfDateFromArrayOfStartAndEndTimes(weekday: String, times: [String]  ) -> [Date] {
+        var placeHolderArray: [Date] = []
+        for time in times {
+            guard let newDate = dateAndTimeService.dateFrom(weekday: weekday, time: time) else { return []}
+            placeHolderArray.append(newDate)
+        }
+        return placeHolderArray
+    }
+    
+    func mainTextController() {
+        let now = Date()
+        for day in formattedDaysTimes {
+            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
+            for pair in pairedDates {
+                let span = pair.0...pair.1
+                if span.contains(now) {
+                    print("The Restaurant is open!!!")
+                    openStatusLight = .green
+                    openStatusText = "Open until \(makeTimeReadable(input: pair.1.description))"
+                } else {
+                    let nextOpenTime = pairedDates.first(where: {$0.0 > now})
+                    print("Will Reopen at \(String(describing: nextOpenTime?.0.description))")
+                }
+            }
+        }
+    }
+    func pairArrays(array1: [Date], array2: [Date]) -> [(Date, Date)] {
+        let count = min(array1.count, array2.count)
+        var pairedArray: [(Date, Date)] = []
+        
+        for i in 0..<count {
+            pairedArray.append((array1[i], array2[i]))
+        }
+        
+        return pairedArray
+    }
+    
     func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) -> [Date] {
         var dates: [Date] = []
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
         timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
-
+        
         let calendar = Calendar.current
         let today = Date() // Get current date
         let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
-
+        
         for timeString in timeStrings {
             if timeString == "24:00:00" {
                 let correctedTimeString = closingTime ? "23:59:59" : "24:00:00"
@@ -74,7 +115,7 @@ class BeastroHomeViewModel: ObservableObject {
                     dateComponents.year = dayOfTheWeek.year
                     dateComponents.month = dayOfTheWeek.month
                     dateComponents.day = dayOfTheWeek.day
-
+                    
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
                     } else {
@@ -89,7 +130,7 @@ class BeastroHomeViewModel: ObservableObject {
                     dateComponents.year = dayOfTheWeek.year
                     dateComponents.month = dayOfTheWeek.month
                     dateComponents.day = dayOfTheWeek.day
-
+                    
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
                     } else {
@@ -158,7 +199,7 @@ class BeastroHomeViewModel: ObservableObject {
         print(formattedDaysTimes)
         getOpenStatus()
     }
-
+    
     
     func getOpenStatus() {
         // Get the current date
@@ -174,7 +215,7 @@ class BeastroHomeViewModel: ObservableObject {
             print("The Full function isn't running")
             return
         }
-//        Restaurant is closed
+        //        Restaurant is closed
         if todaysHoursObject.startTimes == [] && todaysHoursObject .startTimes == [] {
             let currentTimeString = timeFormatter.string(from: currentDate)
             if let currentTime = timeFormatter.date(from: currentTimeString) {
@@ -211,8 +252,8 @@ class BeastroHomeViewModel: ObservableObject {
                     if currentTime >= openDate && currentTime <= closeDate {
                         restaurantIsOpen = true
                         openStatusLight = .green
-//                        Checks if Restaurant is closing within the hour
-                       let closeDateString = closeDate.description
+                        //                        Checks if Restaurant is closing within the hour
+                        let closeDateString = closeDate.description
                         openStatusText = "Open until \(makeTimeReadable(input: closeDateString))"
                         let oneHourBeforeClose = calendar.date(byAdding: .hour, value: -1, to: closeDate)!
                         let isClosingSoon = currentTime >= oneHourBeforeClose && currentTime <= closeDate
@@ -277,43 +318,42 @@ class BeastroHomeViewModel: ObservableObject {
     }
     
     func makeTimeReadable(input: String) -> String {
-       var returnedString = ""
-       let inputFormatter = DateFormatter()
-       inputFormatter.dateFormat = "HH:mm:ss"
-
-       // Convert the input string to a Date object
-       if input == "24:00:00" {
-          let newInput = "00:00:00"
-           if let date = inputFormatter.date(from: newInput) {
-               // Create a DateFormatter for the output format
-               let outputFormatter = DateFormatter()
-               outputFormatter.dateFormat = "h a"
-               outputFormatter.amSymbol = "AM"
-               outputFormatter.pmSymbol = "PM"
-               
-               // Convert the Date object to the desired string format
-               let outputTime = outputFormatter.string(from: date)
-               returnedString = outputTime
-           } else {
-               print("Invalid input time format")
-           }
-       } else {
-           if let date = inputFormatter.date(from: input) {
-               // Create a DateFormatter for the output format
-               let outputFormatter = DateFormatter()
-               outputFormatter.dateFormat = "h a"
-               outputFormatter.amSymbol = "AM"
-               outputFormatter.pmSymbol = "PM"
-               
-               // Convert the Date object to the desired string format
-               let outputTime = outputFormatter.string(from: date)
-               returnedString = outputTime
-           } else {
-               print("Invalid input time format")
-           }
-       }
-       return returnedString
-   }
+        var returnedString = ""
+        timeReadableinputFormatter.dateFormat = "HH:mm:ss"
+        
+        // Convert the input string to a Date object
+        if input == "24:00:00" {
+            let newInput = "00:00:00"
+            if let date = timeReadableinputFormatter.date(from: newInput) {
+                // Create a DateFormatter for the output format
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "h a"
+                outputFormatter.amSymbol = "AM"
+                outputFormatter.pmSymbol = "PM"
+                
+                // Convert the Date object to the desired string format
+                let outputTime = outputFormatter.string(from: date)
+                returnedString = outputTime
+            } else {
+                print("Invalid input time format")
+            }
+        } else {
+            if let date = timeReadableinputFormatter.date(from: input) {
+                // Create a DateFormatter for the output format
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "h a"
+                outputFormatter.amSymbol = "AM"
+                outputFormatter.pmSymbol = "PM"
+                
+                // Convert the Date object to the desired string format
+                let outputTime = outputFormatter.string(from: date)
+                returnedString = outputTime
+            } else {
+                print("Invalid input time format")
+            }
+        }
+        return returnedString
+    }
 }
 
 struct DayWithAbbreviations: Hashable {
