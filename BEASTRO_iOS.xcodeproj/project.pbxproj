@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0202B8502C03A11800B5F00D /* DateAndTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0202B84F2C03A11800B5F00D /* DateAndTimeService.swift */; };
+		0202B8522C060C2400B5F00D /* NewBHVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0202B8512C060C2400B5F00D /* NewBHVM.swift */; };
 		029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */; };
 		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		0202B84F2C03A11800B5F00D /* DateAndTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimeService.swift; sourceTree = "<group>"; };
+		0202B8512C060C2400B5F00D /* NewBHVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBHVM.swift; sourceTree = "<group>"; };
 		029843D32C02B0110000BF0A /* BEASTRO_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BEASTRO_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSApp.swift; sourceTree = "<group>"; };
 		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				029843D82C02B0110000BF0A /* BeastroHomeView.swift */,
 				029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */,
+				0202B8512C060C2400B5F00D /* NewBHVM.swift */,
 			);
 			path = BeastroHome;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			files = (
 				029844012C0377DB0000BF0A /* BeastroHomeViewModel.swift in Sources */,
 				029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */,
+				0202B8522C060C2400B5F00D /* NewBHVM.swift in Sources */,
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
 				029844032C0379430000BF0A /* NetworkingService.swift in Sources */,
 				0202B8502C03A11800B5F00D /* DateAndTimeService.swift in Sources */,
