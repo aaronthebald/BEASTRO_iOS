@@ -34,7 +34,7 @@ class BeastroHomeViewModel: ObservableObject {
     let currentDayFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     let timeReadableInputFormatter = DateFormatter()
-
+    let convertDateToStringFormatter = DateFormatter()
     
     var networkingService: NetworkingServiceProtocol
     var daysOfTheWeek = [
@@ -69,6 +69,28 @@ class BeastroHomeViewModel: ObservableObject {
         return placeHolderArray
     }
     
+    func formatTime(from dateString: String) -> String? {
+        // Define the input date format including the timezone offset
+        let inputDateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        // Create a DateFormatter for parsing the input date string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = inputDateFormat
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        // Parse the date string into a Date object
+        if let date = dateFormatter.date(from: dateString) {
+            // Define the output time format
+            let outputTimeFormat = "HH:mm:ss"
+            dateFormatter.dateFormat = outputTimeFormat
+            // Format the Date object into the desired time string
+            let timeString = dateFormatter.string(from: date)
+            return timeString
+        } else {
+            // Return nil if the input string could not be parsed into a Date
+            return nil
+        }
+    }
+    
     func mainTextController() {
         let now = Date()
         for day in formattedDaysTimes {
@@ -76,15 +98,17 @@ class BeastroHomeViewModel: ObservableObject {
             for pair in pairedDates {
                 let span = pair.0...pair.1
                 if span.contains(now) {
-                    let within1Hours = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-                    if pair.1 < within1Hours {
+                    let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+                    if pair.1 < within1Hour {
                         print("Closing within an hour!")
                         openStatusLight = .yellow
-                        openStatusText = "Open until \(makeTimeReadable(input: pair.1.description))"
+                        guard let closingTimeString = formatTime(from: pair.1.description) else { return }
+                        openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
                     } else {
                         print("The Restaurant is open!!!")
                         openStatusLight = .green
-                        openStatusText = "Open until \(makeTimeReadable(input: pair.1.description))"
+                        guard let closingTimeString = formatTime(from: pair.1.description) else { return }
+                        openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
                     }
                 }
 //                If the current date and time is not within a span the restaurant is closed. That status will be handled here.
@@ -94,12 +118,13 @@ class BeastroHomeViewModel: ObservableObject {
 //                    Checking to see if the restaurant will reopen within 24 hours
                     if within24Hours > nextOpenTime.0 {
                         openStatusLight = .red
-                        openStatusText = ("Will Reopen at \(String(describing: nextOpenTime.0.description))")
+                        guard let openingTimeString = formatTime(from: nextOpenTime.0.description) else { return }
+                        openStatusText = "Opens DAY at \(makeTimeReadable(input: openingTimeString))"
                     } else {
                         openStatusLight = .red
-                        openStatusText = ("Will Reopen on DAYOFWEEK at \(String(describing: nextOpenTime.0.description))")
+                        guard let openingTimeString = formatTime(from: nextOpenTime.0.description) else { return }
+                        openStatusText = "Opens again at \(makeTimeReadable(input: openingTimeString))"
                     }
-
                 }
             }
         }
