@@ -86,12 +86,20 @@ class BeastroHomeViewModel: ObservableObject {
                         openStatusLight = .green
                         openStatusText = "Open until \(makeTimeReadable(input: pair.1.description))"
                     }
-                } else {
-//                    This is for the 24 hours in advance bit
-//                    let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: Date())!
+                }
+//                If the current date and time is not within a span the restaurant is closed. That status will be handled here.
+                else {
+                    let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
+                    guard let nextOpenTime = pairedDates.first(where: {$0.0 > now}) else { return }
+//                    Checking to see if the restaurant will reopen within 24 hours
+                    if within24Hours > nextOpenTime.0 {
+                        openStatusLight = .red
+                        openStatusText = ("Will Reopen at \(String(describing: nextOpenTime.0.description))")
+                    } else {
+                        openStatusLight = .red
+                        openStatusText = ("Will Reopen on DAYOFWEEK at \(String(describing: nextOpenTime.0.description))")
+                    }
 
-                    let nextOpenTime = pairedDates.first(where: {$0.0 > now})
-                    print("Will Reopen at \(String(describing: nextOpenTime?.0.description))")
                 }
             }
         }
