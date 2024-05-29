@@ -101,7 +101,7 @@ class BeastroHomeViewModel: ObservableObject {
         var pairsOfDates: [(Date, Date)] = []
         var returnedSpan: (Date, Date)? = nil
         for day in formattedDaysTimes {
-            var pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
+            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
                 pairsOfDates.append(dates)
                 let span = dates.0...dates.1
@@ -196,8 +196,9 @@ class BeastroHomeViewModel: ObservableObject {
         timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
         
         let calendar = Calendar.current
-        let today = Date() // Get current date
-        let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
+//        Removed these as are not being used in function
+//        let today = Date() // Get current date
+////        let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
         
         for timeString in timeStrings {
             if timeString == "24:00:00" {
