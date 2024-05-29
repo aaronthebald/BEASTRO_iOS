@@ -104,40 +104,44 @@ class BeastroHomeViewModel: ObservableObject {
             let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
                 pairsOfDates.append(dates)
-               
             }
         }
         
         let sortedByFirstDate = pairsOfDates.sorted { $0.0 < $1.0 }
         
-        if !getNextOpenTime {
             for dates in pairsOfDates {
                 let span = dates.0...dates.1
                 guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
                     print("The getSpan function is broken")
                     return nil
                 }
+                
+                if getNextOpenTime {
+                    guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+                        print("The getSpan function is broken")
+                        return nil
+                    }
+                    return nextOpenTime
+                }
+                
                 if span.contains(now) {
-                    print("Are we here?")
-                    print(nextOpenTime)
                     if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
                         print(dates.0, nextOpenTime.1)
                         return (dates.0, nextOpenTime.1)
                         
                     } else {
+                        print("We are here")
                         return dates
                     }
+                } else {
+                    guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+                        print("The getSpan function is broken")
+                        return nil
+                    }
+                    return nextOpenTime
                 }
             }
-        } else {
-                guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
-                    print("The getSpan function is broken")
-                    return nil
-                }
-                return nextOpenTime
-                
-            
-        }
+        print("If you are reading this the getSpan function returned nil")
         return returnedSpan
     }
     
@@ -196,7 +200,7 @@ class BeastroHomeViewModel: ObservableObject {
                     let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
                     print(within24Hours)
 //                    CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
-                    if within24Hours > spanDate.0 {
+                    if within24Hours < spanDate.0 {
                         openStatusLight = .red
                         print("MORE THAN 24 HOURS")
                         guard let openingTimeString = formatTime(from: spanDate.0.description, getWeekDay: false) else {
@@ -238,9 +242,6 @@ class BeastroHomeViewModel: ObservableObject {
         timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
         
         let calendar = Calendar.current
-//        Removed these as are not being used in function
-//        let today = Date() // Get current date
-////        let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
         
         for timeString in timeStrings {
             if timeString == "24:00:00" {
