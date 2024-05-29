@@ -60,17 +60,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
     
-    func createArrayOfDateFromArrayOfStartAndEndTimes(weekday: String, times: [String]  ) -> [Date] {
-        var placeHolderArray: [Date] = []
-        for time in times {
-            guard let newDate = dateAndTimeService.dateFrom(weekday: weekday, time: time) else { return []}
-            placeHolderArray.append(newDate)
-        }
-        return placeHolderArray
-    }
-    
-    
-    //   This function creates a toupee containing the Dates of an opening and closing time.
+    //   This function creates a tuple containing the Dates of an opening and closing time.
     func getSpan(getNextOpenTime: Bool) -> (Date, Date)? {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
@@ -133,7 +123,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
     
-    func mainTextController() {
+    func formatMainText() {
         let now = Date()
         guard let spanDate = getSpan(getNextOpenTime: false) else {
             print("There was a problem building the span")
@@ -243,7 +233,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
         
         formattedDaysTimes = newArray
-        mainTextController()
+        formatMainText()
         
     }
 }
