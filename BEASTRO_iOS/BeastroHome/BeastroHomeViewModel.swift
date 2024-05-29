@@ -22,7 +22,6 @@ class BeastroHomeViewModel: ObservableObject {
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
-        
     }
     
     enum IndicatorLights {
@@ -105,13 +104,16 @@ class BeastroHomeViewModel: ObservableObject {
             var pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
                 pairsOfDates.append(dates)
+                let span = dates.0...dates.1
+                if span.contains(now) {
+                    return dates
+                }
             }
         }
-        print(pairsOfDates)
-        
         for date in pairsOfDates {
             print("func ran")
             let span = date.0...date.1
+            print(span)
             if span.contains(now) {
                 returnedSpan = date
             } else {
@@ -119,8 +121,7 @@ class BeastroHomeViewModel: ObservableObject {
                     print("The getSpan function is broken")
                     return nil
                 }
-                print("HEY HEY HEY HEY \(nextOpenTime)")
-                returnedSpan = nextOpenTime
+                return nextOpenTime
             }
         }
         return returnedSpan
@@ -290,123 +291,6 @@ class BeastroHomeViewModel: ObservableObject {
         formattedDaysTimes = newArray
         mainTextController()
         
-    }
-    
-    
-//    func getOpenStatus() {
-//        // Get the current date
-//        let currentDate = Date()
-//        let calendar = Calendar.current
-//        // "EEEE" gives the full name of the day of the week
-//        currentDayFormatter.dateFormat = "EEEE"
-//        timeFormatter.dateFormat = "HH:mm:ss"
-//        // Get the day of the week string
-//        let dayOfWeek = currentDayFormatter.string(from: currentDate)
-//        currentDay = dayOfWeek
-//        guard let todaysHoursObject = formattedDaysTimes.first(where: {$0.weekday == currentDay}) else {
-//            print("The Full function isn't running")
-//            return
-//        }
-//        //        Restaurant is closed
-//        if todaysHoursObject.startTimes == [] && todaysHoursObject .startTimes == [] {
-//            let currentTimeString = timeFormatter.string(from: currentDate)
-//            if let currentTime = timeFormatter.date(from: currentTimeString) {
-//                restaurantIsOpen = false
-//                openStatusLight = .red
-//                guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else {
-//                    print("Part A Is broken")
-//                    return
-//                }
-//                guard let nextOpenDateString = nextDayOpen.startTimes.first else {
-//                    print("Part B is broken")
-//                    return
-//                }
-//                if let nextDayOpenDate = currentDayFormatter.date(from: nextDayOpen.weekday),
-//                   let nextDayOpenTime = timeFormatter.date(from: nextOpenDateString) {
-//                    let within24Hours = calendar.date(byAdding: .hour, value: -24, to: nextDayOpenTime)!
-//                    let isOpeningWithin24Hours = currentTime >= nextDayOpenTime && currentTime >= within24Hours
-//                    if isOpeningWithin24Hours {
-//                        openStatusText = "Opens again at \(makeTimeReadable(input: nextOpenDateString))"
-//                    } else {
-//                        openStatusText = "Opens \(nextDayOpen.weekday) at \(makeTimeReadable(input: nextOpenDateString))"
-//                    }
-//                }
-//            }
-//        }
-//        
-//        let currentTimeString = timeFormatter.string(from: currentDate)
-//        for openTime in todaysHoursObject.startTimes {
-//            for closedTime in todaysHoursObject.endTimes {
-//                if let openDate = timeFormatter.date(from: openTime),
-//                   let closeDate = timeFormatter.date(from: closedTime),
-//                   let currentTime = timeFormatter.date(from: currentTimeString) {
-//                    // Check if the Restaurant is open
-//                    if currentTime >= openDate && currentTime <= closeDate {
-//                        restaurantIsOpen = true
-//                        openStatusLight = .green
-//                        //                        Checks if Restaurant is closing within the hour
-//                        let closeDateString = closeDate.description
-//                        openStatusText = "Open until \(makeTimeReadable(input: closeDateString))"
-//                        let oneHourBeforeClose = calendar.date(byAdding: .hour, value: -1, to: closeDate)!
-//                        let isClosingSoon = currentTime >= oneHourBeforeClose && currentTime <= closeDate
-//                        closingSoon = isClosingSoon
-//                        if closingSoon {
-//                            guard let nextDayOpen = getNextOpenDay(businessHours: formattedDaysTimes) else { return }
-//                            
-//                            openStatusText = "Open until \(makeTimeReadable(input: closeDateString)), reopens at THIS NEEDS TO BE FIXED"
-//                            openStatusLight = .yellow
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    func getCurrentDayString() -> String {
-        let now = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        return dateFormatter.string(from: now)
-    }
-    
-    func getNextOpenDay(businessHours: [DayWithAbbreviations]) -> DayWithAbbreviations? {
-        let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        let currentDay = getCurrentDayString()
-        guard let currentIndex = daysOfWeek.firstIndex(of: currentDay) else {
-            print("This part is broken")
-            return nil }
-        
-        // Iterate through the days starting from the current day
-        for offset in 0..<daysOfWeek.count {
-            let dayIndex = (currentIndex + offset) % daysOfWeek.count
-            let dayName = daysOfWeek[dayIndex]
-            for day in businessHours {
-                if day.weekday == dayName && isStartTimeInThePast(day: day) && day.startTimes != [] {
-                    return day
-                }
-            }
-            
-        }
-        return nil
-    }
-    
-    func isStartTimeInThePast(day: DayWithAbbreviations) -> Bool {
-        let now = Date()
-        var returnedBool: Bool = false
-        if day.startTimes == [] {
-            returnedBool = true
-        } else {
-            for startTime in day.startTimes {
-                guard let timeOfDay = timeFormatter.date(from: startTime) else {
-                    print("There was a problem in the isStartTimeInThePast function")
-                    return false }
-                if timeOfDay <= now {
-                    returnedBool = true
-                } else {
-                    returnedBool = false
-                }
-            }
-        }
-        return returnedBool
     }
     
     func makeTimeReadable(input: String) -> String {
