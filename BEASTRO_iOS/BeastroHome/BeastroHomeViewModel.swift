@@ -103,24 +103,55 @@ class BeastroHomeViewModel: ObservableObject {
         for day in formattedDaysTimes {
             let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
+                pairsOfDates.append(dates)
+               
+            }
+        }
+        
+        let sortedByFirstDate = pairsOfDates.sorted { $0.0 < $1.0 }
+        
+        if !getNextOpenTime {
+            for dates in pairsOfDates {
                 let span = dates.0...dates.1
+                guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+                    print("The getSpan function is broken")
+                    return nil
+                }
                 if span.contains(now) {
-                    if !getNextOpenTime {
+                    print("Are we here?")
+                    print(nextOpenTime)
+                    if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
+                        print(dates.0, nextOpenTime.1)
+                        return (dates.0, nextOpenTime.1)
+                        
+                    } else {
                         return dates
                     }
                 }
-                pairsOfDates.append(dates)
             }
-        }
-        for date in pairsOfDates {
-            guard let nextOpenTime = pairsOfDates.first(where: {$0.0 > now}) else {
-                print("The getSpan function is broken")
-                return nil
-            }
-            return nextOpenTime
+        } else {
+                guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+                    print("The getSpan function is broken")
+                    return nil
+                }
+                return nextOpenTime
+                
             
         }
         return returnedSpan
+    }
+    
+    func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
+        let newFormatter = DateFormatter()
+        newFormatter.dateFormat = "HH:mm:ss"
+        
+        let closingTimeString = newFormatter.string(from: pair1.1)
+        let openingTimeString = newFormatter.string(from: pair2.0)
+        if closingTimeString.contains("24:00:00") || closingTimeString.contains("23:59:59") && openingTimeString.contains("00:00:00") {
+            return true
+        } else {
+            return false
+        }
     }
     
     func mainTextController() {
@@ -198,7 +229,6 @@ class BeastroHomeViewModel: ObservableObject {
         for i in 0..<count {
             pairedArray.append((array1[i], array2[i]))
         }
-        
         return pairedArray
     }
     

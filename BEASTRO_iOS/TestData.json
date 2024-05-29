@@ -1,0 +1,27 @@
+{
+    "location_name": "BEASTRO by Marshawn Lynch",
+    "hours": [
+        {
+            "day_of_week": "WED",
+            "start_local_time": "07:00:00",
+            "end_local_time": "24:00:00"
+        },
+        
+        
+        {
+            "day_of_week": "TUE",
+            "start_local_time": "07:00:00",
+            "end_local_time": "13:00:00"
+        },
+        {
+            "day_of_week": "TUE",
+            "start_local_time": "15:00:00",
+            "end_local_time": "24:00:00"
+        },
+        {
+            "day_of_week": "THU",
+            "start_local_time": "00:00:00",
+            "end_local_time": "04:00:00"
+        }
+    ]
+}
