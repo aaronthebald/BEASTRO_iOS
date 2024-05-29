@@ -38,13 +38,13 @@ struct BeastroHomeView: View {
                                         HStack(alignment: .top) {
                                             VStack {
                                                 ForEach(day.startTimes, id: \.self) { time in
-                                                    Text("\(vm.makeTimeReadable(input: time)) -")
+                                                    Text("\(vm.dateAndTimeService.makeTimeReadable(input: time)) -")
                                                 }
                                             }
                                             
                                             VStack {
                                                 ForEach(day.endTimes, id: \.self) { time in
-                                                    Text(vm.makeTimeReadable(input: time))
+                                                    Text(vm.dateAndTimeService.makeTimeReadable(input: time))
                                                 }
                                             }
                                         }
