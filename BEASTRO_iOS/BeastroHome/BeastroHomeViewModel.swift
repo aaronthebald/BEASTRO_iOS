@@ -96,7 +96,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
 //   This function creates a toupee containing the Dates of an opening and closing time.
-    func getSpan() -> (Date, Date)? {
+    func getSpan(getNextOpenTime: Bool) -> (Date, Date)? {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
         var returnedSpan: (Date, Date)? = nil
@@ -105,7 +105,9 @@ class BeastroHomeViewModel: ObservableObject {
             for dates in pairedDates {
                 let span = dates.0...dates.1
                 if span.contains(now) {
-                    return dates
+                    if !getNextOpenTime {
+                        return dates
+                    }
                 }
                 pairsOfDates.append(dates)
             }
@@ -123,7 +125,7 @@ class BeastroHomeViewModel: ObservableObject {
     
     func mainTextController() {
         let now = Date()
-        guard let spanDate = getSpan() else {
+        guard let spanDate = getSpan(getNextOpenTime: false) else {
             print("There was a problem building the span")
             return
         }
@@ -136,8 +138,17 @@ class BeastroHomeViewModel: ObservableObject {
                         openStatusLight = .yellow
                         guard let closingTimeString = formatTime(from: spanDate.1.description) else {
                        print("This is broken Part A")
-                        return }
-                        openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
+                        return
+                        }
+                        guard let nextOpenTime = getSpan(getNextOpenTime: true) else {
+                            print("failed to get nextOpenTime")
+                            return
+                        }
+                        guard let nextOpenTimeText = formatTime(from: nextOpenTime.0.description) else {
+                            print("failed to get nextOpenTimeText")
+                            return
+                        }
+                        openStatusText = "Open until \(makeTimeReadable(input: closingTimeString)), reopens at \(makeTimeReadable(input: nextOpenTimeText))"
                     } else {
                         print("The Restaurant is open!!!")
                         openStatusLight = .green
