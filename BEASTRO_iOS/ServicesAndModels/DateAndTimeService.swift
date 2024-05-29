@@ -11,7 +11,7 @@ class DateAndTimeService {
     
     func dateFrom(weekday: String, time: String) -> Date? {
             let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm:ss"  // Updated to match the time format "07:00:00"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"  // Updated to match the time format "07:00:00"
             guard let timeDate = formatter.date(from: time) else {
                 print("Invalid time format")
                 return nil

@@ -30,6 +30,7 @@ class BeastroHomeViewModel: ObservableObject {
         case yellow
         case green
     }
+//    Initializing formatters and Services
     let dateAndTimeService = DateAndTimeService()
     let currentDayFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
@@ -37,6 +38,8 @@ class BeastroHomeViewModel: ObservableObject {
     let convertDateToStringFormatter = DateFormatter()
     
     var networkingService: NetworkingServiceProtocol
+   
+//    Creating an array of Days of the week to ittirate through and assign values to start and end times
     var daysOfTheWeek = [
         DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
@@ -46,6 +49,7 @@ class BeastroHomeViewModel: ObservableObject {
         DayWithAbbreviations(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
     ]
+//    Make network call to receive JSON data using the NetworkingService class
     func fetchBusinessHours() async {
         do {
             let hours = try await networkingService.fetchBusinessHours()
@@ -84,50 +88,94 @@ class BeastroHomeViewModel: ObservableObject {
             dateFormatter.dateFormat = outputTimeFormat
             // Format the Date object into the desired time string
             let timeString = dateFormatter.string(from: date)
+            print(timeString)
             return timeString
         } else {
             // Return nil if the input string could not be parsed into a Date
+            print("Failed to turn \(dateString) into a string")
             return nil
         }
     }
     
+    func getSpan() -> (Date, Date)? {
+        let now = Date()
+        var pairsOfDates: [(Date, Date)] = []
+        var returnedSpan: (Date, Date)? = nil
+        for day in formattedDaysTimes {
+            var pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
+            for dates in pairedDates {
+                pairsOfDates.append(dates)
+            }
+        }
+        print(pairsOfDates)
+        
+        for date in pairsOfDates {
+            print("func ran")
+            let span = date.0...date.1
+            if span.contains(now) {
+                returnedSpan = date
+            } else {
+                guard let nextOpenTime = pairsOfDates.first(where: {$0.0 > now}) else {
+                    print("The getSpan function is broken")
+                    return nil
+                }
+                print("HEY HEY HEY HEY \(nextOpenTime)")
+                returnedSpan = nextOpenTime
+            }
+        }
+        return returnedSpan
+    }
+    
     func mainTextController() {
         let now = Date()
-        for day in formattedDaysTimes {
-            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
-            for pair in pairedDates {
-                let span = pair.0...pair.1
+        guard let spanDate = getSpan() else {
+            print("There was a problem building the span")
+            return
+        }
+            print("function ran")
+                let span = spanDate.0...spanDate.1
                 if span.contains(now) {
                     let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-                    if pair.1 < within1Hour {
+                    if spanDate.1 < within1Hour {
                         print("Closing within an hour!")
                         openStatusLight = .yellow
-                        guard let closingTimeString = formatTime(from: pair.1.description) else { return }
+                        guard let closingTimeString = formatTime(from: spanDate.1.description) else {
+                       print("This is broken Part A")
+                        return }
                         openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
                     } else {
                         print("The Restaurant is open!!!")
                         openStatusLight = .green
-                        guard let closingTimeString = formatTime(from: pair.1.description) else { return }
+                        guard let closingTimeString = formatTime(from: spanDate.1.description) else {
+                            print("This is broken part B")
+                             return }
                         openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
                     }
                 }
 //                If the current date and time is not within a span the restaurant is closed. That status will be handled here.
                 else {
                     let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
-                    guard let nextOpenTime = pairedDates.first(where: {$0.0 > now}) else { return }
+                    print(within24Hours)
 //                    Checking to see if the restaurant will reopen within 24 hours
-                    if within24Hours > nextOpenTime.0 {
+                    if within24Hours > spanDate.0 {
                         openStatusLight = .red
-                        guard let openingTimeString = formatTime(from: nextOpenTime.0.description) else { return }
+                        print("MORE THAN 24 HOURS")
+                        guard let openingTimeString = formatTime(from: spanDate.0.description) else {
+                            print("This is broken part D")
+                             return }
                         openStatusText = "Opens DAY at \(makeTimeReadable(input: openingTimeString))"
                     } else {
                         openStatusLight = .red
-                        guard let openingTimeString = formatTime(from: nextOpenTime.0.description) else { return }
+                        print("LESS THAN 24 HOURS")
+
+                        guard let openingTimeString = formatTime(from: spanDate.0.description) else {
+                            print("This is broken E")
+                             return }
                         openStatusText = "Opens again at \(makeTimeReadable(input: openingTimeString))"
                     }
                 }
-            }
-        }
+            
+        
     }
     func pairArrays(array1: [Date], array2: [Date]) -> [(Date, Date)] {
         let count = min(array1.count, array2.count)
@@ -152,7 +200,7 @@ class BeastroHomeViewModel: ObservableObject {
         
         for timeString in timeStrings {
             if timeString == "24:00:00" {
-                let correctedTimeString = closingTime ? "23:59:59" : "24:00:00"
+                let correctedTimeString = closingTime ? "23:59:59" : "00:00:00"
                 if let timeDate = timeFormatter.date(from: correctedTimeString) {
                     var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: timeDate)
                     dateComponents.year = dayOfTheWeek.year
@@ -169,7 +217,7 @@ class BeastroHomeViewModel: ObservableObject {
                 }
             } else {
                 if let timeDate = timeFormatter.date(from: timeString) {
-                    var dateComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
+                    var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: timeDate)
                     dateComponents.year = dayOfTheWeek.year
                     dateComponents.month = dayOfTheWeek.month
                     dateComponents.day = dayOfTheWeek.day
@@ -186,6 +234,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
         return dates
     }
+//    Why am i calling this? Returns the components of the next occurrence of the current day?
     func nextOccurrence(ofDayOfWeek day: String) -> DateComponents? {
         let calendar = Calendar.current
         var dateComponents = DateComponents()
@@ -203,15 +252,15 @@ class BeastroHomeViewModel: ObservableObject {
         }
         
         // Calculate the number of days until the next occurrence of the input day
-        let daysUntilNextDay = (index + 7 - currentWeekday) % 7
+        let daysUntilNextDay = (index + 7 - currentWeekday + 1) % 7
         
         // Add the number of days to the current date
         if let nextDate = calendar.date(byAdding: .day, value: daysUntilNextDay, to: currentDate) {
             // Get the components for the next occurrence of the input day
             dateComponents = calendar.dateComponents([.year, .month, .day], from: nextDate)
+        } else {
+            print("Unable to get the next occurrence of weekday ")
         }
-        
-        print(dateComponents)
         return dateComponents
     }
     
@@ -239,7 +288,6 @@ class BeastroHomeViewModel: ObservableObject {
         }
         
         formattedDaysTimes = newArray
-        print(formattedDaysTimes)
         mainTextController()
         
     }
