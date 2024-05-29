@@ -76,7 +76,6 @@ class BeastroHomeViewModel: ObservableObject {
         print("sortedByFirstDate: \(sortedByFirstDate)")
         
         for dates in sortedByFirstDate {
-            print(dates)
             let span = dates.0...dates.1
             guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
                 print("The getSpan function is broken")
@@ -92,19 +91,14 @@ class BeastroHomeViewModel: ObservableObject {
                     return (dates.0, nextOpenTime.1)
                     
                 } else {
-                    print("We are here")
                     return dates
                 }
-                
-                
-                
-            }
+                            }
         }
         guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
             print("The getSpan function is broken")
             return nil
         }
-        print("Span contains now is failing")
         return nextOpenTime
     }
     
@@ -127,7 +121,6 @@ class BeastroHomeViewModel: ObservableObject {
             print("There was a problem building the span")
             return
         }
-        print("HEY LOOK HERE\(spanDate)")
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
             let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
@@ -153,7 +146,6 @@ class BeastroHomeViewModel: ObservableObject {
                 openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
             } else {
 //              OPEN FOR MORE THAN AN HOUR LONGER
-                print("The Restaurant is open!!!")
                 openStatusLight = .green
 //              Get String for the time restaurant will be closing
                 guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
@@ -165,11 +157,9 @@ class BeastroHomeViewModel: ObservableObject {
 //      If the current date and time is not within a span, the restaurant is closed. That status will be handled here.
         else {
             let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
-            print(within24Hours)
 //          CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
             if within24Hours < spanDate.0 {
                 openStatusLight = .red
-                print("MORE THAN 24 HOURS")
 //              Get text for next time restaurant will be open
                 guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
                     print("This is broken part D")
@@ -184,7 +174,6 @@ class BeastroHomeViewModel: ObservableObject {
             } else {
 //              CLOSED REOPENS WITHIN 24 HOURS
                 openStatusLight = .red
-                print("LESS THAN 24 HOURS")
 //              Get text for next time restaurant will be open
                 guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
                     print("This is broken E")
