@@ -31,14 +31,13 @@ class BeastroHomeViewModel: ObservableObject {
     }
 //    Initializing formatters and Services
     let dateAndTimeService = DateAndTimeService()
-    let currentDayFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     let timeReadableInputFormatter = DateFormatter()
-    let convertDateToStringFormatter = DateFormatter()
-    
+    let dateFormatter = DateFormatter()
+
     var networkingService: NetworkingServiceProtocol
    
-//    Creating an array of Days of the week to ittirate through and assign values to start and end times
+//    Creating an array of Days of the week to iterate through and assign values to start and end times
     var daysOfTheWeek = [
         DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
@@ -72,18 +71,17 @@ class BeastroHomeViewModel: ObservableObject {
         return placeHolderArray
     }
     
-    func formatTime(from dateString: String) -> String? {
+    func formatTime(from dateString: String, getWeekDay: Bool) -> String? {
         // Define the input date format including the timezone offset
         let inputDateFormat = "yyyy-MM-dd HH:mm:ss Z"
         // Create a DateFormatter for parsing the input date string
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = inputDateFormat
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         // Parse the date string into a Date object
         if let date = dateFormatter.date(from: dateString) {
             // Define the output time format
-            let outputTimeFormat = "HH:mm:ss"
+            let outputTimeFormat = getWeekDay ? "EEEE" : "HH:mm:ss"
             dateFormatter.dateFormat = outputTimeFormat
             // Format the Date object into the desired time string
             let timeString = dateFormatter.string(from: date)
@@ -133,10 +131,11 @@ class BeastroHomeViewModel: ObservableObject {
                 let span = spanDate.0...spanDate.1
                 if span.contains(now) {
                     let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+//                   OPEN BUT CLOSING WITHIN AN HOUR
                     if spanDate.1 < within1Hour {
                         print("Closing within an hour!")
                         openStatusLight = .yellow
-                        guard let closingTimeString = formatTime(from: spanDate.1.description) else {
+                        guard let closingTimeString = formatTime(from: spanDate.1.description, getWeekDay: false) else {
                        print("This is broken Part A")
                         return
                         }
@@ -144,15 +143,16 @@ class BeastroHomeViewModel: ObservableObject {
                             print("failed to get nextOpenTime")
                             return
                         }
-                        guard let nextOpenTimeText = formatTime(from: nextOpenTime.0.description) else {
+                        guard let nextOpenTimeText = formatTime(from: nextOpenTime.0.description, getWeekDay: false) else {
                             print("failed to get nextOpenTimeText")
                             return
                         }
                         openStatusText = "Open until \(makeTimeReadable(input: closingTimeString)), reopens at \(makeTimeReadable(input: nextOpenTimeText))"
                     } else {
+//                        OPEN FOR MORE THAN AN HOUR
                         print("The Restaurant is open!!!")
                         openStatusLight = .green
-                        guard let closingTimeString = formatTime(from: spanDate.1.description) else {
+                        guard let closingTimeString = formatTime(from: spanDate.1.description, getWeekDay: false) else {
                             print("This is broken part B")
                              return }
                         openStatusText = "Open until \(makeTimeReadable(input: closingTimeString))"
@@ -162,19 +162,25 @@ class BeastroHomeViewModel: ObservableObject {
                 else {
                     let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
                     print(within24Hours)
-//                    Checking to see if the restaurant will reopen within 24 hours
+//                    CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
                     if within24Hours > spanDate.0 {
                         openStatusLight = .red
                         print("MORE THAN 24 HOURS")
-                        guard let openingTimeString = formatTime(from: spanDate.0.description) else {
+                        guard let openingTimeString = formatTime(from: spanDate.0.description, getWeekDay: false) else {
                             print("This is broken part D")
-                             return }
-                        openStatusText = "Opens DAY at \(makeTimeReadable(input: openingTimeString))"
+                            return
+                        }
+                        guard let openingDay = formatTime(from: spanDate.0.description, getWeekDay: true) else {
+                            print("failed to get openingDay String")
+                            return
+                        }
+                        openStatusText = "Opens \(openingDay) at \(makeTimeReadable(input: openingTimeString))"
                     } else {
+//                        CLOSED REOPENS WITHIN 24 HOURS
                         openStatusLight = .red
                         print("LESS THAN 24 HOURS")
 
-                        guard let openingTimeString = formatTime(from: spanDate.0.description) else {
+                        guard let openingTimeString = formatTime(from: spanDate.0.description, getWeekDay: false) else {
                             print("This is broken E")
                              return }
                         openStatusText = "Opens again at \(makeTimeReadable(input: openingTimeString))"
@@ -196,7 +202,6 @@ class BeastroHomeViewModel: ObservableObject {
     
     func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) -> [Date] {
         var dates: [Date] = []
-        let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
         timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
         
