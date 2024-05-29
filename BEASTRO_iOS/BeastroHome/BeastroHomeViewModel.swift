@@ -139,7 +139,6 @@ class BeastroHomeViewModel: ObservableObject {
             print("There was a problem building the span")
             return
         }
-        print("function ran")
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
             let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
@@ -147,51 +146,57 @@ class BeastroHomeViewModel: ObservableObject {
             if spanDate.1 < within1Hour {
                 print("Closing within an hour!")
                 openStatusLight = .yellow
+//              Get String for the time restaurant will be closing
                 guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
                     print("This is broken Part A")
                     return
                 }
+//              Get span for next time restaurant will be open
                 guard let nextOpenTime = getSpan(getNextOpenTime: true) else {
                     print("failed to get nextOpenTime")
                     return
                 }
+//              Get text for next time restaurant will be open
                 guard let nextOpenTimeText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false) else {
                     print("failed to get nextOpenTimeText")
                     return
                 }
                 openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
             } else {
-                //                        OPEN FOR MORE THAN AN HOUR
+//              OPEN FOR MORE THAN AN HOUR LONGER
                 print("The Restaurant is open!!!")
                 openStatusLight = .green
+//              Get String for the time restaurant will be closing
                 guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
                     print("This is broken part B")
                     return }
                 openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString))"
             }
         }
-        //                If the current date and time is not within a span the restaurant is closed. That status will be handled here.
+//      If the current date and time is not within a span, the restaurant is closed. That status will be handled here.
         else {
             let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
             print(within24Hours)
-            //                    CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
+//          CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
             if within24Hours < spanDate.0 {
                 openStatusLight = .red
                 print("MORE THAN 24 HOURS")
+//              Get text for next time restaurant will be open
                 guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
                     print("This is broken part D")
                     return
                 }
+//              Get text for next day restaurant will be open
                 guard let openingDay = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true) else {
                     print("failed to get openingDay String")
                     return
                 }
                 openStatusText = "Opens \(openingDay) at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
             } else {
-                //                        CLOSED REOPENS WITHIN 24 HOURS
+//              CLOSED REOPENS WITHIN 24 HOURS
                 openStatusLight = .red
                 print("LESS THAN 24 HOURS")
-                
+//              Get text for next time restaurant will be open
                 guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
                     print("This is broken E")
                     return }
