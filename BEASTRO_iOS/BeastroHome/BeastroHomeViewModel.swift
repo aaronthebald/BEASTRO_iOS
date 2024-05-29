@@ -73,22 +73,19 @@ class BeastroHomeViewModel: ObservableObject {
         }
         
         let sortedByFirstDate = pairsOfDates.sorted { $0.0 < $1.0 }
+        print("sortedByFirstDate: \(sortedByFirstDate)")
         
-        for dates in pairsOfDates {
+        for dates in sortedByFirstDate {
+            print(dates)
             let span = dates.0...dates.1
             guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
                 print("The getSpan function is broken")
                 return nil
             }
-            
             if getNextOpenTime {
-                guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
-                    print("The getSpan function is broken")
-                    return nil
-                }
+                print("getNextOpenTime block ran")
                 return nextOpenTime
             }
-            
             if span.contains(now) {
                 if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
                     print(dates.0, nextOpenTime.1)
@@ -98,16 +95,17 @@ class BeastroHomeViewModel: ObservableObject {
                     print("We are here")
                     return dates
                 }
-            } else {
-                guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
-                    print("The getSpan function is broken")
-                    return nil
-                }
-                return nextOpenTime
+                
+                
+                
             }
         }
-        print("If you are reading this the getSpan function returned nil")
-        return returnedSpan
+        guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+            print("The getSpan function is broken")
+            return nil
+        }
+        print("Span contains now is failing")
+        return nextOpenTime
     }
     
     func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
@@ -129,6 +127,7 @@ class BeastroHomeViewModel: ObservableObject {
             print("There was a problem building the span")
             return
         }
+        print("HEY LOOK HERE\(spanDate)")
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
             let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
