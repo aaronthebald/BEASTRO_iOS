@@ -95,7 +95,7 @@ class BeastroHomeViewModel: ObservableObject {
             return nil
         }
     }
-    
+//   This function creates a toupee containing the Dates of an opening and closing time.
     func getSpan() -> (Date, Date)? {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
@@ -103,26 +103,20 @@ class BeastroHomeViewModel: ObservableObject {
         for day in formattedDaysTimes {
             let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
-                pairsOfDates.append(dates)
                 let span = dates.0...dates.1
                 if span.contains(now) {
                     return dates
                 }
+                pairsOfDates.append(dates)
             }
         }
         for date in pairsOfDates {
-            print("func ran")
-            let span = date.0...date.1
-            print(span)
-            if span.contains(now) {
-                returnedSpan = date
-            } else {
-                guard let nextOpenTime = pairsOfDates.first(where: {$0.0 > now}) else {
-                    print("The getSpan function is broken")
-                    return nil
-                }
-                return nextOpenTime
+            guard let nextOpenTime = pairsOfDates.first(where: {$0.0 > now}) else {
+                print("The getSpan function is broken")
+                return nil
             }
+            return nextOpenTime
+            
         }
         return returnedSpan
     }
