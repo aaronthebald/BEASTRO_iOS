@@ -34,6 +34,8 @@ class BeastroHomeViewModel: ObservableObject {
     let timeFormatter = DateFormatter()
     let timeReadableInputFormatter = DateFormatter()
     let dateFormatter = DateFormatter()
+    let timeReadableOutputFormatter = DateFormatter()
+
 
     var networkingService: NetworkingServiceProtocol
    
@@ -303,42 +305,40 @@ class BeastroHomeViewModel: ObservableObject {
         mainTextController()
         
     }
-    
     func makeTimeReadable(input: String) -> String {
         var returnedString = ""
+        let timeReadableInputFormatter = DateFormatter()
         timeReadableInputFormatter.dateFormat = "HH:mm:ss"
         
-        // Convert the input string to a Date object
+        // Handle special case for "24:00:00"
+        var adjustedInput = input
         if input == "24:00:00" {
-            let newInput = "00:00:00"
-            if let date = timeReadableInputFormatter.date(from: newInput) {
-                // Create a DateFormatter for the output format
-                let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "h a"
-                outputFormatter.amSymbol = "AM"
-                outputFormatter.pmSymbol = "PM"
-                
-                // Convert the Date object to the desired string format
-                let outputTime = outputFormatter.string(from: date)
-                returnedString = outputTime
-            } else {
-                print("Invalid input time format")
-            }
-        } else {
-            if let date = timeReadableInputFormatter.date(from: input) {
-                // Create a DateFormatter for the output format
-                let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "h a"
-                outputFormatter.amSymbol = "AM"
-                outputFormatter.pmSymbol = "PM"
-                
-                // Convert the Date object to the desired string format
-                let outputTime = outputFormatter.string(from: date)
-                returnedString = outputTime
-            } else {
-                print("Invalid input time format")
-            }
+            adjustedInput = "00:00:00"
         }
+        
+        // Convert the input string to a Date object
+        if let date = timeReadableInputFormatter.date(from: adjustedInput) {
+            // Create a DateFormatter for the output format
+            
+            // Check if minutes are not "00"
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.hour, .minute], from: date)
+            
+            if components.minute == 0 {
+                timeReadableOutputFormatter.dateFormat = "h a"
+            } else {
+                timeReadableOutputFormatter.dateFormat = "h:mm a"
+            }
+            
+            timeReadableOutputFormatter.amSymbol = "AM"
+            timeReadableOutputFormatter.pmSymbol = "PM"
+            
+            // Convert the Date object to the desired string format
+            returnedString = timeReadableOutputFormatter.string(from: date)
+        } else {
+            print("Invalid input time format")
+        }
+        
         return returnedString
     }
 }
