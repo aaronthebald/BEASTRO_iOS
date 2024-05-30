@@ -9,8 +9,6 @@ import Foundation
 
 class BeastroHomeViewModel: ObservableObject {
     
-    @Published var formattedDaysTimes: [DayWithAbbreviations] = []
-    @Published var returnedHours: [Hour] = []
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
     @Published var openStatusLight: IndicatorLights = .red
@@ -32,6 +30,8 @@ class BeastroHomeViewModel: ObservableObject {
     //    Initializing formatters and Services
     let dateAndTimeService = DateAndTimeService()
     
+    var formattedDaysTimes: [DayWithAbbreviations] = []
+    var returnedHours: [Hour] = []
     
     var networkingService: NetworkingServiceProtocol
     
@@ -62,6 +62,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
     
+//    Function to get current date of the week. This is to allow the view to make the current date font weight .bold
     func getCurrentDayOfTheWeek() {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
@@ -105,6 +106,7 @@ class BeastroHomeViewModel: ObservableObject {
         return nextOpenTime
     }
     
+//    This function if used to determine if the restaurant is open past midnight
     func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
         let newFormatter = DateFormatter()
         newFormatter.dateFormat = "HH:mm:ss"
@@ -127,9 +129,8 @@ class BeastroHomeViewModel: ObservableObject {
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
             let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-            //                   OPEN BUT CLOSING WITHIN AN HOUR
             if spanDate.1 < within1Hour {
-                print("Closing within an hour!")
+//           OPEN BUT CLOSING WITHIN AN HOUR
                 openStatusLight = .yellow
 //              Get String for the time restaurant will be closing
                 guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
@@ -184,9 +185,8 @@ class BeastroHomeViewModel: ObservableObject {
                 openStatusText = "Opens again at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
             }
         }
-        
-        
     }
+    
     func pairArrays(array1: [Date], array2: [Date]) -> [(Date, Date)] {
         let count = min(array1.count, array2.count)
         var pairedArray: [(Date, Date)] = []
@@ -196,9 +196,6 @@ class BeastroHomeViewModel: ObservableObject {
         }
         return pairedArray
     }
-    
-    
-    
     
     func consolidateReturnedDays() {
         var newArray: [DayWithAbbreviations] = []
@@ -234,7 +231,7 @@ class BeastroHomeViewModel: ObservableObject {
     func sortOpeningTimes() {
         var sortedArray: [OperatingHours] = []
         for day in operatingHours {
-          let  sortedOpenTimes = day.openingTimes.sorted { $0 < $1}
+            let  sortedOpenTimes = day.openingTimes.sorted { $0 < $1}
             let sortedClosingTimes = day.closingTimes.sorted { $0 < $1 }
             let newOperatingHour = OperatingHours(dayOfWeek: day.dayOfWeek, openingTimes: sortedOpenTimes, closingTimes: sortedClosingTimes)
             sortedArray.append(newOperatingHour)
@@ -250,7 +247,7 @@ class BeastroHomeViewModel: ObservableObject {
                 if let lastClosingTimeIndex = newClosingTimesDay1.lastIndex(of: "24:00:00") {
                     newClosingTimesDay1[lastClosingTimeIndex] = day2.closingTimes.first!
                 }
-
+                
                 let newDay1 = OperatingHours(dayOfWeek: day1.dayOfWeek, openingTimes: day1.openingTimes, closingTimes: newClosingTimesDay1)
                 
                 var newOpeningTimesDay2 = day2.openingTimes
@@ -265,7 +262,7 @@ class BeastroHomeViewModel: ObservableObject {
                 operatingHours[i + 1] = newDay2
             }
         }
-
+        
         // Compare the last object to the first object: "Sunday to Monday
         if let firstDay = operatingHours.first, let lastDay = operatingHours.last {
             if lastDay.closingTimes.contains("24:00:00") && firstDay.openingTimes.contains("00:00:00") {
@@ -274,7 +271,7 @@ class BeastroHomeViewModel: ObservableObject {
                 if let lastClosingTimeIndex = newClosingTimesLastDay.lastIndex(of: "24:00:00") {
                     newClosingTimesLastDay[lastClosingTimeIndex] = firstDay.closingTimes.first!
                 }
-
+                
                 let newLastDay = OperatingHours(dayOfWeek: lastDay.dayOfWeek, openingTimes: lastDay.openingTimes, closingTimes: newClosingTimesLastDay)
                 
                 var newOpeningTimesFirstDay = firstDay.openingTimes
