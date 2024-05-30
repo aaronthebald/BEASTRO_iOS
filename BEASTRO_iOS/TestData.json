@@ -3,25 +3,55 @@
     "hours": [
         {
             "day_of_week": "WED",
-            "start_local_time": "07:00:00",
+            "start_local_time": "00:00:00",
             "end_local_time": "24:00:00"
         },
         
         
         {
             "day_of_week": "TUE",
-            "start_local_time": "07:00:00",
-            "end_local_time": "13:00:00"
+            "start_local_time": "00:00:00",
+            "end_local_time": "24:00:00"
         },
         {
-            "day_of_week": "TUE",
-            "start_local_time": "15:00:00",
+            "day_of_week": "MON",
+            "start_local_time": "00:00:00",
             "end_local_time": "24:00:00"
         },
         {
             "day_of_week": "THU",
             "start_local_time": "00:00:00",
+            "end_local_time": "24:00:00"
+        },
+        {
+            "day_of_week": "FRI",
+            "start_local_time": "00:00:00",
             "end_local_time": "04:00:00"
+        },
+        {
+            "day_of_week": "FRI",
+            "start_local_time": "09:00:00",
+            "end_local_time": "22:00:00"
+        },
+        {
+            "day_of_week": "SAT",
+            "start_local_time": "00:00:00",
+            "end_local_time": "24:00:00"
+        },
+        {
+            "day_of_week": "SUN",
+            "start_local_time": "00:00:00",
+            "end_local_time": "04:00:00"
+        },
+        {
+            "day_of_week": "SUN",
+            "start_local_time": "09:00:00",
+            "end_local_time": "14:00:00"
+        },
+        {
+            "day_of_week": "SUN",
+            "start_local_time": "16:00:00",
+            "end_local_time": "23:00:00"
         }
     ]
 }

@@ -236,8 +236,7 @@ class BeastroHomeViewModel: ObservableObject {
         for i in stride(from: 0, to: operatingHours.count - 1, by: 1) {
             let day1 = operatingHours[i]
             let day2 = operatingHours[i + 1]
-            
-            if day1.closingTimes.contains("24:00:00") && day2.openingTimes.contains("00:00:00") {
+            if day1.closingTimes.contains("24:00:00") && day2.openingTimes.contains("00:00:00") && !day2.closingTimes.first!.contains("24:00:00") {
                 var newClosingTimesDay1 = day1.closingTimes
                 // Assuming closingTimes is an array of strings
                 if let lastClosingTimeIndex = newClosingTimesDay1.lastIndex(of: "24:00:00") {
