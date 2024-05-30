@@ -27,7 +27,7 @@ class BeastroHomeViewModel: ObservableObject {
         case yellow
         case green
     }
-    //    Initializing formatters and Services
+
     let dateAndTimeService = DateAndTimeService()
     
     var formattedDaysTimes: [DayWithAbbreviations] = []
@@ -45,7 +45,7 @@ class BeastroHomeViewModel: ObservableObject {
         DayWithAbbreviations(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
     ]
-    //    Make network call to receive JSON data using the NetworkingService class
+//    Make network call to receive JSON data using the NetworkingService class
     func fetchBusinessHours() async {
         do {
             let hours = try await networkingService.fetchBusinessHours()

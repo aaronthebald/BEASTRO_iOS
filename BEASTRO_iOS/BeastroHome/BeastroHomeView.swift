@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BeastroHomeView: View {
     
-    @StateObject private var vm = BeastroHomeViewModel(networkingService: NetworkingService())
+    @StateObject private var viewModel = BeastroHomeViewModel(networkingService: NetworkingService())
     @State private var showMenu: Bool = false
     @State private var showFullHours: Bool = false
     
@@ -21,32 +21,7 @@ struct BeastroHomeView: View {
                     homePageTitle
                     Spacer()
                 }
-                VStack(alignment: .leading) {
-                    currentOpenStatus
-                        .onTapGesture {
-                            withAnimation(.easeIn) {
-                                showFullHours.toggle()
-                            }
-                        }
-                    if showFullHours {
-                        Divider()
-                            .foregroundStyle(Color.primary)
-                        openCloseTimes
-                    }
-                }
-                .padding(25)
-                .frame(maxWidth: .infinity)
-                
-                .background {
-                    RoundedRectangle(cornerRadius: 7)
-                        .fill(Material.ultraThin)
-                }
-                .padding(.horizontal, 20)
-                .overlay {
-                    if vm.dataIsLoading {
-                        loadingCover
-                    }
-                }
+                hoursInformationAccordion
                 Spacer()
                 Button {
                     showMenu = true
@@ -64,17 +39,17 @@ struct BeastroHomeView: View {
                 Text("This is where the menu would go")
             })
             .task {
-                await vm.fetchBusinessHours()
-                vm.consolidateReturnedDays()
+                await viewModel.fetchBusinessHours()
+                viewModel.consolidateReturnedDays()
             }
-            .alert("Uh Oh", isPresented: $vm.showAlert) {
+            .alert("Uh Oh", isPresented: $viewModel.showAlert) {
                 Button {
-                    vm.showAlert = false
+                    viewModel.showAlert = false
                 } label: {
                     Text("Dismiss")
                 }
             } message: {
-                Text(vm.errorMessage)
+                Text(viewModel.errorMessage)
             }
         }
     }
@@ -97,6 +72,35 @@ extension BeastroHomeView {
         .foregroundStyle(Color.white)
     }
     
+    private var hoursInformationAccordion: some View {
+        VStack(alignment: .leading) {
+            currentOpenStatus
+                .onTapGesture {
+                    withAnimation(.easeIn) {
+                        showFullHours.toggle()
+                    }
+                }
+            if showFullHours {
+                Divider()
+                    .foregroundStyle(Color.primary)
+                openCloseTimes
+            }
+        }
+        .padding(25)
+        .frame(maxWidth: .infinity)
+        
+        .background {
+            RoundedRectangle(cornerRadius: 7)
+                .fill(Material.ultraThin)
+        }
+        .padding(.horizontal, 20)
+        .overlay {
+            if viewModel.dataIsLoading {
+                loadingCover
+            }
+        }
+    }
+    
     private var showMenuButton: some View {
         VStack(spacing: 7) {
             Image(systemName: "chevron.up")
@@ -113,7 +117,7 @@ extension BeastroHomeView {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text(vm.openStatusText)
+                    Text(viewModel.openStatusText)
                     Circle()
                         .frame(height: 7)
                         .foregroundStyle(getColorStatus())
@@ -133,7 +137,7 @@ extension BeastroHomeView {
     
     private var openCloseTimes: some View {
         VStack(spacing: 10) {
-            ForEach(vm.operatingHours, id: \.self) { day in
+            ForEach(viewModel.operatingHours, id: \.self) { day in
                 HStack(alignment: .top) {
                     Text(day.dayOfWeek)
                     Spacer()
@@ -145,19 +149,19 @@ extension BeastroHomeView {
                         HStack(alignment: .top) {
                             VStack {
                                 ForEach(day.openingTimes, id: \.self) { time in
-                                    Text("\(vm.dateAndTimeService.makeTimeReadable(input: time)) -")
+                                    Text("\(viewModel.dateAndTimeService.makeTimeReadable(input: time)) -")
                                 }
                             }
                             
                             VStack {
                                 ForEach(day.closingTimes, id: \.self) { time in
-                                    Text(vm.dateAndTimeService.makeTimeReadable(input: time))
+                                    Text(viewModel.dateAndTimeService.makeTimeReadable(input: time))
                                 }
                             }
                         }
                     }
                 }
-                .fontWeight(vm.currentDay == day.dayOfWeek ? .bold : .regular)
+                .fontWeight(viewModel.currentDay == day.dayOfWeek ? .bold : .regular)
             }
         }
     }
@@ -177,9 +181,9 @@ extension BeastroHomeView {
     }
     
     private func getColorStatus() -> Color {
-        if vm.openStatusLight == .red {
+        if viewModel.openStatusLight == .red {
             return Color.red
-        } else if vm.openStatusLight == .yellow {
+        } else if viewModel.openStatusLight == .yellow {
             return Color.yellow
         } else {
             return Color.green
