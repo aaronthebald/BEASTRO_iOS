@@ -27,6 +27,7 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
     
+    @Published var businessName: String = ""
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
     @Published var openStatusLight: IndicatorLights = .red
@@ -60,9 +61,10 @@ class BeastroHomeViewModel: ObservableObject {
 //    Make network call to receive JSON data using the NetworkingService class
     func fetchBusinessHours() async {
         do {
-            let hours = try await networkingService.fetchBusinessHours()
+            let hoursResponse = try await networkingService.fetchBusinessHours()
             await MainActor.run {
-                returnedHours = hours
+                returnedHours = hoursResponse.hours
+                businessName = hoursResponse.locationName
                 dataIsLoading = false
             }
         } catch  {

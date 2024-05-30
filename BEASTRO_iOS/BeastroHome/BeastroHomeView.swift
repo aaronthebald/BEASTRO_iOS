@@ -65,9 +65,7 @@ struct BeastroHomeView: View {
 extension BeastroHomeView {
     private var homePageTitle: some View {
         VStack(alignment: .leading) {
-            Text("BEASTRO by")
-            Text("Marshawn")
-            Text("Lynch")
+            Text(viewModel.businessName)
         }
         .padding(.leading)
         .font(.largeTitle)

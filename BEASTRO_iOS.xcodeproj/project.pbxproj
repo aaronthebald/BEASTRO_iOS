@@ -121,7 +121,7 @@
 				02478B072C09141C00374B11 /* Models */,
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
 				02B5BA612C038B17000CF54D /* BeastroHome */,
-				02B5BA602C038AE5000CF54D /* ServicesAndModels */,
+				02B5BA602C038AE5000CF54D /* Services */,
 				029843DA2C02B0130000BF0A /* Assets.xcassets */,
 				029843DC2C02B0130000BF0A /* Preview Content */,
 				02478B052C07524800374B11 /* TestData.json */,
@@ -154,13 +154,13 @@
 			path = BEASTRO_iOSUITests;
 			sourceTree = "<group>";
 		};
-		02B5BA602C038AE5000CF54D /* ServicesAndModels */ = {
+		02B5BA602C038AE5000CF54D /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				029844022C0379430000BF0A /* NetworkingService.swift */,
 				0202B84F2C03A11800B5F00D /* DateAndTimeService.swift */,
 			);
-			path = ServicesAndModels;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		02B5BA612C038B17000CF54D /* BeastroHome */ = {

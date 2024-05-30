@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkingServiceProtocol {
-    func fetchBusinessHours() async throws -> [OpenPeriod]
+    func fetchBusinessHours() async throws -> HoursResponse
 }
 
 class NetworkingService: NetworkingServiceProtocol {
@@ -21,7 +21,7 @@ class NetworkingService: NetworkingServiceProtocol {
         case badResponse
     }
     
-    func fetchBusinessHours() async throws -> [OpenPeriod] {
+    func fetchBusinessHours() async throws -> HoursResponse {
         guard let url = URL(string: urlString) else {
             let error = URLError.invalidURL
             throw error
@@ -32,7 +32,7 @@ class NetworkingService: NetworkingServiceProtocol {
                 throw URLError.badResponse
             }
             let hoursResponse = try jsonDecoder.decode(HoursResponse.self, from: data)
-            return hoursResponse.hours
+            return hoursResponse
         } catch {
             throw error
         }
