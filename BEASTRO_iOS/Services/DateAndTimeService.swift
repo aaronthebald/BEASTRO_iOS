@@ -39,7 +39,6 @@ final class DateAndTimeService {
             if timeString == "24:00:00" ||  timeString == "23:59:59" {
                 timeString = "00:00:00"
             }
-            print(timeString)
             return timeString
         } else {
             // Return nil if the input string could not be parsed into a Date

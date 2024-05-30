@@ -186,13 +186,12 @@ final class BeastroHomeViewModel: ObservableObject {
             }
             if span.contains(now) {
                 if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
-                    print(dates.0, nextOpenTime.1)
                     return (dates.0, nextOpenTime.1)
                     
                 } else {
                     return dates
                 }
-                            }
+            }
         }
         guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
             print("The getSpan function is broken")
@@ -216,7 +215,7 @@ final class BeastroHomeViewModel: ObservableObject {
     }
     
     
-    func convertArraysIntoTuplesOfDates(array1: [Date], array2: [Date]) -> [(Date, Date)] {
+   private func convertArraysIntoTuplesOfDates(array1: [Date], array2: [Date]) -> [(Date, Date)] {
         let count = min(array1.count, array2.count)
         var pairedArray: [(Date, Date)] = []
         
