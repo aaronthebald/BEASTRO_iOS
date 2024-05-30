@@ -23,36 +23,15 @@ struct BeastroHomeView: View {
                 }
                 VStack(alignment: .leading) {
                     currentOpenStatus
+                        .onTapGesture {
+                            withAnimation(.easeIn) {
+                                showFullHours.toggle()
+                            }
+                        }
                     if showFullHours {
                         Divider()
                             .foregroundStyle(Color.primary)
-                        VStack(spacing: 10) {
-                            ForEach(vm.operatingHours, id: \.self) { day in
-                                HStack(alignment: .top) {
-                                    Text(day.dayOfWeek)
-                                    Spacer()
-                                    if day.openingTimes == [] || day.closingTimes == [] {
-                                        Text("Closed")
-                                    } else if day.closingTimes.contains("24:00:00") && day.openingTimes.contains("00:00:00") {
-                                        Text("Open 24 hours")
-                                    } else {
-                                        HStack(alignment: .top) {
-                                            VStack {
-                                                ForEach(day.openingTimes, id: \.self) { time in
-                                                    Text("\(vm.dateAndTimeService.makeTimeReadable(input: time)) -")
-                                                }
-                                            }
-                                            
-                                            VStack {
-                                                ForEach(day.closingTimes, id: \.self) { time in
-                                                    Text(vm.dateAndTimeService.makeTimeReadable(input: time))
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        openCloseTimes
                     }
                 }
                 .padding(25)
@@ -138,13 +117,40 @@ extension BeastroHomeView {
                     .foregroundStyle(Color.secondary)
             }
             Spacer()
-            Button {
-                withAnimation(.easeIn) {
-                    showFullHours.toggle()
+            Image(systemName: "chevron.right")
+                .foregroundStyle(Color.primary)
+                .rotationEffect(.degrees(showFullHours ? -90 : 0)) // Rotate 90 degrees if showFullHours is true
+        }
+        .contentShape(Rectangle().inset(by: -25)) // Increase the tappable area by 25 points on all sides
+
+    }
+    
+    private var openCloseTimes: some View {
+        VStack(spacing: 10) {
+            ForEach(vm.operatingHours, id: \.self) { day in
+                HStack(alignment: .top) {
+                    Text(day.dayOfWeek)
+                    Spacer()
+                    if day.openingTimes == [] || day.closingTimes == [] {
+                        Text("Closed")
+                    } else if day.closingTimes.contains("24:00:00") && day.openingTimes.contains("00:00:00") {
+                        Text("Open 24 hours")
+                    } else {
+                        HStack(alignment: .top) {
+                            VStack {
+                                ForEach(day.openingTimes, id: \.self) { time in
+                                    Text("\(vm.dateAndTimeService.makeTimeReadable(input: time)) -")
+                                }
+                            }
+                            
+                            VStack {
+                                ForEach(day.closingTimes, id: \.self) { time in
+                                    Text(vm.dateAndTimeService.makeTimeReadable(input: time))
+                                }
+                            }
+                        }
+                    }
                 }
-            } label: {
-                Image(systemName: showFullHours ? "chevron.up" : "chevron.right")
-                    .foregroundStyle(Color.primary)
             }
         }
     }
