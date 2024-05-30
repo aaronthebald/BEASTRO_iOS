@@ -43,7 +43,7 @@ struct BeastroHomeView: View {
             })
             .task {
                 await viewModel.fetchBusinessHours()
-                viewModel.consolidateReturnedDays()
+                viewModel.consolidateReturnedOpenPeriodsFromAPI()
             }
             .alert("Uh Oh", isPresented: $viewModel.showAlert) {
                 Button {

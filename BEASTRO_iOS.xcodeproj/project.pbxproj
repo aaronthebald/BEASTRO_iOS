@@ -81,6 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02478B072C09141C00374B11 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				029844042C037A350000BF0A /* HoursResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		029843CA2C02B0110000BF0A = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +112,7 @@
 		029843D52C02B0110000BF0A /* BEASTRO_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				02478B072C09141C00374B11 /* Models */,
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
 				02B5BA612C038B17000CF54D /* BeastroHome */,
 				02B5BA602C038AE5000CF54D /* ServicesAndModels */,
@@ -142,7 +151,6 @@
 		02B5BA602C038AE5000CF54D /* ServicesAndModels */ = {
 			isa = PBXGroup;
 			children = (
-				029844042C037A350000BF0A /* HoursResponse.swift */,
 				029844022C0379430000BF0A /* NetworkingService.swift */,
 				0202B84F2C03A11800B5F00D /* DateAndTimeService.swift */,
 			);

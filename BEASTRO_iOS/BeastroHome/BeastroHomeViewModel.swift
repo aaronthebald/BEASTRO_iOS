@@ -42,20 +42,20 @@ class BeastroHomeViewModel: ObservableObject {
 
     let dateAndTimeService = DateAndTimeService()
     
-    var formattedDaysTimes: [DayWithAbbreviations] = []
-    var returnedHours: [Hour] = []
+    private var formattedDaysTimes: [DayWithParsableDates] = []
+    private var returnedHours: [Hour] = []
     
-    var networkingService: NetworkingServiceProtocol
+    private var networkingService: NetworkingServiceProtocol
     
     //    Creating an array of Days of the week to iterate through and assign values to start and end times
-    var daysOfTheWeek = [
-        DayWithAbbreviations(weekday: "Monday", abv: "MON", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Wednesday", abv: "WED", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Thursday", abv: "THU", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Friday", abv: "FRI", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
-        DayWithAbbreviations(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
+   private var daysOfTheWeek = [
+        DayWithParsableDates(weekday: "Monday", abv: "MON", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Wednesday", abv: "WED", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Thursday", abv: "THU", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Friday", abv: "FRI", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithParsableDates(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
     ]
 //    Make network call to receive JSON data using the NetworkingService class
     func fetchBusinessHours() async {
@@ -79,8 +79,8 @@ class BeastroHomeViewModel: ObservableObject {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
     
-    func consolidateReturnedDays() {
-        var newArray: [DayWithAbbreviations] = []
+    func consolidateReturnedOpenPeriodsFromAPI() {
+        var newArray: [DayWithParsableDates] = []
         
         for day in daysOfTheWeek {
             let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
@@ -93,7 +93,7 @@ class BeastroHomeViewModel: ObservableObject {
             let operatingHour = OperatingHours(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
             operatingHours.append(operatingHour)
             
-            let formattedDay = DayWithAbbreviations(
+            let formattedDay = DayWithParsableDates(
                 weekday: day.weekday,
                 abv: day.abv,
                 startTimes: openingTimes,
@@ -305,7 +305,7 @@ class BeastroHomeViewModel: ObservableObject {
     }
 }
 
-struct DayWithAbbreviations: Hashable {
+struct DayWithParsableDates: Hashable {
     let weekday: String
     let abv: String
     let startTimes: [String]
