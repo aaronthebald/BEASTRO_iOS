@@ -34,7 +34,7 @@ class BeastroHomeViewModel: ObservableObject {
     
     //    Creating an array of Days of the week to iterate through and assign values to start and end times
     var daysOfTheWeek = [
-        DayWithAbbreviations(weekday: "Monday", abv: "Mon", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
+        DayWithAbbreviations(weekday: "Monday", abv: "MON", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Wednesday", abv: "WED", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithAbbreviations(weekday: "Thursday", abv: "THU", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
@@ -233,27 +233,56 @@ class BeastroHomeViewModel: ObservableObject {
         }
         operatingHours = sortedArray
         
-        for i in 0..<operatingHours.count - 1 {
+        for i in stride(from: 0, to: operatingHours.count - 1, by: 1) {
             let day1 = operatingHours[i]
             let day2 = operatingHours[i + 1]
             
             if day1.closingTimes.contains("24:00:00") && day2.openingTimes.contains("00:00:00") {
                 var newClosingTimesDay1 = day1.closingTimes
-                newClosingTimesDay1.removeLast()
-                newClosingTimesDay1.append(day2.closingTimes.first!)
-                
+                // Assuming closingTimes is an array of strings
+                if let lastClosingTimeIndex = newClosingTimesDay1.lastIndex(of: "24:00:00") {
+                    newClosingTimesDay1[lastClosingTimeIndex] = day2.closingTimes.first!
+                }
+
                 let newDay1 = OperatingHours(dayOfWeek: day1.dayOfWeek, openingTimes: day1.openingTimes, closingTimes: newClosingTimesDay1)
                 
                 var newOpeningTimesDay2 = day2.openingTimes
                 newOpeningTimesDay2.removeFirst()
+                
                 var newClosingTimesDay2 = day2.closingTimes
                 newClosingTimesDay2.removeFirst()
                 
                 let newDay2 = OperatingHours(dayOfWeek: day2.dayOfWeek, openingTimes: newOpeningTimesDay2, closingTimes: newClosingTimesDay2)
-                guard let indexDay1 = operatingHours.firstIndex(where: {$0.dayOfWeek == newDay1.dayOfWeek}) else { return }
-                guard let indexDay2 = operatingHours.firstIndex(where: {$0.dayOfWeek == newDay2.dayOfWeek}) else { return }
-                operatingHours[indexDay1] = newDay1
-                operatingHours[indexDay2] = newDay2
+                
+                operatingHours[i] = newDay1
+                operatingHours[i + 1] = newDay2
+            }
+        }
+
+        // Compare the last object to the first object: "Sunday to Monday
+        if let firstDay = operatingHours.first, let lastDay = operatingHours.last {
+            if lastDay.closingTimes.contains("24:00:00") && firstDay.openingTimes.contains("00:00:00") {
+                var newClosingTimesLastDay = lastDay.closingTimes
+                // Assuming closingTimes is an array of strings
+                if let lastClosingTimeIndex = newClosingTimesLastDay.lastIndex(of: "24:00:00") {
+                    newClosingTimesLastDay[lastClosingTimeIndex] = firstDay.closingTimes.first!
+                }
+
+                let newLastDay = OperatingHours(dayOfWeek: lastDay.dayOfWeek, openingTimes: lastDay.openingTimes, closingTimes: newClosingTimesLastDay)
+                
+                var newOpeningTimesFirstDay = firstDay.openingTimes
+                newOpeningTimesFirstDay.removeFirst()
+                
+                var newClosingTimesFirstDay = firstDay.closingTimes
+                newClosingTimesFirstDay.removeFirst()
+                
+                let newFirstDay = OperatingHours(dayOfWeek: firstDay.dayOfWeek, openingTimes: newOpeningTimesFirstDay, closingTimes: newClosingTimesFirstDay)
+                
+                if let firstDayIndex = operatingHours.firstIndex(where: { $0.dayOfWeek == newFirstDay.dayOfWeek }),
+                   let lastDayIndex = operatingHours.firstIndex(where: { $0.dayOfWeek == newLastDay.dayOfWeek }) {
+                    operatingHours[firstDayIndex] = newFirstDay
+                    operatingHours[lastDayIndex] = newLastDay
+                }
             }
         }
     }
