@@ -67,57 +67,35 @@ class BeastroHomeViewModel: ObservableObject {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
     
-    //   This function creates a tuple containing the Dates of an opening and closing time.
-    func getSpan(getNextOpenTime: Bool) -> (Date, Date)? {
-        let now = Date()
-        var pairsOfDates: [(Date, Date)] = []
-        for day in formattedDaysTimes {
-            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
-            for dates in pairedDates {
-                pairsOfDates.append(dates)
-            }
+    func consolidateReturnedDays() {
+        var newArray: [DayWithAbbreviations] = []
+        
+        for day in daysOfTheWeek {
+            let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
+            let openingTimes = filteredHours.map { $0.startLocalTime }
+            let closingTimes = filteredHours.map { $0.endLocalTime }
+            let dayOfTheWeek = dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday)
+            let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: openingTimes, closingTime: false)
+            let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: closingTimes, closingTime: true)
+            
+            let operatingHour = OperatingHours(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
+            operatingHours.append(operatingHour)
+            
+            let formattedDay = DayWithAbbreviations(
+                weekday: day.weekday,
+                abv: day.abv,
+                startTimes: openingTimes,
+                endTimes: closingTimes,
+                startTimeInDateFormat: startTimesInDateFormat,
+                endTimeInDateFormat: endTimesInDateFormat
+            )
+            
+            newArray.append(formattedDay)
         }
         
-        let sortedByFirstDate = pairsOfDates.sorted { $0.0 < $1.0 }
-        for dates in sortedByFirstDate {
-            let span = dates.0...dates.1
-            guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
-                print("The getSpan function is broken")
-                return nil
-            }
-            if getNextOpenTime {
-                print("getNextOpenTime block ran")
-                return nextOpenTime
-            }
-            if span.contains(now) {
-                if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
-                    print(dates.0, nextOpenTime.1)
-                    return (dates.0, nextOpenTime.1)
-                    
-                } else {
-                    return dates
-                }
-                            }
-        }
-        guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
-            print("The getSpan function is broken")
-            return nil
-        }
-        return nextOpenTime
-    }
-    
-//    This function if used to determine if the restaurant is open past midnight
-    func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
-        let newFormatter = DateFormatter()
-        newFormatter.dateFormat = "HH:mm:ss"
-        
-        let closingTimeString = newFormatter.string(from: pair1.1)
-        let openingTimeString = newFormatter.string(from: pair2.0)
-        if closingTimeString.contains("24:00:00") || closingTimeString.contains("23:59:59") && openingTimeString.contains("00:00:00") {
-            return true
-        } else {
-            return false
-        }
+        formattedDaysTimes = newArray
+        formatMainText()
+        sortOpeningTimes()
     }
     
     func formatMainText() {
@@ -187,6 +165,60 @@ class BeastroHomeViewModel: ObservableObject {
         }
     }
     
+    //   This function creates a tuple containing the Dates of an opening and closing time.
+    func getSpan(getNextOpenTime: Bool) -> (Date, Date)? {
+        let now = Date()
+        var pairsOfDates: [(Date, Date)] = []
+        for day in formattedDaysTimes {
+            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
+            for dates in pairedDates {
+                pairsOfDates.append(dates)
+            }
+        }
+        
+        let sortedByFirstDate = pairsOfDates.sorted { $0.0 < $1.0 }
+        for dates in sortedByFirstDate {
+            let span = dates.0...dates.1
+            guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+                print("The getSpan function is broken")
+                return nil
+            }
+            if getNextOpenTime {
+                print("getNextOpenTime block ran")
+                return nextOpenTime
+            }
+            if span.contains(now) {
+                if isTheClosingTimePastMidnight(pair1: dates, pair2: nextOpenTime) {
+                    print(dates.0, nextOpenTime.1)
+                    return (dates.0, nextOpenTime.1)
+                    
+                } else {
+                    return dates
+                }
+                            }
+        }
+        guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
+            print("The getSpan function is broken")
+            return nil
+        }
+        return nextOpenTime
+    }
+    
+//    This function if used to determine if the restaurant is open past midnight
+    func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
+        let newFormatter = DateFormatter()
+        newFormatter.dateFormat = "HH:mm:ss"
+        
+        let closingTimeString = newFormatter.string(from: pair1.1)
+        let openingTimeString = newFormatter.string(from: pair2.0)
+        if closingTimeString.contains("24:00:00") || closingTimeString.contains("23:59:59") && openingTimeString.contains("00:00:00") {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    
     func pairArrays(array1: [Date], array2: [Date]) -> [(Date, Date)] {
         let count = min(array1.count, array2.count)
         var pairedArray: [(Date, Date)] = []
@@ -195,37 +227,6 @@ class BeastroHomeViewModel: ObservableObject {
             pairedArray.append((array1[i], array2[i]))
         }
         return pairedArray
-    }
-    
-    func consolidateReturnedDays() {
-        var newArray: [DayWithAbbreviations] = []
-        
-        for day in daysOfTheWeek {
-            let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
-            let openingTimes = filteredHours.map { $0.startLocalTime }
-            let closingTimes = filteredHours.map { $0.endLocalTime }
-            let dayOfTheWeek = dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday)
-            let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: openingTimes, closingTime: false)
-            let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: closingTimes, closingTime: true)
-            
-            let operatingHour = OperatingHours(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
-            operatingHours.append(operatingHour)
-            
-            let formattedDay = DayWithAbbreviations(
-                weekday: day.weekday,
-                abv: day.abv,
-                startTimes: openingTimes,
-                endTimes: closingTimes,
-                startTimeInDateFormat: startTimesInDateFormat,
-                endTimeInDateFormat: endTimesInDateFormat
-            )
-            
-            newArray.append(formattedDay)
-        }
-        
-        formattedDaysTimes = newArray
-        formatMainText()
-        sortOpeningTimes()
     }
     
     func sortOpeningTimes() {
