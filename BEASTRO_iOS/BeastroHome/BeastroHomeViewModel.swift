@@ -31,7 +31,7 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var openStatusLight: IndicatorLights = .red
     @Published var openStatusText: String = ""
-    @Published var operatingHours: [OperatingHours] = []
+    @Published var operatingHours: [OperatingHoursForWeekDay] = []
     @Published var dataIsLoading: Bool = true
     @Published var currentDay: String = ""
     
@@ -90,7 +90,7 @@ class BeastroHomeViewModel: ObservableObject {
             let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: openingTimes, closingTime: false)
             let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: closingTimes, closingTime: true)
             
-            let operatingHour = OperatingHours(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
+            let operatingHour = OperatingHoursForWeekDay(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
             operatingHours.append(operatingHour)
             
             let formattedDay = DayWithParsableDates(
@@ -242,11 +242,11 @@ class BeastroHomeViewModel: ObservableObject {
     }
     
     func sortOpeningTimes() {
-        var sortedArray: [OperatingHours] = []
+        var sortedArray: [OperatingHoursForWeekDay] = []
         for day in operatingHours {
             let  sortedOpenTimes = day.openingTimes.sorted { $0 < $1}
             let sortedClosingTimes = day.closingTimes.sorted { $0 < $1 }
-            let newOperatingHour = OperatingHours(dayOfWeek: day.dayOfWeek, openingTimes: sortedOpenTimes, closingTimes: sortedClosingTimes)
+            let newOperatingHour = OperatingHoursForWeekDay(dayOfWeek: day.dayOfWeek, openingTimes: sortedOpenTimes, closingTimes: sortedClosingTimes)
             sortedArray.append(newOperatingHour)
             
         }
@@ -261,7 +261,7 @@ class BeastroHomeViewModel: ObservableObject {
                     newClosingTimesDay1[lastClosingTimeIndex] = day2.closingTimes.first!
                 }
                 
-                let newDay1 = OperatingHours(dayOfWeek: day1.dayOfWeek, openingTimes: day1.openingTimes, closingTimes: newClosingTimesDay1)
+                let newDay1 = OperatingHoursForWeekDay(dayOfWeek: day1.dayOfWeek, openingTimes: day1.openingTimes, closingTimes: newClosingTimesDay1)
                 
                 var newOpeningTimesDay2 = day2.openingTimes
                 newOpeningTimesDay2.removeFirst()
@@ -269,7 +269,7 @@ class BeastroHomeViewModel: ObservableObject {
                 var newClosingTimesDay2 = day2.closingTimes
                 newClosingTimesDay2.removeFirst()
                 
-                let newDay2 = OperatingHours(dayOfWeek: day2.dayOfWeek, openingTimes: newOpeningTimesDay2, closingTimes: newClosingTimesDay2)
+                let newDay2 = OperatingHoursForWeekDay(dayOfWeek: day2.dayOfWeek, openingTimes: newOpeningTimesDay2, closingTimes: newClosingTimesDay2)
                 
                 operatingHours[i] = newDay1
                 operatingHours[i + 1] = newDay2
@@ -285,7 +285,7 @@ class BeastroHomeViewModel: ObservableObject {
                     newClosingTimesLastDay[lastClosingTimeIndex] = firstDay.closingTimes.first!
                 }
                 
-                let newLastDay = OperatingHours(dayOfWeek: lastDay.dayOfWeek, openingTimes: lastDay.openingTimes, closingTimes: newClosingTimesLastDay)
+                let newLastDay = OperatingHoursForWeekDay(dayOfWeek: lastDay.dayOfWeek, openingTimes: lastDay.openingTimes, closingTimes: newClosingTimesLastDay)
                 
                 var newOpeningTimesFirstDay = firstDay.openingTimes
                 newOpeningTimesFirstDay.removeFirst()
@@ -293,7 +293,7 @@ class BeastroHomeViewModel: ObservableObject {
                 var newClosingTimesFirstDay = firstDay.closingTimes
                 newClosingTimesFirstDay.removeFirst()
                 
-                let newFirstDay = OperatingHours(dayOfWeek: firstDay.dayOfWeek, openingTimes: newOpeningTimesFirstDay, closingTimes: newClosingTimesFirstDay)
+                let newFirstDay = OperatingHoursForWeekDay(dayOfWeek: firstDay.dayOfWeek, openingTimes: newOpeningTimesFirstDay, closingTimes: newClosingTimesFirstDay)
                 
                 if let firstDayIndex = operatingHours.firstIndex(where: { $0.dayOfWeek == newFirstDay.dayOfWeek }),
                    let lastDayIndex = operatingHours.firstIndex(where: { $0.dayOfWeek == newLastDay.dayOfWeek }) {
@@ -305,17 +305,6 @@ class BeastroHomeViewModel: ObservableObject {
     }
 }
 
-struct DayWithParsableDates: Hashable {
-    let weekday: String
-    let abv: String
-    let startTimes: [String]
-    let endTimes: [String]
-    let startTimeInDateFormat: [Date]
-    let endTimeInDateFormat: [Date]
-}
 
-struct OperatingHours: Hashable {
-    let dayOfWeek: String
-    let openingTimes: [String]
-    let closingTimes: [String]
-}
+
+
