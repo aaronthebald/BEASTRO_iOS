@@ -36,11 +36,17 @@ struct BeastroHomeView: View {
                 }
                 .padding(25)
                 .frame(maxWidth: .infinity)
+                
                 .background {
                     RoundedRectangle(cornerRadius: 7)
                         .fill(Material.ultraThin)
                 }
                 .padding(.horizontal, 20)
+                .overlay {
+                    if vm.dataIsLoading {
+                        loadingCover
+                    }
+                }
                 Spacer()
                 Button {
                     showMenu = true
@@ -153,6 +159,20 @@ extension BeastroHomeView {
                 }
             }
         }
+    }
+    
+    
+    private var loadingCover: some View {
+        ProgressView()
+            .frame(maxWidth: .infinity)
+            .frame(height: 95)
+            .background {
+                RoundedRectangle(cornerRadius: 7)
+                    .fill(Material.ultraThin).opacity(0.85)
+                    .padding(.horizontal, 20)
+                
+            }
+        
     }
     
     private func getColorStatus() -> Color {

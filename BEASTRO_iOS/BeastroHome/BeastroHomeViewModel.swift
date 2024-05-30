@@ -16,6 +16,7 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var openStatusLight: IndicatorLights = .red
     @Published var openStatusText: String = ""
     @Published var operatingHours: [OperatingHours] = []
+    @Published var dataIsLoading: Bool = true
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
@@ -48,9 +49,11 @@ class BeastroHomeViewModel: ObservableObject {
             let hours = try await networkingService.fetchBusinessHours()
             await MainActor.run {
                 returnedHours = hours
+                dataIsLoading = false
             }
         } catch  {
             await MainActor.run {
+                dataIsLoading = false
                 showAlert = true
                 errorMessage = error.localizedDescription
             }
