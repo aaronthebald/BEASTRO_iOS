@@ -55,6 +55,7 @@ final class BeastroHomeViewModel: ObservableObject {
                 dataIsLoading = false
                 showAlert = true
                 errorMessage = error.localizedDescription
+                openStatusText = "Restaurant hours failed to load"
             }
         }
     }
