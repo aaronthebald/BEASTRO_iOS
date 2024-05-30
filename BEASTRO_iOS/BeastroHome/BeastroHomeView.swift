@@ -21,8 +21,11 @@ struct BeastroHomeView: View {
                     homePageTitle
                     Spacer()
                 }
+                
                 hoursInformationAccordion
+                
                 Spacer()
+                
                 Button {
                     showMenu = true
                 } label: {
@@ -30,7 +33,7 @@ struct BeastroHomeView: View {
                 }
             }
             .background {
-                Image("HomeScreenImage_Local")
+                Image(.homeScreenImageLocal)
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea(.all)
@@ -116,23 +119,28 @@ extension BeastroHomeView {
     private var currentOpenStatus: some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
+                
                 HStack {
                     Text(viewModel.openStatusText)
+                    
                     Circle()
                         .frame(height: 7)
-                        .foregroundStyle(getColorStatus())
+                        .foregroundStyle(viewModel.openStatusLight.color)
                 }
+                
                 Text("SEE FULL HOURS")
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
             }
+            
             Spacer()
+            
             Image(systemName: "chevron.right")
                 .foregroundStyle(Color.primary)
                 .rotationEffect(.degrees(showFullHours ? -90 : 0)) // Rotate 90 degrees if showFullHours is true
         }
         .contentShape(Rectangle().inset(by: -25)) // Increase the tappable area by 25 points on all sides
-
+        
     }
     
     private var openCloseTimes: some View {
@@ -140,7 +148,9 @@ extension BeastroHomeView {
             ForEach(viewModel.operatingHours, id: \.self) { day in
                 HStack(alignment: .top) {
                     Text(day.dayOfWeek)
+                    
                     Spacer()
+                    
                     if day.openingTimes == [] || day.closingTimes == [] {
                         Text("Closed")
                     } else if day.closingTimes.contains("24:00:00") && day.openingTimes.contains("00:00:00") {
@@ -177,16 +187,5 @@ extension BeastroHomeView {
                     .padding(.horizontal, 20)
                 
             }
-        
-    }
-    
-    private func getColorStatus() -> Color {
-        if viewModel.openStatusLight == .red {
-            return Color.red
-        } else if viewModel.openStatusLight == .yellow {
-            return Color.yellow
-        } else {
-            return Color.green
-        }
     }
 }

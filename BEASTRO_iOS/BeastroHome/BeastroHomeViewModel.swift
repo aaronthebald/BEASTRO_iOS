@@ -6,8 +6,26 @@
 //
 
 import Foundation
+import SwiftUI
 
 class BeastroHomeViewModel: ObservableObject {
+    
+    enum IndicatorLights {
+        case red
+        case yellow
+        case green
+        
+        var color: Color {
+            switch self {
+            case .red:
+                return Color.red
+            case .yellow:
+                return Color.yellow
+            case .green:
+                return Color.green
+            }
+        }
+    }
     
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
@@ -20,12 +38,6 @@ class BeastroHomeViewModel: ObservableObject {
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
         getCurrentDayOfTheWeek()
-    }
-    
-    enum IndicatorLights {
-        case red
-        case yellow
-        case green
     }
 
     let dateAndTimeService = DateAndTimeService()
