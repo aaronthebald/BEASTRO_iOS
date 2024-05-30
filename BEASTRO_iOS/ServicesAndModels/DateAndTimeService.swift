@@ -22,42 +22,6 @@ class DateAndTimeService {
         return dayOfWeekString
     }
     
-    func dateFrom(weekday: String, time: String) -> Date? {
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"  // Updated to match the time format "07:00:00"
-            guard let timeDate = formatter.date(from: time) else {
-                print("Invalid time format")
-                return nil
-            }
-            
-            let calendar = Calendar.current
-            let weekdaySymbols = calendar.weekdaySymbols.map { $0.lowercased() }
-            
-            guard let weekdayIndex = weekdaySymbols.firstIndex(of: weekday.lowercased()) else {
-                print("Invalid weekday")
-                return nil
-            }
-            
-            let today = Date()
-            let todayWeekday = calendar.component(.weekday, from: today)
-            
-            var daysToAdd = (weekdayIndex + 1) - todayWeekday
-            if daysToAdd < 0 {
-                daysToAdd += 7
-            }
-            
-            guard let nextWeekdayDate = calendar.date(byAdding: .day, value: daysToAdd, to: today) else {
-                return nil
-            }
-            
-            let timeComponents = calendar.dateComponents([.hour, .minute, .second], from: timeDate)
-            var finalDateComponents = calendar.dateComponents([.year, .month, .day], from: nextWeekdayDate)
-            finalDateComponents.hour = timeComponents.hour
-            finalDateComponents.minute = timeComponents.minute
-            finalDateComponents.second = timeComponents.second
-            
-            return calendar.date(from: finalDateComponents)
-        }
-    
     func formatTime(from dateString: String, getWeekDay: Bool) -> String? {
         // Define the input date format including the timezone offset
         let inputDateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -71,7 +35,10 @@ class DateAndTimeService {
             let outputTimeFormat = getWeekDay ? "EEEE" : "HH:mm:ss"
             dateFormatter.dateFormat = outputTimeFormat
             // Format the Date object into the desired time string
-            let timeString = dateFormatter.string(from: date)
+            var timeString = dateFormatter.string(from: date)
+            if timeString == "24:00:00" ||  timeString == "23:59:59" {
+                timeString = "00:00:00"
+            }
             print(timeString)
             return timeString
         } else {
