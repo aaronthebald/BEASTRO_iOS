@@ -157,6 +157,7 @@ extension BeastroHomeView {
                         }
                     }
                 }
+                .fontWeight(vm.currentDay == day.dayOfWeek ? .bold : .regular)
             }
         }
     }

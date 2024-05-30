@@ -17,9 +17,11 @@ class BeastroHomeViewModel: ObservableObject {
     @Published var openStatusText: String = ""
     @Published var operatingHours: [OperatingHours] = []
     @Published var dataIsLoading: Bool = true
+    @Published var currentDay: String = ""
     
     init(networkingService: NetworkingServiceProtocol) {
         self.networkingService = networkingService
+        getCurrentDayOfTheWeek()
     }
     
     enum IndicatorLights {
@@ -58,6 +60,10 @@ class BeastroHomeViewModel: ObservableObject {
                 errorMessage = error.localizedDescription
             }
         }
+    }
+    
+    func getCurrentDayOfTheWeek() {
+        currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
     
     //   This function creates a tuple containing the Dates of an opening and closing time.

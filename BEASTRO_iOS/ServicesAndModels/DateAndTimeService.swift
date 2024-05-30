@@ -13,10 +13,16 @@ class DateAndTimeService {
     let timeReadableInputFormatter = DateFormatter()
     let dateFormatter = DateFormatter()
     let timeReadableOutputFormatter = DateFormatter()
+    let formatter = DateFormatter()
 
+    func getCurrentDayOfWeek() -> String {
+        let date = Date()
+        dateFormatter.dateFormat = "EEEE" // "EEEE" gives the full name of the day
+        let dayOfWeekString = dateFormatter.string(from: date)
+        return dayOfWeekString
+    }
     
     func dateFrom(weekday: String, time: String) -> Date? {
-            let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"  // Updated to match the time format "07:00:00"
             guard let timeDate = formatter.date(from: time) else {
                 print("Invalid time format")
