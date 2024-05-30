@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkingServiceProtocol {
-    func fetchBusinessHours() async throws -> [Hour]
+    func fetchBusinessHours() async throws -> [OpenPeriod]
 }
 
 class NetworkingService: NetworkingServiceProtocol {
@@ -21,7 +21,7 @@ class NetworkingService: NetworkingServiceProtocol {
         case badResponse
     }
     
-    func fetchBusinessHours() async throws -> [Hour] {
+    func fetchBusinessHours() async throws -> [OpenPeriod] {
         guard let url = URL(string: urlString) else {
             let error = URLError.invalidURL
             throw error

@@ -8,7 +8,7 @@
 import Foundation
 struct HoursResponse: Codable {
     let locationName: String
-    let hours: [Hour]
+    let hours: [OpenPeriod]
 
     enum CodingKeys: String, CodingKey {
         case locationName = "location_name"
@@ -16,7 +16,7 @@ struct HoursResponse: Codable {
     }
 }
 
-struct Hour: Codable, Identifiable {
+struct OpenPeriod: Codable, Identifiable {
     let dayOfWeek, startLocalTime, endLocalTime: String
     let id: String = UUID().uuidString
     enum CodingKeys: String, CodingKey {

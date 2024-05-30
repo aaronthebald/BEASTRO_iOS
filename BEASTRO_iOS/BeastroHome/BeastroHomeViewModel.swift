@@ -43,7 +43,7 @@ class BeastroHomeViewModel: ObservableObject {
     let dateAndTimeService = DateAndTimeService()
     
     private var formattedDaysTimes: [DayWithParsableDates] = []
-    private var returnedHours: [Hour] = []
+    private var returnedHours: [OpenPeriod] = []
     
     private var networkingService: NetworkingServiceProtocol
     
@@ -106,11 +106,11 @@ class BeastroHomeViewModel: ObservableObject {
         }
         
         formattedDaysTimes = newArray
-        formatMainText()
+        setAndFormatMainText()
         sortOpeningTimes()
     }
     
-    func formatMainText() {
+    func setAndFormatMainText() {
         let now = Date()
         guard let spanDate = getSpan(getNextOpenTime: false) else {
             print("There was a problem building the span")
@@ -118,8 +118,8 @@ class BeastroHomeViewModel: ObservableObject {
         }
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
-            let within1Hour = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-            if spanDate.1 < within1Hour {
+            let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+            if spanDate.1 < dateWithin1HourObject {
 //           OPEN BUT CLOSING WITHIN AN HOUR
                 openStatusLight = .yellow
 //              Get String for the time restaurant will be closing
