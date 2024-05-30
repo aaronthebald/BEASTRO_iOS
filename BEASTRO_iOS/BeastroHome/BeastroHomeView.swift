@@ -13,6 +13,7 @@ struct BeastroHomeView: View {
     @State private var showMenu: Bool = false
     @State private var showFullHours: Bool = false
     
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 50) {
@@ -26,30 +27,28 @@ struct BeastroHomeView: View {
                         Divider()
                             .foregroundStyle(Color.primary)
                         VStack(spacing: 10) {
-                            ForEach(vm.formattedDaysTimes, id: \.self) { day in
+                            ForEach(vm.operatingHours, id: \.self) { day in
                                 HStack(alignment: .top) {
-                                    Text(day.weekday)
+                                    Text(day.dayOfWeek)
                                     Spacer()
-                                    if day.startTimes == [] || day.endTimes == [] {
+                                    if day.openingTimes == [] || day.closingTimes == [] {
                                         Text("Closed")
-                                    } else if day.endTimes.contains("24:00:00") && day.startTimes.contains("00:00:00") {
+                                    } else if day.closingTimes.contains("24:00:00") && day.openingTimes.contains("00:00:00") {
                                         Text("Open 24 hours")
                                     } else {
                                         HStack(alignment: .top) {
                                             VStack {
-                                                ForEach(day.startTimes, id: \.self) { time in
+                                                ForEach(day.openingTimes, id: \.self) { time in
                                                     Text("\(vm.dateAndTimeService.makeTimeReadable(input: time)) -")
                                                 }
                                             }
                                             
                                             VStack {
-                                                ForEach(day.endTimes, id: \.self) { time in
+                                                ForEach(day.closingTimes, id: \.self) { time in
                                                     Text(vm.dateAndTimeService.makeTimeReadable(input: time))
                                                 }
                                             }
                                         }
-                                       
-
                                     }
                                 }
                             }
