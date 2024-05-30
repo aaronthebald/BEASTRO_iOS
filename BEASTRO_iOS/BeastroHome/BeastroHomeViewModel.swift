@@ -71,9 +71,11 @@ final class BeastroHomeViewModel: ObservableObject {
             let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
             let openingTimes = filteredHours.map { $0.startLocalTime }
             let closingTimes = filteredHours.map { $0.endLocalTime }
-            let dayOfTheWeek = dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday)
-            let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: openingTimes, closingTime: false)
-            let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek!, timeStrings: closingTimes, closingTime: true)
+            guard let dayOfTheWeek = dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday) else {
+                return
+            }
+            let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: openingTimes, closingTime: false)
+            let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: closingTimes, closingTime: true)
             
             let operatingHour = OperatingHoursForWeekDay(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
             operatingHours.append(operatingHour)
@@ -103,7 +105,9 @@ final class BeastroHomeViewModel: ObservableObject {
         }
         let span = spanDate.0...spanDate.1
         if span.contains(now) {
-            let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+            guard let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now) else {
+                return
+            }
             if spanDate.1 < dateWithin1HourObject {
 //           OPEN BUT CLOSING WITHIN AN HOUR
                 openStatusLight = .yellow
@@ -135,7 +139,9 @@ final class BeastroHomeViewModel: ObservableObject {
         }
 //      If the current date and time is not within a span, the restaurant is closed. That status will be handled here.
         else {
-            let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now)!
+            guard let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now) else {
+                return
+            }
 //          CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
             if within24Hours < spanDate.0 {
                 openStatusLight = .red
@@ -239,10 +245,13 @@ final class BeastroHomeViewModel: ObservableObject {
         for i in stride(from: 0, to: operatingHours.count - 1, by: 1) {
             let day1 = operatingHours[i]
             let day2 = operatingHours[i + 1]
-            if day1.closingTimes.contains("24:00:00") && day2.openingTimes.contains("00:00:00") && !day2.closingTimes.first!.contains("24:00:00") {
+            guard let firstItemInDay2ClosingTimes = day2.closingTimes.first else {
+                return
+            }
+            if day1.closingTimes.contains("24:00:00") && day2.openingTimes.contains("00:00:00") && !firstItemInDay2ClosingTimes.contains("24:00:00") {
                 var newClosingTimesDay1 = day1.closingTimes
                 if let lastClosingTimeIndex = newClosingTimesDay1.lastIndex(of: "24:00:00") {
-                    newClosingTimesDay1[lastClosingTimeIndex] = day2.closingTimes.first!
+                    newClosingTimesDay1[lastClosingTimeIndex] = firstItemInDay2ClosingTimes
                 }
                 
                 let newDay1 = OperatingHoursForWeekDay(dayOfWeek: day1.dayOfWeek, openingTimes: day1.openingTimes, closingTimes: newClosingTimesDay1)
@@ -264,9 +273,11 @@ final class BeastroHomeViewModel: ObservableObject {
         if let firstDay = operatingHours.first, let lastDay = operatingHours.last {
             if lastDay.closingTimes.contains("24:00:00") && firstDay.openingTimes.contains("00:00:00") {
                 var newClosingTimesLastDay = lastDay.closingTimes
-                // Assuming closingTimes is an array of strings
+                guard let firstItemInFirstDayClosingTimes = firstDay.closingTimes.first else {
+                    return
+                }
                 if let lastClosingTimeIndex = newClosingTimesLastDay.lastIndex(of: "24:00:00") {
-                    newClosingTimesLastDay[lastClosingTimeIndex] = firstDay.closingTimes.first!
+                    newClosingTimesLastDay[lastClosingTimeIndex] = firstItemInFirstDayClosingTimes
                 }
                 
                 let newLastDay = OperatingHoursForWeekDay(dayOfWeek: lastDay.dayOfWeek, openingTimes: lastDay.openingTimes, closingTimes: newClosingTimesLastDay)
