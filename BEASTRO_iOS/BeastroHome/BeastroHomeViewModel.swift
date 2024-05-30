@@ -8,25 +8,8 @@
 import Foundation
 import SwiftUI
 
-class BeastroHomeViewModel: ObservableObject {
-    
-    enum IndicatorLights {
-        case red
-        case yellow
-        case green
+final class BeastroHomeViewModel: ObservableObject {
         
-        var color: Color {
-            switch self {
-            case .red:
-                return Color.red
-            case .yellow:
-                return Color.yellow
-            case .green:
-                return Color.green
-            }
-        }
-    }
-    
     @Published var businessName: String = ""
     @Published var showAlert: Bool = false
     @Published var errorMessage: String = ""
@@ -77,7 +60,7 @@ class BeastroHomeViewModel: ObservableObject {
     }
     
 //    Function to get current date of the week. This is to allow the view to make the current date font weight .bold
-    func getCurrentDayOfTheWeek() {
+   private func getCurrentDayOfTheWeek() {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
     
@@ -109,10 +92,10 @@ class BeastroHomeViewModel: ObservableObject {
         
         formattedDaysTimes = newArray
         setAndFormatMainText()
-        sortOpeningTimes()
+        setAndSortOpeningAndClosingTimes()
     }
     
-    func setAndFormatMainText() {
+   private func setAndFormatMainText() {
         let now = Date()
         guard let spanDate = getSpan(getNextOpenTime: false) else {
             print("There was a problem building the span")
@@ -184,7 +167,7 @@ class BeastroHomeViewModel: ObservableObject {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
         for day in formattedDaysTimes {
-            let pairedDates: [(Date, Date)] = pairArrays(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
+            let pairedDates: [(Date, Date)] = convertArraysIntoTuplesOfDates(array1: day.startTimeInDateFormat, array2: day.endTimeInDateFormat)
             for dates in pairedDates {
                 pairsOfDates.append(dates)
             }
@@ -233,7 +216,7 @@ class BeastroHomeViewModel: ObservableObject {
     }
     
     
-    func pairArrays(array1: [Date], array2: [Date]) -> [(Date, Date)] {
+    func convertArraysIntoTuplesOfDates(array1: [Date], array2: [Date]) -> [(Date, Date)] {
         let count = min(array1.count, array2.count)
         var pairedArray: [(Date, Date)] = []
         
@@ -243,7 +226,7 @@ class BeastroHomeViewModel: ObservableObject {
         return pairedArray
     }
     
-    func sortOpeningTimes() {
+   private func setAndSortOpeningAndClosingTimes() {
         var sortedArray: [OperatingHoursForWeekDay] = []
         for day in operatingHours {
             let  sortedOpenTimes = day.openingTimes.sorted { $0 < $1}
@@ -302,6 +285,23 @@ class BeastroHomeViewModel: ObservableObject {
                     operatingHours[firstDayIndex] = newFirstDay
                     operatingHours[lastDayIndex] = newLastDay
                 }
+            }
+        }
+    }
+    
+    enum IndicatorLights {
+        case red
+        case yellow
+        case green
+        
+        var color: Color {
+            switch self {
+            case .red:
+                return Color.red
+            case .yellow:
+                return Color.yellow
+            case .green:
+                return Color.green
             }
         }
     }

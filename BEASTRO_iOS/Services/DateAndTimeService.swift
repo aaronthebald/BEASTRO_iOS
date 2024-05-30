@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DateAndTimeService {
+final class DateAndTimeService {
     
     let timeFormatter = DateFormatter()
     let timeReadableInputFormatter = DateFormatter()
