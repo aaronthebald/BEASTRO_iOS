@@ -101,7 +101,7 @@ final class BeastroHomeViewModel: ObservableObject {
         setAndSortOperatingHours()
     }
     
-    /// This function controls the open status text. It gets the current time, then establishes where the current time is relative to either the current open times or the next time the business will be open.
+    /// This function controls the open status text. It gets the current time, then establishes where the current time is relative to either the current closing time or the next time the business will be open.
    private func setAndFormatMainText() {
        do {
            let now = Date()
@@ -121,7 +121,7 @@ final class BeastroHomeViewModel: ObservableObject {
                 let nextOpenTime = try getSpan(getNextOpenTime: true)
 //              Get text for next time restaurant will be open
                 let nextOpenTimeText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false)
-                       
+//              Get text for next weekday restaurant will be open
                 let nextOpenDayText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true)
                    
                 openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
@@ -142,10 +142,9 @@ final class BeastroHomeViewModel: ObservableObject {
                if within24Hours < spanDate.0 {
                    openStatusLight = .red
 //              Get text for next time restaurant will be open
-                   
-                       let openingTimeString = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false)
+                let openingTimeString = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false)
 //              Get text for next day restaurant will be open
-                       let openingDay = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true)
+                let openingDay = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true)
                    openStatusText = try "Opens \(openingDay) at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
                } else {
 //              CLOSED REOPENS WITHIN 24 HOURS
@@ -162,7 +161,7 @@ final class BeastroHomeViewModel: ObservableObject {
     }
     
 ///   This function creates a tuple containing the Dates of an opening and closing time.
-    ///   This function calls the isClosingTimePastMidnight function. This allows us to create a tuple to support the closing times that may cross into the next day.
+///   This function calls the isClosingTimePastMidnight function. This allows us to create a tuple to support the closing times that may cross into the next day.
     func getSpan(getNextOpenTime: Bool) throws -> (Date, Date) {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
@@ -224,7 +223,7 @@ final class BeastroHomeViewModel: ObservableObject {
         return pairedArray
     }
     
-    /// This func creates and sorts the Operating hours array. This is used exclusively for displaying the hours of operation in the openCloseTimes section of the view. Has no impact on the openStatusText,.
+/// This func creates and sorts the Operating hours array. This is used exclusively for displaying the hours of operation in the openCloseTimes section of the view. Has no impact on the openStatusText,.
    private func setAndSortOperatingHours() {
         var sortedArray: [OperatingHoursForWeekDay] = []
         for day in operatingHours {
@@ -263,7 +262,7 @@ final class BeastroHomeViewModel: ObservableObject {
             }
         }
         
-        // Compare the last object to the first object: "Sunday to Monday"
+//      Compare the last object to the first object: "Sunday to Monday"
         if let firstDay = operatingHours.first, let lastDay = operatingHours.last {
             if lastDay.closingTimes.contains("24:00:00") && firstDay.openingTimes.contains("00:00:00") {
                 var newClosingTimesLastDay = lastDay.closingTimes

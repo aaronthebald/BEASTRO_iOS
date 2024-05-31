@@ -12,7 +12,6 @@
 		02478B092C09179C00374B11 /* OperatingHoursForWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02478B082C09179C00374B11 /* OperatingHoursForWeekday.swift */; };
 		02478B0B2C0917BF00374B11 /* DayWithParsableDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02478B0A2C0917BF00374B11 /* DayWithParsableDates.swift */; };
 		024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A982C096759009427C6 /* FiraSans-Black.ttf */; };
-		024E6A9E2C0967DC009427C6 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6A9D2C0967DC009427C6 /* Font.swift */; };
 		024E6AA02C097143009427C6 /* HindSiliguri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */; };
 		024E6AA22C0972C2009427C6 /* HindSiliguri-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */; };
 		024E6AAA2C09F017009427C6 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6AA92C09F017009427C6 /* FontHelper.swift */; };
@@ -33,7 +32,6 @@
 		024E6A982C096759009427C6 /* FiraSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Black.ttf"; sourceTree = "<group>"; };
 		024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "BEASTRO-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BEASTRO_iOS.entitlements; sourceTree = "<group>"; };
-		024E6A9D2C0967DC009427C6 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Regular.ttf"; sourceTree = "<group>"; };
 		024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Bold.ttf"; sourceTree = "<group>"; };
 		024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chivo-VariableFont_wght.ttf"; sourceTree = "<group>"; };
@@ -69,14 +67,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		024E6A9C2C0967C7009427C6 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				024E6A9D2C0967DC009427C6 /* Font.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		024E6AA42C097D88009427C6 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -109,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				024E6AA42C097D88009427C6 /* Fonts */,
-				024E6A9C2C0967C7009427C6 /* Extensions */,
 				024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */,
 				024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */,
 				02478B072C09141C00374B11 /* Models */,
@@ -228,7 +217,6 @@
 				02478B0B2C0917BF00374B11 /* DayWithParsableDates.swift in Sources */,
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
 				02478B092C09179C00374B11 /* OperatingHoursForWeekday.swift in Sources */,
-				024E6A9E2C0967DC009427C6 /* Font.swift in Sources */,
 				024E6AAA2C09F017009427C6 /* FontHelper.swift in Sources */,
 				029844032C0379430000BF0A /* NetworkingService.swift in Sources */,
 				0202B8502C03A11800B5F00D /* DateAndTimeService.swift in Sources */,

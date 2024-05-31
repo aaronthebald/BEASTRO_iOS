@@ -21,31 +21,25 @@ final class DateAndTimeService {
 
     func getCurrentDayOfWeek() -> String {
         let date = Date()
-        dateFormatter.dateFormat = "EEEE" // "EEEE" gives the full name of the day
+        dateFormatter.dateFormat = "EEEE"
         let dayOfWeekString = dateFormatter.string(from: date)
         return dayOfWeekString
     }
     
     func formatTime(from dateString: String, getWeekDay: Bool) throws -> String {
-        // Define the input date format including the timezone offset
         let inputDateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        // Create a DateFormatter for parsing the input date string
         dateFormatter.dateFormat = inputDateFormat
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
-        // Parse the date string into a Date object
         if let date = dateFormatter.date(from: dateString) {
-            // Define the output time format
             let outputTimeFormat = getWeekDay ? "EEEE" : "HH:mm:ss"
             dateFormatter.dateFormat = outputTimeFormat
-            // Format the Date object into the desired time string
             var timeString = dateFormatter.string(from: date)
             if timeString == "24:00:00" ||  timeString == "23:59:59" {
                 timeString = "00:00:00"
             }
             return timeString
         } else {
-            // Return nil if the input string could not be parsed into a Date
             print("Failed to turn \(dateString) into a string")
             throw dateError.failedToFormatDate
         }
@@ -53,8 +47,8 @@ final class DateAndTimeService {
     
     func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) throws -> [Date] {
         var dates: [Date] = []
-        timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
-        timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
+        timeFormatter.dateFormat = "HH:mm:ss"
+        timeFormatter.timeZone = TimeZone.current
         
         let calendar = Calendar.current
         
@@ -91,29 +85,23 @@ final class DateAndTimeService {
         return dates
     }
     
-    //   Returns the components of the next occurrence of the current day
+///      Returns the components of the next occurrence of the input day
         func nextOccurrence(ofDayOfWeek day: String) throws -> DateComponents {
             let calendar = Calendar.current
             var dateComponents = DateComponents()
             
-            // Get the current date
             let currentDate = Date()
             
-            // Get the weekday of the current date (Sunday: 1, Monday: 2, ..., Saturday: 7)
             let currentWeekday = calendar.component(.weekday, from: currentDate)
             
-            // Get the index of the input day (case-insensitive)
             guard let index = calendar.weekdaySymbols.firstIndex(where: { $0.caseInsensitiveCompare(day) == .orderedSame }) else {
                 print("Invalid day of the week: \(day)")
                 throw dateError.failedToFormatDate
             }
             
-            // Calculate the number of days until the next occurrence of the input day
             let daysUntilNextDay = (index + 7 - currentWeekday + 1) % 7
             
-            // Add the number of days to the current date
             if let nextDate = calendar.date(byAdding: .day, value: daysUntilNextDay, to: currentDate) {
-                // Get the components for the next occurrence of the input day
                 dateComponents = calendar.dateComponents([.year, .month, .day], from: nextDate)
             } else {
                 throw dateError.failedToFormatDate
@@ -131,11 +119,8 @@ final class DateAndTimeService {
             adjustedInput = "00:00:00"
         }
         
-        // Convert the input string to a Date object
         if let date = timeReadableInputFormatter.date(from: adjustedInput) {
-            // Create a DateFormatter for the output format
             
-            // Check if minutes are not "00"
             let calendar = Calendar.current
             let components = calendar.dateComponents([.hour, .minute], from: date)
             
@@ -148,7 +133,6 @@ final class DateAndTimeService {
             timeReadableOutputFormatter.amSymbol = "AM"
             timeReadableOutputFormatter.pmSymbol = "PM"
             
-            // Convert the Date object to the desired string format
             return timeReadableOutputFormatter.string(from: date)
         } else {
             throw dateError.failedToFormatDate

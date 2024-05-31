@@ -36,7 +36,7 @@ struct BeastroHomeView: View {
                 await viewModel.fetchBusinessHours()
                 viewModel.consolidateReturnedOpenPeriodsFromAPI()
             }
-            .alert("Uh Oh", isPresented: $viewModel.showAlert) {
+            .alert("There was an error", isPresented: $viewModel.showAlert) {
                 Button {
                     viewModel.showAlert = false
                 } label: {
@@ -58,7 +58,7 @@ extension BeastroHomeView {
         Text(viewModel.businessName)
         .padding(.leading)
         .lineLimit(3)
-        .font(.customFont(name: FontHelper.instance.firaSans, size: 54, relativeTo: .largeTitle))
+        .font(.custom(FontHelper.instance.firaSans, size: 54, relativeTo: .largeTitle))
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color.white)
     }
@@ -99,6 +99,7 @@ extension BeastroHomeView {
             Image(systemName: "chevron.up")
                 .foregroundStyle(Color.white)
             Text("View Menu")
+                .font(.custom(FontHelper.instance.hindSiliguriREG, size: 24, relativeTo: .body))
                 .foregroundStyle(Color.white)
         }
         .fontWeight(.bold)
@@ -110,7 +111,7 @@ extension BeastroHomeView {
                 
                 HStack {
                     Text(viewModel.openStatusText)
-                        .font(.customFont(name: FontHelper.instance.hindSiliguriREG, size: 18, relativeTo: .body))
+                        .font(.custom(FontHelper.instance.hindSiliguriREG, size: 18, relativeTo: .body))
 
                     Circle()
                         .frame(height: 7)
@@ -118,7 +119,7 @@ extension BeastroHomeView {
                 }
                 
                 Text("SEE FULL HOURS")
-                    .font(.customFont(name: FontHelper.instance.chivo, size: 12, relativeTo: .body))
+                    .font(.custom(FontHelper.instance.chivo, size: 12, relativeTo: .body))
                     .foregroundStyle(Color.secondary)
             }
             
@@ -160,7 +161,7 @@ extension BeastroHomeView {
                         }
                     }
                 }
-                .font(.customFont(name: day.dayOfWeek == viewModel.currentDay ? FontHelper.instance.hindSiliguriBOLD : FontHelper.instance.hindSiliguriREG, size: 18, relativeTo: .body))
+                .font(.custom(day.dayOfWeek == viewModel.currentDay ? FontHelper.instance.hindSiliguriBOLD : FontHelper.instance.hindSiliguriREG, size: 18, relativeTo: .body))
             }
         }
     }
