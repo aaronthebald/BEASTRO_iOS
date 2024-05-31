@@ -105,7 +105,8 @@ final class BeastroHomeViewModel: ObservableObject {
             return
         }
         let span = spanDate.0...spanDate.1
-        if span.contains(now) {
+        let isBusinessOpen = span.contains(now)
+        if isBusinessOpen {
             guard let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now) else {
                 return
             }

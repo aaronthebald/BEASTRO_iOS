@@ -114,6 +114,17 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		024E6AA42C097D88009427C6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */,
+				024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */,
+				024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */,
+				024E6A982C096759009427C6 /* FiraSans-Black.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		029843CA2C02B0110000BF0A = {
 			isa = PBXGroup;
 			children = (
@@ -137,13 +148,10 @@
 		029843D52C02B0110000BF0A /* BEASTRO_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				024E6AA42C097D88009427C6 /* Fonts */,
 				024E6A9C2C0967C7009427C6 /* Extensions */,
 				024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */,
 				024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */,
-				024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */,
-				024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */,
-				024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */,
-				024E6A982C096759009427C6 /* FiraSans-Black.ttf */,
 				02478B072C09141C00374B11 /* Models */,
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
 				02B5BA612C038B17000CF54D /* BeastroHome */,
