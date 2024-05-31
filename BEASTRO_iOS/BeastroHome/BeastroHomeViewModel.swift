@@ -72,25 +72,29 @@ final class BeastroHomeViewModel: ObservableObject {
             let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
             let openingTimes = filteredHours.map { $0.startLocalTime }
             let closingTimes = filteredHours.map { $0.endLocalTime }
-            guard let dayOfTheWeek = dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday) else {
-                return
+            do {
+                let dayOfTheWeek = try dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday)
+                let startTimesInDateFormat = try dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: openingTimes, closingTime: false)
+                let endTimesInDateFormat = try dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: closingTimes, closingTime: true)
+                let formattedDay = DayWithParsableDates(
+                    weekday: day.weekday,
+                    abv: day.abv,
+                    startTimes: openingTimes,
+                    endTimes: closingTimes,
+                    startTimeInDateFormat: startTimesInDateFormat,
+                    endTimeInDateFormat: endTimesInDateFormat
+                )
+                
+                newArray.append(formattedDay)
+            } catch {
+                showAlert = true
+                errorMessage = error.localizedDescription
             }
-            let startTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: openingTimes, closingTime: false)
-            let endTimesInDateFormat = dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: closingTimes, closingTime: true)
             
             let operatingHour = OperatingHoursForWeekDay(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
             operatingHours.append(operatingHour)
             
-            let formattedDay = DayWithParsableDates(
-                weekday: day.weekday,
-                abv: day.abv,
-                startTimes: openingTimes,
-                endTimes: closingTimes,
-                startTimeInDateFormat: startTimesInDateFormat,
-                endTimeInDateFormat: endTimesInDateFormat
-            )
             
-            newArray.append(formattedDay)
         }
         
         formattedDaysTimes = newArray
@@ -99,76 +103,66 @@ final class BeastroHomeViewModel: ObservableObject {
     }
     
    private func setAndFormatMainText() {
-        let now = Date()
-        guard let spanDate = getSpan(getNextOpenTime: false) else {
-            print("There was a problem building the span")
-            return
-        }
-        let span = spanDate.0...spanDate.1
-        let isBusinessOpen = span.contains(now)
-        if isBusinessOpen {
-            guard let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now) else {
-                return
-            }
-            if spanDate.1 < dateWithin1HourObject {
+       do {
+           let now = Date()
+           let spanDate = try getSpan(getNextOpenTime: false)
+           let span = spanDate.0...spanDate.1
+           let isBusinessOpen = span.contains(now)
+           if isBusinessOpen {
+               guard let dateWithin1HourObject = Calendar.current.date(byAdding: .hour, value: 1, to: now) else {
+                   return
+               }
+               if spanDate.1 < dateWithin1HourObject {
 //           OPEN BUT CLOSING WITHIN AN HOUR
-                openStatusLight = .yellow
+                   openStatusLight = .yellow
 //              Get String for the time restaurant will be closing
-                guard
-                    let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false),
+                       let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
 //              Get span for next time restaurant will be open
-                    let nextOpenTime = getSpan(getNextOpenTime: true),
-                
+                       let nextOpenTime = try getSpan(getNextOpenTime: true)
 //              Get text for next time restaurant will be open
-                    let nextOpenTimeText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false),
-                    
-                    let nextOpenDayText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true) else {
-                    print("There was an error in setting and formatting the openStatusText under the within 24 hours conditions")
-                    return
-                }
-                
-                openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
-            } else {
+                       let nextOpenTimeText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false)
+                       
+                       let nextOpenDayText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true)
+                   
+                   openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
+               } else {
 //              OPEN FOR MORE THAN AN HOUR LONGER
-                openStatusLight = .green
+                   openStatusLight = .green
 //              Get String for the time restaurant will be closing
-                guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
-                    print("This is broken part B")
-                    return }
-                openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString))"
-            }
-        }
+                    let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
+                   openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString))"
+               }
+           }
 //      If the current date and time is not within a span, the restaurant is closed. That status will be handled here.
-        else {
-            guard let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now) else {
-                return
-            }
+           else {
+               guard let within24Hours = Calendar.current.date(byAdding: .hour, value: 24, to: now) else {
+                   return
+               }
 //          CLOSED. NEXT OPEN TIME IS MORE THAN 24 HOURS IN THE FUTURE
-            if within24Hours < spanDate.0 {
-                openStatusLight = .red
+               if within24Hours < spanDate.0 {
+                   openStatusLight = .red
 //              Get text for next time restaurant will be open
-                guard 
-                    let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false),
+                   
+                       let openingTimeString = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false)
 //              Get text for next day restaurant will be open
-                    let openingDay = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true) else {
-                    print("failed to get openingDay String")
-                    return
-                }
-                openStatusText = "Opens \(openingDay) at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
-            } else {
+                       let openingDay = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true)
+                   openStatusText = try "Opens \(openingDay) at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
+               } else {
 //              CLOSED REOPENS WITHIN 24 HOURS
-                openStatusLight = .red
+                   openStatusLight = .red
 //              Get text for next time restaurant will be open
-                guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
-                    print("This is broken E")
-                    return }
-                openStatusText = "Opens again at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
-            }
-        }
+                    let openingTimeString = try dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false)
+                    openStatusText = try "Opens again at \(dateAndTimeService.makeTimeReadable(input: openingTimeString))"
+               }
+           }
+       } catch  {
+           showAlert = true
+                        errorMessage = error.localizedDescription
+       }
     }
     
-    //   This function creates a tuple containing the Dates of an opening and closing time.
-    func getSpan(getNextOpenTime: Bool) -> (Date, Date)? {
+//   This function creates a tuple containing the Dates of an opening and closing time.
+    func getSpan(getNextOpenTime: Bool) throws -> (Date, Date) {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
         for day in formattedDaysTimes {
@@ -183,7 +177,7 @@ final class BeastroHomeViewModel: ObservableObject {
             let span = dates.0...dates.1
             guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
                 print("The getSpan function is broken")
-                return nil
+                throw dateError.failedToCreateSpan
             }
             if getNextOpenTime {
                 print("getNextOpenTime block ran")
@@ -200,7 +194,7 @@ final class BeastroHomeViewModel: ObservableObject {
         }
         guard let nextOpenTime = sortedByFirstDate.first(where: {$0.0 > now}) else {
             print("The getSpan function is broken")
-            return nil
+            throw dateError.failedToCreateSpan
         }
         return nextOpenTime
     }
@@ -313,6 +307,11 @@ final class BeastroHomeViewModel: ObservableObject {
                 return Color.green
             }
         }
+    }
+    
+    enum dateError: Error {
+        case failedToFormatDate
+        case failedToCreateSpan
     }
 }
 

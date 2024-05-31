@@ -160,13 +160,13 @@ extension BeastroHomeView {
                         HStack(alignment: .top) {
                             VStack {
                                 ForEach(day.openingTimes, id: \.self) { time in
-                                    Text("\(viewModel.dateAndTimeService.makeTimeReadable(input: time)) -")
+                                   try? Text("\(viewModel.dateAndTimeService.makeTimeReadable(input: time)) -")
                                 }
                             }
                             
                             VStack {
                                 ForEach(day.closingTimes, id: \.self) { time in
-                                    Text(viewModel.dateAndTimeService.makeTimeReadable(input: time))
+                                    try? Text(viewModel.dateAndTimeService.makeTimeReadable(input: time))
                                 }
                             }
                         }

@@ -14,6 +14,10 @@ final class DateAndTimeService {
     let dateFormatter = DateFormatter()
     let timeReadableOutputFormatter = DateFormatter()
     let formatter = DateFormatter()
+    
+    enum dateError: Error {
+        case failedToFormatDate
+    }
 
     func getCurrentDayOfWeek() -> String {
         let date = Date()
@@ -22,7 +26,7 @@ final class DateAndTimeService {
         return dayOfWeekString
     }
     
-    func formatTime(from dateString: String, getWeekDay: Bool) -> String? {
+    func formatTime(from dateString: String, getWeekDay: Bool) throws -> String {
         // Define the input date format including the timezone offset
         let inputDateFormat = "yyyy-MM-dd HH:mm:ss Z"
         // Create a DateFormatter for parsing the input date string
@@ -43,11 +47,11 @@ final class DateAndTimeService {
         } else {
             // Return nil if the input string could not be parsed into a Date
             print("Failed to turn \(dateString) into a string")
-            return nil
+            throw dateError.failedToFormatDate
         }
     }
     
-    func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) -> [Date] {
+    func datesFromStrings(dayOfTheWeek: DateComponents, timeStrings: [String], closingTime: Bool) throws -> [Date] {
         var dates: [Date] = []
         timeFormatter.dateFormat = "HH:mm:ss" // Adjust based on your input format
         timeFormatter.timeZone = TimeZone.current // Or set to the appropriate time zone
@@ -65,11 +69,9 @@ final class DateAndTimeService {
                     
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
-                    } else {
-                        print("Could not combine date components for string: \(correctedTimeString)")
                     }
                 } else {
-                    print("Invalid date format for string: \(correctedTimeString)")
+                    throw dateError.failedToFormatDate
                 }
             } else {
                 if let timeDate = timeFormatter.date(from: timeString) {
@@ -80,11 +82,9 @@ final class DateAndTimeService {
                     
                     if let combinedDate = calendar.date(from: dateComponents) {
                         dates.append(combinedDate)
-                    } else {
-                        print("Could not combine date components for string: \(timeString)")
                     }
                 } else {
-                    print("Invalid date format for string: \(timeString)")
+                    throw dateError.failedToFormatDate
                 }
             }
         }
@@ -92,7 +92,7 @@ final class DateAndTimeService {
     }
     
     //   Returns the components of the next occurrence of the current day
-        func nextOccurrence(ofDayOfWeek day: String) -> DateComponents? {
+        func nextOccurrence(ofDayOfWeek day: String) throws -> DateComponents {
             let calendar = Calendar.current
             var dateComponents = DateComponents()
             
@@ -105,7 +105,7 @@ final class DateAndTimeService {
             // Get the index of the input day (case-insensitive)
             guard let index = calendar.weekdaySymbols.firstIndex(where: { $0.caseInsensitiveCompare(day) == .orderedSame }) else {
                 print("Invalid day of the week: \(day)")
-                return nil
+                throw dateError.failedToFormatDate
             }
             
             // Calculate the number of days until the next occurrence of the input day
@@ -116,13 +116,12 @@ final class DateAndTimeService {
                 // Get the components for the next occurrence of the input day
                 dateComponents = calendar.dateComponents([.year, .month, .day], from: nextDate)
             } else {
-                print("Unable to get the next occurrence of weekday ")
+                throw dateError.failedToFormatDate
             }
             return dateComponents
         }
     
-    func makeTimeReadable(input: String) -> String {
-        var returnedString = ""
+    func makeTimeReadable(input: String) throws -> String {
         let timeReadableInputFormatter = DateFormatter()
         timeReadableInputFormatter.dateFormat = "HH:mm:ss"
         
@@ -150,12 +149,9 @@ final class DateAndTimeService {
             timeReadableOutputFormatter.pmSymbol = "PM"
             
             // Convert the Date object to the desired string format
-            returnedString = timeReadableOutputFormatter.string(from: date)
+            return timeReadableOutputFormatter.string(from: date)
         } else {
-            print("Invalid input time format")
+            throw dateError.failedToFormatDate
         }
-        
-        return returnedString
     }
-
 }
