@@ -19,30 +19,10 @@
 		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
 		029843DE2C02B0130000BF0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DD2C02B0130000BF0A /* Preview Assets.xcassets */; };
-		029843E82C02B0130000BF0A /* BEASTRO_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843E72C02B0130000BF0A /* BEASTRO_iOSTests.swift */; };
-		029843F22C02B0130000BF0A /* BEASTRO_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843F12C02B0130000BF0A /* BEASTRO_iOSUITests.swift */; };
-		029843F42C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843F32C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift */; };
 		029844012C0377DB0000BF0A /* BeastroHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */; };
 		029844032C0379430000BF0A /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844022C0379430000BF0A /* NetworkingService.swift */; };
 		029844052C037A350000BF0A /* HoursResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029844042C037A350000BF0A /* HoursResponse.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		029843E42C02B0130000BF0A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 029843CB2C02B0110000BF0A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 029843D22C02B0110000BF0A;
-			remoteInfo = BEASTRO_iOS;
-		};
-		029843EE2C02B0130000BF0A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 029843CB2C02B0110000BF0A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 029843D22C02B0110000BF0A;
-			remoteInfo = BEASTRO_iOS;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0202B84F2C03A11800B5F00D /* DateAndTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimeService.swift; sourceTree = "<group>"; };
@@ -61,11 +41,6 @@
 		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
 		029843DA2C02B0130000BF0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		029843DD2C02B0130000BF0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		029843E32C02B0130000BF0A /* BEASTRO_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BEASTRO_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		029843E72C02B0130000BF0A /* BEASTRO_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSTests.swift; sourceTree = "<group>"; };
-		029843ED2C02B0130000BF0A /* BEASTRO_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BEASTRO_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		029843F12C02B0130000BF0A /* BEASTRO_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSUITests.swift; sourceTree = "<group>"; };
-		029843F32C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		029844002C0377DB0000BF0A /* BeastroHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeViewModel.swift; sourceTree = "<group>"; };
 		029844022C0379430000BF0A /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
 		029844042C037A350000BF0A /* HoursResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoursResponse.swift; sourceTree = "<group>"; };
@@ -73,20 +48,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		029843D02C02B0110000BF0A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		029843E02C02B0130000BF0A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		029843EA2C02B0130000BF0A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -129,8 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				029843D52C02B0110000BF0A /* BEASTRO_iOS */,
-				029843E62C02B0130000BF0A /* BEASTRO_iOSTests */,
-				029843F02C02B0130000BF0A /* BEASTRO_iOSUITests */,
 				029843D42C02B0110000BF0A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,8 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				029843D32C02B0110000BF0A /* BEASTRO_iOS.app */,
-				029843E32C02B0130000BF0A /* BEASTRO_iOSTests.xctest */,
-				029843ED2C02B0130000BF0A /* BEASTRO_iOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,23 +126,6 @@
 				029843DD2C02B0130000BF0A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		029843E62C02B0130000BF0A /* BEASTRO_iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				029843E72C02B0130000BF0A /* BEASTRO_iOSTests.swift */,
-			);
-			path = BEASTRO_iOSTests;
-			sourceTree = "<group>";
-		};
-		029843F02C02B0130000BF0A /* BEASTRO_iOSUITests */ = {
-			isa = PBXGroup;
-			children = (
-				029843F12C02B0130000BF0A /* BEASTRO_iOSUITests.swift */,
-				029843F32C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift */,
-			);
-			path = BEASTRO_iOSUITests;
 			sourceTree = "<group>";
 		};
 		02B5BA602C038AE5000CF54D /* Services */ = {
@@ -226,42 +166,6 @@
 			productReference = 029843D32C02B0110000BF0A /* BEASTRO_iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		029843E22C02B0130000BF0A /* BEASTRO_iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 029843FA2C02B0130000BF0A /* Build configuration list for PBXNativeTarget "BEASTRO_iOSTests" */;
-			buildPhases = (
-				029843DF2C02B0130000BF0A /* Sources */,
-				029843E02C02B0130000BF0A /* Frameworks */,
-				029843E12C02B0130000BF0A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				029843E52C02B0130000BF0A /* PBXTargetDependency */,
-			);
-			name = BEASTRO_iOSTests;
-			productName = BEASTRO_iOSTests;
-			productReference = 029843E32C02B0130000BF0A /* BEASTRO_iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		029843EC2C02B0130000BF0A /* BEASTRO_iOSUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 029843FD2C02B0130000BF0A /* Build configuration list for PBXNativeTarget "BEASTRO_iOSUITests" */;
-			buildPhases = (
-				029843E92C02B0130000BF0A /* Sources */,
-				029843EA2C02B0130000BF0A /* Frameworks */,
-				029843EB2C02B0130000BF0A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				029843EF2C02B0130000BF0A /* PBXTargetDependency */,
-			);
-			name = BEASTRO_iOSUITests;
-			productName = BEASTRO_iOSUITests;
-			productReference = 029843ED2C02B0130000BF0A /* BEASTRO_iOSUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -274,14 +178,6 @@
 				TargetAttributes = {
 					029843D22C02B0110000BF0A = {
 						CreatedOnToolsVersion = 15.4;
-					};
-					029843E22C02B0130000BF0A = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = 029843D22C02B0110000BF0A;
-					};
-					029843EC2C02B0130000BF0A = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = 029843D22C02B0110000BF0A;
 					};
 				};
 			};
@@ -299,8 +195,6 @@
 			projectRoot = "";
 			targets = (
 				029843D22C02B0110000BF0A /* BEASTRO_iOS */,
-				029843E22C02B0130000BF0A /* BEASTRO_iOSTests */,
-				029843EC2C02B0130000BF0A /* BEASTRO_iOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -316,20 +210,6 @@
 				029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */,
 				024E6AA22C0972C2009427C6 /* HindSiliguri-Bold.ttf in Resources */,
 				024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		029843E12C02B0130000BF0A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		029843EB2C02B0130000BF0A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,37 +232,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		029843DF2C02B0130000BF0A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				029843E82C02B0130000BF0A /* BEASTRO_iOSTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		029843E92C02B0130000BF0A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				029843F22C02B0130000BF0A /* BEASTRO_iOSUITests.swift in Sources */,
-				029843F42C02B0130000BF0A /* BEASTRO_iOSUITestsLaunchTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		029843E52C02B0130000BF0A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 029843D22C02B0110000BF0A /* BEASTRO_iOS */;
-			targetProxy = 029843E42C02B0130000BF0A /* PBXContainerItemProxy */;
-		};
-		029843EF2C02B0130000BF0A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 029843D22C02B0110000BF0A /* BEASTRO_iOS */;
-			targetProxy = 029843EE2C02B0130000BF0A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		029843F52C02B0130000BF0A /* Debug */ = {
@@ -568,82 +418,6 @@
 			};
 			name = Release;
 		};
-		029843FB2C02B0130000BF0A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW75NQ7TG5;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.AaronWilson.BEASTRO-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BEASTRO_iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BEASTRO_iOS";
-			};
-			name = Debug;
-		};
-		029843FC2C02B0130000BF0A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW75NQ7TG5;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.AaronWilson.BEASTRO-iOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BEASTRO_iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BEASTRO_iOS";
-			};
-			name = Release;
-		};
-		029843FE2C02B0130000BF0A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW75NQ7TG5;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.AaronWilson.BEASTRO-iOSUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BEASTRO_iOS;
-			};
-			name = Debug;
-		};
-		029843FF2C02B0130000BF0A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW75NQ7TG5;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.AaronWilson.BEASTRO-iOSUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BEASTRO_iOS;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -661,24 +435,6 @@
 			buildConfigurations = (
 				029843F82C02B0130000BF0A /* Debug */,
 				029843F92C02B0130000BF0A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		029843FA2C02B0130000BF0A /* Build configuration list for PBXNativeTarget "BEASTRO_iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				029843FB2C02B0130000BF0A /* Debug */,
-				029843FC2C02B0130000BF0A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		029843FD2C02B0130000BF0A /* Build configuration list for PBXNativeTarget "BEASTRO_iOSUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				029843FE2C02B0130000BF0A /* Debug */,
-				029843FF2C02B0130000BF0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
