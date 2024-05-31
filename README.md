@@ -1,6 +1,7 @@
 # BEASTRO: a Purs Project
 ## Introduction
 **Hello There! 👋🏼**
+My name is Aaron Wilson. This project was a fun exercise in Dates! Careful consideration was used to find as many edge cases as possible.
 
 ## Project Overview
 
@@ -90,5 +91,26 @@ In developing BEASTRO, various edge cases were considered to ensure robustness a
 **Fonts**: Imported and used the fonts specified in the Figma file.
 
 **Animations**: Used a combination of animations and rotation effects when the accordion is expanded or collapsed 
+
+## Remaining Questions
+
+**An unusual edge case**: In a professional environment I would ask my manager how this should be displayed:
+ - Input: 
+    ```json
+    {
+      "day_of_week": "MON",
+      "start_local_time": "13:00:00",
+      "end_local_time": "24:00:00"
+    }, 
+    {
+      "day_of_week": "TUE",
+      "start_local_time": "00:00:00",
+      "end_local_time": "06:00:00"
+    }
+    ```
+  - Monday: 1pm-6am
+  - or
+  - Monday: 1pm-12am
+  - Tuesday: 12am-6am
 
 
