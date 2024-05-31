@@ -13,6 +13,8 @@
 		02478B0B2C0917BF00374B11 /* DayWithParsableDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02478B0A2C0917BF00374B11 /* DayWithParsableDates.swift */; };
 		024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A982C096759009427C6 /* FiraSans-Black.ttf */; };
 		024E6A9E2C0967DC009427C6 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6A9D2C0967DC009427C6 /* Font.swift */; };
+		024E6AA02C097143009427C6 /* HindSiliguri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */; };
+		024E6AA22C0972C2009427C6 /* HindSiliguri-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */; };
 		029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */; };
 		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
@@ -51,6 +53,9 @@
 		024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "BEASTRO-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BEASTRO_iOS.entitlements; sourceTree = "<group>"; };
 		024E6A9D2C0967DC009427C6 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Regular.ttf"; sourceTree = "<group>"; };
+		024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Bold.ttf"; sourceTree = "<group>"; };
+		024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chivo-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		029843D32C02B0110000BF0A /* BEASTRO_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BEASTRO_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSApp.swift; sourceTree = "<group>"; };
 		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
@@ -135,6 +140,9 @@
 				024E6A9C2C0967C7009427C6 /* Extensions */,
 				024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */,
 				024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */,
+				024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */,
+				024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */,
+				024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */,
 				024E6A982C096759009427C6 /* FiraSans-Black.ttf */,
 				02478B072C09141C00374B11 /* Models */,
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
@@ -296,7 +304,9 @@
 			files = (
 				029843DE2C02B0130000BF0A /* Preview Assets.xcassets in Resources */,
 				02478B062C07524800374B11 /* TestData.json in Resources */,
+				024E6AA02C097143009427C6 /* HindSiliguri-Regular.ttf in Resources */,
 				029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */,
+				024E6AA22C0972C2009427C6 /* HindSiliguri-Bold.ttf in Resources */,
 				024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

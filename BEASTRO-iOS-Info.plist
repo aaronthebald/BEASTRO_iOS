@@ -5,6 +5,9 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Black.ttf</string>
+		<string>HindSiliguri-Regular.ttf</string>
+		<string>HindSiliguri-Bold.ttf</string>
+		<string>Chivo-VariableFont_wght.ttf</string>
 	</array>
 </dict>
 </plist>

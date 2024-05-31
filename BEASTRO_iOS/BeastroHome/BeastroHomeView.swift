@@ -14,7 +14,9 @@ struct BeastroHomeView: View {
     @State private var showFullHours: Bool = false
     
     let firaSans = "FiraSans-Black"
-    
+    let hindSiliguriREG = "HindSiliguri-Regular"
+    let hindSiliguriBOLD = "HindSiliguri-Bold"
+    let chivo = "Chivo-VariableFont_wght"
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
@@ -120,14 +122,15 @@ extension BeastroHomeView {
                 
                 HStack {
                     Text(viewModel.openStatusText)
-                    
+                        .font(.customFont(name: hindSiliguriREG, size: 18, relativeTo: .body))
+
                     Circle()
                         .frame(height: 7)
                         .foregroundStyle(viewModel.openStatusLight.color)
                 }
                 
                 Text("SEE FULL HOURS")
-                    .font(.caption)
+                    .font(.customFont(name: chivo, size: 12, relativeTo: .body))
                     .foregroundStyle(Color.secondary)
             }
             
@@ -142,7 +145,7 @@ extension BeastroHomeView {
     }
     
     private var openCloseTimes: some View {
-        VStack(spacing: 10) {
+        VStack {
             ForEach(viewModel.operatingHours, id: \.self) { day in
                 HStack(alignment: .top) {
                     Text(day.dayOfWeek)
@@ -169,7 +172,8 @@ extension BeastroHomeView {
                         }
                     }
                 }
-                .fontWeight(viewModel.currentDay == day.dayOfWeek ? .bold : .regular)
+                .font(.customFont(name: day.dayOfWeek == viewModel.currentDay ? hindSiliguriBOLD : hindSiliguriREG, size: 18, relativeTo: .body))
+
             }
         }
     }
