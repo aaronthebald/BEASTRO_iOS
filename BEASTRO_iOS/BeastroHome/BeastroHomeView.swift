@@ -10,13 +10,9 @@ import SwiftUI
 struct BeastroHomeView: View {
     
     @StateObject private var viewModel = BeastroHomeViewModel(networkingService: NetworkingService())
-    @State private var showMenu: Bool = false
     @State private var showFullHours: Bool = false
+    var fontHelper = FontHelper()
     
-    let firaSans = "FiraSans-Black"
-    let hindSiliguriREG = "HindSiliguri-Regular"
-    let hindSiliguriBOLD = "HindSiliguri-Bold"
-    let chivo = "Chivo-VariableFont_wght"
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
@@ -29,11 +25,7 @@ struct BeastroHomeView: View {
                 
                 Spacer()
                 
-                Button {
-                    showMenu = true
-                } label: {
-                    showMenuButton
-                }
+                showMenuButton
             }
             .background {
                 Image(.homeScreenImageLocal)
@@ -41,9 +33,6 @@ struct BeastroHomeView: View {
                     .scaledToFill()
                     .ignoresSafeArea(.all)
             }
-            .sheet(isPresented: $showMenu, onDismiss: {showMenu = false}, content: {
-                Text("This is where the menu would go")
-            })
             .task {
                 await viewModel.fetchBusinessHours()
                 viewModel.consolidateReturnedOpenPeriodsFromAPI()
@@ -70,7 +59,7 @@ extension BeastroHomeView {
         Text(viewModel.businessName)
         .padding(.leading)
         .lineLimit(3)
-        .font(.customFont(name: firaSans, size: 54, relativeTo: .largeTitle))
+        .font(.customFont(name: fontHelper.firaSans, size: 54, relativeTo: .largeTitle))
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color.white)
     }
@@ -122,7 +111,7 @@ extension BeastroHomeView {
                 
                 HStack {
                     Text(viewModel.openStatusText)
-                        .font(.customFont(name: hindSiliguriREG, size: 18, relativeTo: .body))
+                        .font(.customFont(name: fontHelper.hindSiliguriREG, size: 18, relativeTo: .body))
 
                     Circle()
                         .frame(height: 7)
@@ -130,7 +119,7 @@ extension BeastroHomeView {
                 }
                 
                 Text("SEE FULL HOURS")
-                    .font(.customFont(name: chivo, size: 12, relativeTo: .body))
+                    .font(.customFont(name: fontHelper.chivo, size: 12, relativeTo: .body))
                     .foregroundStyle(Color.secondary)
             }
             
@@ -172,7 +161,7 @@ extension BeastroHomeView {
                         }
                     }
                 }
-                .font(.customFont(name: day.dayOfWeek == viewModel.currentDay ? hindSiliguriBOLD : hindSiliguriREG, size: 18, relativeTo: .body))
+                .font(.customFont(name: day.dayOfWeek == viewModel.currentDay ? fontHelper.hindSiliguriBOLD : fontHelper.hindSiliguriREG, size: 18, relativeTo: .body))
 
             }
         }

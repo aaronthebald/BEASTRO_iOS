@@ -15,6 +15,7 @@
 		024E6A9E2C0967DC009427C6 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6A9D2C0967DC009427C6 /* Font.swift */; };
 		024E6AA02C097143009427C6 /* HindSiliguri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */; };
 		024E6AA22C0972C2009427C6 /* HindSiliguri-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */; };
+		024E6AAA2C09F017009427C6 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6AA92C09F017009427C6 /* FontHelper.swift */; };
 		029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */; };
 		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 		024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Regular.ttf"; sourceTree = "<group>"; };
 		024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HindSiliguri-Bold.ttf"; sourceTree = "<group>"; };
 		024E6AA32C0973E2009427C6 /* Chivo-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chivo-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		024E6AA92C09F017009427C6 /* FontHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
 		029843D32C02B0110000BF0A /* BEASTRO_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BEASTRO_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSApp.swift; sourceTree = "<group>"; };
 		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				024E6A9F2C097143009427C6 /* HindSiliguri-Regular.ttf */,
 				024E6AA12C0972C2009427C6 /* HindSiliguri-Bold.ttf */,
 				024E6A982C096759009427C6 /* FiraSans-Black.ttf */,
+				024E6AA92C09F017009427C6 /* FontHelper.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
 				02478B092C09179C00374B11 /* OperatingHoursForWeekday.swift in Sources */,
 				024E6A9E2C0967DC009427C6 /* Font.swift in Sources */,
+				024E6AAA2C09F017009427C6 /* FontHelper.swift in Sources */,
 				029844032C0379430000BF0A /* NetworkingService.swift in Sources */,
 				0202B8502C03A11800B5F00D /* DateAndTimeService.swift in Sources */,
 				029844052C037A350000BF0A /* HoursResponse.swift in Sources */,
