@@ -113,23 +113,16 @@ final class BeastroHomeViewModel: ObservableObject {
 //           OPEN BUT CLOSING WITHIN AN HOUR
                 openStatusLight = .yellow
 //              Get String for the time restaurant will be closing
-                guard let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false) else {
-                    print("This is broken Part A")
-                    return
-                }
+                guard
+                    let closingTimeString = dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false),
 //              Get span for next time restaurant will be open
-                guard let nextOpenTime = getSpan(getNextOpenTime: true) else {
-                    print("failed to get nextOpenTime")
-                    return
-                }
-                print(nextOpenTime.0)
+                    let nextOpenTime = getSpan(getNextOpenTime: true),
+                
 //              Get text for next time restaurant will be open
-                guard let nextOpenTimeText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false) else {
-                    print("failed to get nextOpenTimeText")
-                    return
-                }
-                guard let nextOpenDayText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true) else {
-                    print("YOOOOOO")
+                    let nextOpenTimeText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false),
+                    
+                    let nextOpenDayText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true) else {
+                    print("There was an error in setting and formatting the openStatusText under the within 24 hours conditions")
                     return
                 }
                 
@@ -153,12 +146,10 @@ final class BeastroHomeViewModel: ObservableObject {
             if within24Hours < spanDate.0 {
                 openStatusLight = .red
 //              Get text for next time restaurant will be open
-                guard let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false) else {
-                    print("This is broken part D")
-                    return
-                }
+                guard 
+                    let openingTimeString = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: false),
 //              Get text for next day restaurant will be open
-                guard let openingDay = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true) else {
+                    let openingDay = dateAndTimeService.formatTime(from: spanDate.0.description, getWeekDay: true) else {
                     print("failed to get openingDay String")
                     return
                 }
