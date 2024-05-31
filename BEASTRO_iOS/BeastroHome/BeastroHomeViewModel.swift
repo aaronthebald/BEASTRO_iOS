@@ -62,6 +62,7 @@ final class BeastroHomeViewModel: ObservableObject {
    private func getCurrentDayOfTheWeek() {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
+    
 /// Iterates through the days of the week, consolidating and creating Date objects for each opening and closing time. Also creates operatingHour objects used for the open/closed times in the open/closed hours section in the home view.
     func consolidateReturnedOpenPeriodsFromAPI() {
         var newArray: [DayWithParsableDates] = []
@@ -97,7 +98,7 @@ final class BeastroHomeViewModel: ObservableObject {
         
         formattedDaysTimes = newArray
         setAndFormatMainText()
-        setAndSortOpeningAndClosingTimes()
+        setAndSortOperatingHours()
     }
     
     /// This function controls the open status text. It gets the current time, then establishes where the current time is relative to either the current open times or the next time the business will be open.
@@ -156,11 +157,12 @@ final class BeastroHomeViewModel: ObservableObject {
            }
        } catch  {
            showAlert = true
-                        errorMessage = error.localizedDescription
+           errorMessage = error.localizedDescription
        }
     }
     
 ///   This function creates a tuple containing the Dates of an opening and closing time.
+    ///   This function calls the isClosingTimePastMidnight function. This allows us to create a tuple to support the closing times that may cross into the next day.
     func getSpan(getNextOpenTime: Bool) throws -> (Date, Date) {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
@@ -222,7 +224,8 @@ final class BeastroHomeViewModel: ObservableObject {
         return pairedArray
     }
     
-   private func setAndSortOpeningAndClosingTimes() {
+    /// This func creates and sorts the Operating hours array. This is used exclusively for displaying the hours of operation in the openCloseTimes section of the view. Has no impact on the openStatusText,.
+   private func setAndSortOperatingHours() {
         var sortedArray: [OperatingHoursForWeekDay] = []
         for day in operatingHours {
             let  sortedOpenTimes = day.openingTimes.sorted { $0 < $1}
@@ -260,7 +263,7 @@ final class BeastroHomeViewModel: ObservableObject {
             }
         }
         
-        // Compare the last object to the first object: "Sunday to Monday
+        // Compare the last object to the first object: "Sunday to Monday"
         if let firstDay = operatingHours.first, let lastDay = operatingHours.last {
             if lastDay.closingTimes.contains("24:00:00") && firstDay.openingTimes.contains("00:00:00") {
                 var newClosingTimesLastDay = lastDay.closingTimes
