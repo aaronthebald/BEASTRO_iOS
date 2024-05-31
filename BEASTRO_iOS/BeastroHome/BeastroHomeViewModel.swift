@@ -62,7 +62,7 @@ final class BeastroHomeViewModel: ObservableObject {
    private func getCurrentDayOfTheWeek() {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
-    
+/// Iterates through the days of the week, consolidating and creating Date objects for each opening and closing time. Also creates operatingHour objects used for the open/closed times in the open/closed hours section in the home view.
     func consolidateReturnedOpenPeriodsFromAPI() {
         var newArray: [DayWithParsableDates] = []
         
@@ -100,6 +100,7 @@ final class BeastroHomeViewModel: ObservableObject {
         setAndSortOpeningAndClosingTimes()
     }
     
+    /// This function controls the open status text. It gets the current time, then establishes where the current time is relative to either the current open times or the next time the business will be open.
    private func setAndFormatMainText() {
        do {
            let now = Date()
@@ -159,7 +160,7 @@ final class BeastroHomeViewModel: ObservableObject {
        }
     }
     
-//   This function creates a tuple containing the Dates of an opening and closing time.
+///   This function creates a tuple containing the Dates of an opening and closing time.
     func getSpan(getNextOpenTime: Bool) throws -> (Date, Date) {
         let now = Date()
         var pairsOfDates: [(Date, Date)] = []
@@ -196,7 +197,7 @@ final class BeastroHomeViewModel: ObservableObject {
         return nextOpenTime
     }
     
-//    This function if used to determine if the restaurant is open past midnight
+///    This function if used to determine if the restaurant is open past midnight
     func isTheClosingTimePastMidnight(pair1: (Date, Date), pair2: (Date, Date)) -> Bool {
         let newFormatter = DateFormatter()
         newFormatter.dateFormat = "HH:mm:ss"
