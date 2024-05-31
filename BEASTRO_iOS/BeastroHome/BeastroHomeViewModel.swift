@@ -28,10 +28,9 @@ final class BeastroHomeViewModel: ObservableObject {
     
     private var formattedDaysTimes: [DayWithParsableDates] = []
     private var returnedHours: [OpenPeriod] = []
-    
     private var networkingService: NetworkingServiceProtocol
     
-    //    Creating an array of Days of the week to iterate through and assign values to start and end times
+    //    Creating an array of Days of the week to iterate through and assign Date values to start and end times
    private var daysOfTheWeek = [
         DayWithParsableDates(weekday: "Monday", abv: "MON", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithParsableDates(weekday: "Tuesday", abv: "TUE", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
@@ -41,7 +40,7 @@ final class BeastroHomeViewModel: ObservableObject {
         DayWithParsableDates(weekday: "Saturday", abv: "SAT", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: []),
         DayWithParsableDates(weekday: "Sunday", abv: "SUN", startTimes: [], endTimes: [], startTimeInDateFormat: [], endTimeInDateFormat: [])
     ]
-//    Make network call to receive JSON data using the NetworkingService class
+
     func fetchBusinessHours() async {
         do {
             let hoursResponse = try await networkingService.fetchBusinessHours()
@@ -60,7 +59,6 @@ final class BeastroHomeViewModel: ObservableObject {
         }
     }
     
-//    Function to get current date of the week. This is to allow the view to make the current date font weight .bold
    private func getCurrentDayOfTheWeek() {
         currentDay = dateAndTimeService.getCurrentDayOfWeek()
     }
@@ -72,6 +70,7 @@ final class BeastroHomeViewModel: ObservableObject {
             let filteredHours = returnedHours.filter { $0.dayOfWeek == day.abv }
             let openingTimes = filteredHours.map { $0.startLocalTime }
             let closingTimes = filteredHours.map { $0.endLocalTime }
+            
             do {
                 let dayOfTheWeek = try dateAndTimeService.nextOccurrence(ofDayOfWeek: day.weekday)
                 let startTimesInDateFormat = try dateAndTimeService.datesFromStrings(dayOfTheWeek: dayOfTheWeek, timeStrings: openingTimes, closingTime: false)
@@ -94,7 +93,6 @@ final class BeastroHomeViewModel: ObservableObject {
             let operatingHour = OperatingHoursForWeekDay(dayOfWeek: day.weekday, openingTimes: openingTimes, closingTimes: closingTimes)
             operatingHours.append(operatingHour)
             
-            
         }
         
         formattedDaysTimes = newArray
@@ -114,23 +112,23 @@ final class BeastroHomeViewModel: ObservableObject {
                }
                if spanDate.1 < dateWithin1HourObject {
 //           OPEN BUT CLOSING WITHIN AN HOUR
-                   openStatusLight = .yellow
+                openStatusLight = .yellow
 //              Get String for the time restaurant will be closing
-                       let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
+                let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
 //              Get span for next time restaurant will be open
-                       let nextOpenTime = try getSpan(getNextOpenTime: true)
+                let nextOpenTime = try getSpan(getNextOpenTime: true)
 //              Get text for next time restaurant will be open
-                       let nextOpenTimeText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false)
+                let nextOpenTimeText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false)
                        
-                       let nextOpenDayText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true)
+                let nextOpenDayText = try dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true)
                    
-                   openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
+                openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
                } else {
 //              OPEN FOR MORE THAN AN HOUR LONGER
                    openStatusLight = .green
 //              Get String for the time restaurant will be closing
-                    let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
-                   openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString))"
+                let closingTimeString = try dateAndTimeService.formatTime(from: spanDate.1.description, getWeekDay: false)
+                openStatusText = try "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString))"
                }
            }
 //      If the current date and time is not within a span, the restaurant is closed. That status will be handled here.
@@ -180,7 +178,6 @@ final class BeastroHomeViewModel: ObservableObject {
                 throw dateError.failedToCreateSpan
             }
             if getNextOpenTime {
-                print("getNextOpenTime block ran")
                 return nextOpenTime
             }
             if span.contains(now) {

@@ -52,15 +52,3 @@ final class NetworkingService: NetworkingServiceProtocol {
         }
     }
 }
-
-/*
- Components to fetch TestData:
- var bundle: Bundle {
-     return Bundle(for: type(of: self))
- }
- guard let path = bundle.url(forResource: "TestData", withExtension: "json") else {
-     fatalError("Failed to load JSON file")
- }
- let testData =  try Data(contentsOf: path)
- */
-
