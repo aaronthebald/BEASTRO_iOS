@@ -122,12 +122,18 @@ final class BeastroHomeViewModel: ObservableObject {
                     print("failed to get nextOpenTime")
                     return
                 }
+                print(nextOpenTime.0)
 //              Get text for next time restaurant will be open
                 guard let nextOpenTimeText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: false) else {
                     print("failed to get nextOpenTimeText")
                     return
                 }
-                openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
+                guard let nextOpenDayText = dateAndTimeService.formatTime(from: nextOpenTime.0.description, getWeekDay: true) else {
+                    print("YOOOOOO")
+                    return
+                }
+                
+                openStatusText = "Open until \(dateAndTimeService.makeTimeReadable(input: closingTimeString)), reopens on \(nextOpenDayText) at \(dateAndTimeService.makeTimeReadable(input: nextOpenTimeText))"
             } else {
 //              OPEN FOR MORE THAN AN HOUR LONGER
                 openStatusLight = .green
