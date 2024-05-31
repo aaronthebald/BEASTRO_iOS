@@ -13,10 +13,11 @@ struct BeastroHomeView: View {
     @State private var showMenu: Bool = false
     @State private var showFullHours: Bool = false
     
+    let firaSans = "FiraSans-Black"
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 50) {
+            VStack(spacing: 30) {
                 HStack {
                     homePageTitle
                     Spacer()
@@ -64,12 +65,11 @@ struct BeastroHomeView: View {
 
 extension BeastroHomeView {
     private var homePageTitle: some View {
-        VStack(alignment: .leading) {
-            Text(viewModel.businessName)
-        }
+        Text(viewModel.businessName)
         .padding(.leading)
-        .font(.largeTitle)
-        .fontWeight(.heavy)
+        .lineLimit(3)
+        .font(.customFont(name: firaSans, size: 54, relativeTo: .largeTitle))
+        .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color.white)
     }
     

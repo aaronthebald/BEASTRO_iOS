@@ -11,6 +11,8 @@
 		02478B062C07524800374B11 /* TestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 02478B052C07524800374B11 /* TestData.json */; };
 		02478B092C09179C00374B11 /* OperatingHoursForWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02478B082C09179C00374B11 /* OperatingHoursForWeekday.swift */; };
 		02478B0B2C0917BF00374B11 /* DayWithParsableDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02478B0A2C0917BF00374B11 /* DayWithParsableDates.swift */; };
+		024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 024E6A982C096759009427C6 /* FiraSans-Black.ttf */; };
+		024E6A9E2C0967DC009427C6 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E6A9D2C0967DC009427C6 /* Font.swift */; };
 		029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */; };
 		029843D92C02B0110000BF0A /* BeastroHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029843D82C02B0110000BF0A /* BeastroHomeView.swift */; };
 		029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 029843DA2C02B0130000BF0A /* Assets.xcassets */; };
@@ -45,6 +47,10 @@
 		02478B052C07524800374B11 /* TestData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TestData.json; sourceTree = "<group>"; };
 		02478B082C09179C00374B11 /* OperatingHoursForWeekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingHoursForWeekday.swift; sourceTree = "<group>"; };
 		02478B0A2C0917BF00374B11 /* DayWithParsableDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWithParsableDates.swift; sourceTree = "<group>"; };
+		024E6A982C096759009427C6 /* FiraSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Black.ttf"; sourceTree = "<group>"; };
+		024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "BEASTRO-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
+		024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BEASTRO_iOS.entitlements; sourceTree = "<group>"; };
+		024E6A9D2C0967DC009427C6 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		029843D32C02B0110000BF0A /* BEASTRO_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BEASTRO_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BEASTRO_iOSApp.swift; sourceTree = "<group>"; };
 		029843D82C02B0110000BF0A /* BeastroHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastroHomeView.swift; sourceTree = "<group>"; };
@@ -95,6 +101,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		024E6A9C2C0967C7009427C6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				024E6A9D2C0967DC009427C6 /* Font.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		029843CA2C02B0110000BF0A = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +132,10 @@
 		029843D52C02B0110000BF0A /* BEASTRO_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				024E6A9C2C0967C7009427C6 /* Extensions */,
+				024E6A9B2C0967BA009427C6 /* BEASTRO_iOS.entitlements */,
+				024E6A9A2C096780009427C6 /* BEASTRO-iOS-Info.plist */,
+				024E6A982C096759009427C6 /* FiraSans-Black.ttf */,
 				02478B072C09141C00374B11 /* Models */,
 				029843D62C02B0110000BF0A /* BEASTRO_iOSApp.swift */,
 				02B5BA612C038B17000CF54D /* BeastroHome */,
@@ -279,6 +297,7 @@
 				029843DE2C02B0130000BF0A /* Preview Assets.xcassets in Resources */,
 				02478B062C07524800374B11 /* TestData.json in Resources */,
 				029843DB2C02B0130000BF0A /* Assets.xcassets in Resources */,
+				024E6A992C096759009427C6 /* FiraSans-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +327,7 @@
 				02478B0B2C0917BF00374B11 /* DayWithParsableDates.swift in Sources */,
 				029843D72C02B0110000BF0A /* BEASTRO_iOSApp.swift in Sources */,
 				02478B092C09179C00374B11 /* OperatingHoursForWeekday.swift in Sources */,
+				024E6A9E2C0967DC009427C6 /* Font.swift in Sources */,
 				029844032C0379430000BF0A /* NetworkingService.swift in Sources */,
 				0202B8502C03A11800B5F00D /* DateAndTimeService.swift in Sources */,
 				029844052C037A350000BF0A /* HoursResponse.swift in Sources */,
@@ -471,12 +491,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BEASTRO_iOS/BEASTRO_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BEASTRO_iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = MW75NQ7TG5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "BEASTRO-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -501,12 +523,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BEASTRO_iOS/BEASTRO_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BEASTRO_iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = MW75NQ7TG5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "BEASTRO-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
